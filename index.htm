@@ -20,9 +20,13 @@
     <link href="./css/override.css" rel="stylesheet">
 
     <script>
-      //_gUserEmail = null;
-      _gUserEmail = 'nattasarit@gmail.com';  //bypass login
+      _gUserEmail = null;
+      //_gUserEmail = 'tutor1@gmail.com';  //bypass login
       _gUserType = 'tutor';
+      _gUser = {
+          turId:null,
+          turName:null
+      };
     </script>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -112,8 +116,30 @@
         function login(email,password){
           console.log("email=", email);
           console.log("password=", password);
+          var data = {
+            email: email,
+            password:password
+          }
+          console.log(data);
           if(_gUserEmail){   //call web service for check user credential
-            //_gUserEmail = email;  //bypass login
+            $.ajax({
+              type: "POST",
+              url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/tutor/login",
+              data: JSON.stringify(data),
+              contentType: "application/json; charset=utf-8",
+              crossDomain: true,
+              dataType: "json",
+              success: function (data, status, jqXHR) {
+
+                 alert("Tutor ID : " + data.data.id);
+              },
+
+              error: function (jqXHR, status) {
+                 // error handler
+                 console.log(jqXHR);
+                 alert('fail' + status.code);
+              }
+            });
             loadMainPage();
           }
         }
