@@ -1,0 +1,39 @@
+.label-header{
+    font-size: 2em;
+}
+
+.container-half-left{
+    display: inline;
+}
+
+.container-half-right{
+    display: inline;
+}
+
+.navbar-nav .nav-link:hover{
+    background-color: rgba(100,100,100,0.4);
+    color: rgb(50,70,120);
+}
+
+.navbar-dark .navbar-nav .nav-link{
+    background-color: transparent;
+    color:white;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover{
+    background-color: rgba(100,100,100,0.4);
+}
+
+.navbar{
+    border-radius: 0;
+    padding: 0;
+    height: 50px;
+}
+
+.container-btn-add-right{
+    float: right;
+}
+
+.login-container{
+    width: 500px;
+}

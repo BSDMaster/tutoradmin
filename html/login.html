@@ -1,27 +1,59 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        
-    </head>
 
-    <body>
-        login
-        <div class="form-group">
-            <label for="inputsm">e-mail</label>
-            <input class="form-control input-sm" id="txtLoginEmail" type="text">
-        </div>
-        <div class="form-group">
-            <label for="inputdefault">password</label>
-            <input class="form-control" id="txtLoginPassword" type="text">
-        </div>
-        <button class="ui-button ui-widget ui-corner-all" id="btnLogin">Login</button>
+<head>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+</head>
 
-        <script>
-            jQuery( "#btnLogin" ).click(function() {
-                var email = jQuery("#txtLoginEmail").val();
-                var password = jQuery("#txtLoginPassword").val();
-                window.parent.login(email, password);
+<body>
+    <div class="container login-container">
+        <ul class="nav nav-tabs" id="loginTabs">
+            <li class="nav-item active">
+                <a data-toggle="tab" href="#home" tabindex="0">นักเรียนหรือผู้ปกครอง&nbsp;&nbsp;
+                    <span class="badge badge-pill badge-danger" id="badgenum"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a data-toggle="tab" href="#profile" tabindex="1">ติวเตอร์</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="form-group">
+                <label for="txtLoginEmail">E-mail Address</label>
+                <input type="email" class="form-control" id="txtLoginEmail" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+                <label for="txtLoginPassword">Password</label>
+                <input class="form-control" id="txtLoginPassword" type="password">
+            </div>
+            <button type="button" class="btn btn-primary" id="btnLogin">Login</button>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // The on tab shown event
+            $('.nav-tabs a').on('shown.bs.tab', function (e) {
+                var tabIndex = e.currentTarget.tabIndex;
+                if(tabIndex != null && tabIndex != 0){
+                    _gUserType = "tutor";
+                }
             });
-        </script>
-    </body>
+        });
+
+        jQuery("#btnLogin").click(function () {
+            console.log("_gUserType = ", _gUserType);
+            var email = jQuery("#txtLoginEmail").val();
+            var password = jQuery("#txtLoginPassword").val();
+            window.parent.login(email, password);
+        });
+
+
+    </script>
+</body>
+
 </html>

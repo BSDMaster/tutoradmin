@@ -1,3 +1,42 @@
 .navbar .nav{
     float: right;
 }
+div {
+    font-size: 1.1em;
+}
+div font {
+    font-size: inherit;
+}
+
+label {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.modal-dialog {
+       top: 250px;
+}
+
+.modal-header .close {
+    margin-right: 0;
+}   
+
+.modal-title {
+    margin: 0px auto;
+}
+
+/* override bootgrid (table) */
+.search.form-group{
+    display: none;
+}
+
+.actions.btn-group{
+    display: none;
+}
+
+.bg-primary{
+    background-image: linear-gradient(#ebbd54,#D87801 60%, #D87801);
+    background-repeat: repeat;
+}
+
+

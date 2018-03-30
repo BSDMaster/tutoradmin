@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div class="label-header">รายละเอียดการรับงานสอน</div>
+
+    <!-- Button trigger modal -->
+    <button id="btnAddClass" type="button" class="btn btn-primary container-btn-add-right" data-toggle="modal" data-target="#modalAddClass">
+        เพิ่ม
+    </button>
+
+    <table id="gridClass" class="table table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th data-column-id="id" data-identifier="true" data-type="numeric">ลำดับ</th>
+                <th data-column-id="class">วิชา</th>
+                <th data-column-id="level">ระดับชั้น</th>
+                <th data-column-id="exp">ประสบการณ์สอน</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+            </tr>
+        </thead>
+    </table>
+    <div style="margin-top:30px;">
+        <div class="container-half-left">หลักสูตรที่สามารถสอนได้ :</div>
+        <div class="container-half-right">
+            <div>
+                <input type="checkbox"> สามารถสอนโดยใช้เอกสารประกอบการเรียนเป็นภาษาอังกฤษ </div>
+            <div>
+                <input type="checkbox"> สามารถสอนโดยใช้เอกสารประกอบการเรียนและสนทนาเป็นภาษาอังกฤษได้ </div>
+        </div>
+    </div>
+    </br>
+    <div>
+        <div>เวลาเดินทางไปและกลับสูงสุดที่ยอมรับได้</div>
+        <div class="form-group">
+            <select class="form-control" id="exampleFormControlSelect1" style="width:300px;">
+                <option>1 ชั่วโมง</option>
+                <option>2 ชั่วโมง</option>
+                <option>3 ชั่วโมง</option>
+            </select>
+        </div>
+    </div>
+    </br>
+    <div>
+        <div>วัน เวลา สถานที่และพาหนะที่ใช้เดินทาง :</div>
+    </div>
+    <!-- Button trigger modal -->
+    <button id="btnAddJobDetail" type="button" class="btn btn-primary container-btn-add-right" data-toggle="modal" data-target="#modalAddJobDetail">
+        เพิ่ม
+    </button>
+    <table id="gridJobDetail" class="table table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th data-column-id="id" data-identifier="true" data-type="numeric">ลำดับ</th>
+                <th data-column-id="day">วัน</th>
+                <th data-column-id="StartTime">เวลาเริ่มเดินทาง</th>
+                <th data-column-id="startPlace">สถานที่เริ่มต้นเดินทาง</th>
+                <th data-column-id="endTime">เวลาสิ้นสุดเดินทาง</th>
+                <th data-column-id="endPlace">สถานที่สิ้นสุดเดินทาง</th>
+                <th data-column-id="car">รถยนต์ส่วนตัว</th>
+                <th data-column-id="bus">รถประจำทาง</th>
+                <th data-column-id="bts">รถไฟฟ้า</th>
+                <th data-column-id="taxi" data-formatter="taxi" data-sortable="false">รถแท็กซี่</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+            </tr>
+        </thead>
+    </table>
+
+    <!-- Modal Add Class-->
+    <div class="modal fade" id="modalAddClass" tabindex="-1" role="dialog" aria-labelledby="modalAddClassLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAddClassLabel">เพิ่มรายวิชา</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="dropdownSubject">วิชา</label>
+                            <select class="form-control" id="dropdownSubject">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dropdownClass">ระดับชั้น</label>
+                            <select class="form-control" id="dropdownClass">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dropdownExp">ประสบการณ์สอน</label>
+                            <select class="form-control" id="dropdownExp">
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnSaveAddClass">ตกลง</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Add JobDetail-->
+    <div class="modal fade" id="modalAddJobDetail" tabindex="-1" role="dialog" aria-labelledby="modalAddJobDetailLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAddJobDetailLabel">วัน เวลา สถานที่และพาหนะที่ใช้เดินทาง</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="dropdownCopyFromDay">สำเนามาจาก</label>
+                            <select class="form-control" id="dropdownCopyFromDay">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dropdownJobDetailDay">วัน</label>
+                            <select class="form-control" id="dropdownJobDetailDay">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dropdownJobDetailStartTime">เวลาเริ่มต้นเดินทาง</label>
+                            <select class="form-control" id="dropdownJobDetailStartTime">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dropdownJobDetailEndTime">เวลาสิ้นสุดการเดินทาง</label>
+                            <select class="form-control" id="dropdownJobDetailEndTime">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtStartPlace">สถานที่เริ่มต้นเดินทาง</label>
+                            <input type="email" class="form-control" id="txtStartPlace" value="SiamParagon">
+                        </div>
+                        <div class="form-group">
+                            <label for="txtEndPlace">สถานทีสิ้นสุดการเดินทาง</label>
+                            <input type="email" class="form-control" id="txtEndPlace" value="SiamParagon">
+                        </div>
+                        <div style="display:inline;">
+                            <input type="checkbox" id="chkJobDetailCar">
+                            <label>รถยนต์ส่วนตัว</label>
+                            <input type="checkbox" id="chkJobDetailBus">
+                            <label>รถโดยสารประจำทาง</label>
+                            <input type="checkbox" id="chkJobDetailBTS">
+                            <label>รถไฟฟ้า</label>
+                            <input type="checkbox" id="chkJobDetailTaxi">
+                            <label>แท็กซี่</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnSaveAddDetail">ตกลง</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary">บันทึก</button>
+            <button type="button" class="btn btn-secondary">ยกเลิก</button>
+        </div>
+    </div>
+
+    <script>
+        //bind master data
+        //subject
+        var dataSubject = [{
+            name: "คณิตศาสตร์", val: "math"
+        }, {
+            name: "ภาษาไทย", val: "thai"
+        }, {
+            name: "ภาษาอังกฤษ", val: "eng"
+        }];
+        for (var i = 0; i < dataSubject.length; i++) {
+            $('#dropdownSubject').append('<option value="' + dataSubject[i].val + '">' + dataSubject[i].name + '</option>');
+        }
+
+        //class
+        var dataClass = [{
+            name: "ประถมศึกษาตอนต้น", val: "c1"
+        }, {
+            name: "ประถมศึกษาตอนปลาย", val: "c2"
+        }, {
+            name: "มัธยมศึกษาตอนต้น", val: "c3"
+        }, {
+            name: "มัธยมศึกษาตอนปลาย", val: "c4"
+        }];
+        for (var i = 0; i < dataClass.length; i++) {
+            $('#dropdownClass').append('<option value="' + dataClass[i].val + '">' + dataClass[i].name + '</option>');
+        }
+
+        //exp
+        var dataExp = [{
+            name: "ไม่มีประสบการณ์สอน", val: "y0"
+        }, {
+            name: "1 ปี", val: "y1"
+        }, {
+            name: "2 ปี", val: "y2"
+        }, {
+            name: "3 ปี", val: "y3"
+        }];
+        for (var i = 0; i < dataExp.length; i++) {
+            $('#dropdownExp').append('<option value="' + dataExp[i].val + '">' + dataExp[i].name + '</option>');
+        }
+
+        //day
+        var dataDay = [{
+            name: "จันทร์", val: "monday"
+        }, {
+            name: "อังคาร", val: "tuesday"
+        }, {
+            name: "พุธ", val: "wednesday"
+        }, {
+            name: "พฤหัสบดี", val: "thursday"
+        }, {
+            name: "ศุกร์", val: "friday"
+        }, {
+            name: "เสาร์", val: "satuarday"
+        }, {
+            name: "อาทิตย์", val: "sunday"
+        }];
+        for (var i = 0; i < dataDay.length; i++) {
+            $('#dropdownCopyFromDay').append('<option value="' + dataDay[i].val + '">' + dataDay[i].name + '</option>');
+            $('#dropdownJobDetailDay').append('<option value="' + dataDay[i].val + '">' + dataDay[i].name + '</option>');
+        }
+
+        //time
+        var dataTime = [{
+            name: "8:00 น.", val: "800"
+        }, {
+            name: "8:30 น.", val: "830"
+        }, {
+            name: "9:00 น.", val: "900"
+        }, {
+            name: "9:30 น.", val: "930"
+        }, {
+            name: "10:00 น.", val: "1000"
+        }, {
+            name: "10:30 น.", val: "1030"
+        }, {
+            name: "11:00 น.", val: "1100"
+        }, {
+            name: "11:30 น.", val: "1130"
+        }, {
+            name: "12:00 น.", val: "1200"
+        }];
+        for (var i = 0; i < dataDay.length; i++) {
+            $('#dropdownJobDetailStartTime').append('<option value="' + dataTime[i].val + '">' + dataTime[i].name + '</option>');
+            $('#dropdownJobDetailEndTime').append('<option value="' + dataTime[i].val + '">' + dataTime[i].name + '</option>');
+        }
+
+
+        //grid Class
+        var gridClass = $("#gridClass").bootgrid({
+            formatters: {
+                "taxi": function(column, row){
+                    return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\">Car<span class=\"fa fa-pencil\"></span></button> "
+                },
+                "commands": function (column, row) {
+                    console.log("row=", row);
+                    return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\">Edit<span class=\"fa fa-pencil\"></span></button> " +
+                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\">Delete<span class=\"fa fa-trash-o\"></span></button>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function () {
+            gridClass.find(".command-edit").on("click", function (e) {
+                alert("You pressed edit on row: " + $(this).data("row-id"));
+            }).end().find(".command-delete").on("click", function (e) {
+                var rows = [];
+                rows[0] = parseInt($(this).data("row-id"));
+                gridClass.bootgrid('remove', rows);
+            });
+        });
+
+        /*
+        gridClass.bootgrid("append", [
+            {
+                "id": 1,
+                "class": "ภาษาอังกฤษ",
+                "level": "มัธยมศึกษาตอนปลาย",
+                "exp": "1 ปี"
+            }
+        ]);
+        */
+
+        //grid Job Detail
+        var gridDetail = $("#gridJobDetail").bootgrid({
+            ajax: false,
+            formatters: {
+                "commands": function (column, row) {
+                    return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\">Edit<span class=\"fa fa-pencil\"></span></button> " +
+                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\">Delete<span class=\"fa fa-trash-o\"></span></button>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function () {
+            gridDetail.find(".command-edit").on("click", function (e) {
+                alert("You pressed edit on row: " + $(this).data("row-id"));
+            }).end().find(".command-delete").on("click", function (e) {
+                var rows = [];
+                rows[0] = parseInt($(this).data("row-id"));
+                //var id = $(this).data("row-id");
+                console.log("rows=",rows);
+                gridDetail.bootgrid('remove', rows);
+            });
+        });
+
+        /*
+        gridDetail.bootgrid("append", [
+            {
+                "id": 1,
+                "day": "จันทร์",
+                "StartTime": "13.00 น.",
+                "startPlace": "Silom Complex",
+                "endTime": "19.00 น.",
+                "endPlace": "หมูบ้านรวมน้ำใจ ประชาอุทิศ",
+                "car": "",
+                "bus": "",
+                "bts": "",
+                "taxi": ""
+            }
+        ]);
+        */
+
+        $("#btnSaveAddClass").on("click", function (e) {
+            var selectedSubject = $("#dropdownSubject option:selected").text();
+            var selectedClass = $("#dropdownClass option:selected").text();
+            var selectedExp = $("#dropdownExp option:selected").text();
+            if (selectedSubject && selectedClass && selectedExp) {
+                gridClass.bootgrid("append", [
+                    {
+                        "id": gridClass.bootgrid("getTotalRowCount") + 1,
+                        "class": selectedSubject,
+                        "level": selectedClass,
+                        "exp": selectedExp
+                    }
+                ]);
+            }
+        });
+
+        $("#btnSaveAddDetail").on("click", function (e) {
+            var selectedJobDetailDay = $("#dropdownJobDetailDay option:selected").text();
+            var selectedJobDetailStartTime = $("#dropdownJobDetailStartTime option:selected").text();
+            var selectedJobDetailEndTime = $("#dropdownJobDetailEndTime option:selected").text();
+            var txtStartPlace = $("#txtStartPlace").val();
+            var txtEndPlace = $("#txtEndPlace").val();
+            var chkCar = "";
+            var chkBus = "";
+            var chkBTS = "";
+            var chkTaxi = "";
+            
+
+            if (selectedJobDetailDay && selectedJobDetailStartTime && selectedJobDetailEndTime && txtStartPlace && txtEndPlace) {
+                gridDetail.bootgrid("append", [
+                    {
+                        "id": gridDetail.bootgrid("getTotalRowCount") + 1,
+                        "day": selectedJobDetailDay,
+                        "StartTime": selectedJobDetailStartTime,
+                        "startPlace": txtStartPlace,
+                        "endTime": selectedJobDetailEndTime,
+                        "endPlace": txtEndPlace,
+                        "car": chkCar,
+                        "bus": chkBus,
+                        "bts": chkBTS,
+                        "taxi": chkTaxi
+                    }
+                ]);
+            }
+        });
+
+
+
+    </script>
+</body>
+
+</html>

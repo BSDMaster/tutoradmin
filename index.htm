@@ -1,91 +1,165 @@
 <!DOCTYPE html>
 <!-- saved from url=(0048)http://getbootstrap.com/2.3.2/examples/hero.html -->
-<html lang="en" class="gr__getbootstrap_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <title>Tutor</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<html lang="en">
 
-    <!-- Le styles -->
-    <link href="./library/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-    </style>
-    <link href="./library/bootstrap-responsive.css" rel="stylesheet">
-    <!--Override CSS-->
-    <link href="./css/override.css" rel="stylesheet">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <script>
-      _gUserEmail = null;
-      //_gUserEmail = 'tutor1@gmail.com';  //bypass login
-      _gUserType = 'tutor';
-      _gUser = {
-          turId:null,
-          turName:null
-      };
-    </script>
+  <title>Tutor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="http://getbootstrap.com/2.3.2/assets/ico/favicon.png">
-  </head>
+  <!-- Le styles -->
+  <!--<link href="./library/bootstrap.css" rel="stylesheet">-->
 
-  <body data-gr-c-s-loaded="true">
-    <div id="divMainNavBar" class="navbar navbar-inverse navbar-fixed-top" style="display:none;">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="javascript:loadMainPage();">Tutor</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <!--<li class="active"><a href="javascript:changePage('./html/schedule.html');">ตารางสอน</a></li>-->
-              <li><a href="javascript:changePage('./html/schedule.html');">ตารางสอน</a></li>
-              <li><a href="javascript:changePage('./html/rate.html');">อัตราค่าเรียน</a></li>
-              <li><a href="javascript:changePage('./html/contact.html');">ติดต่อเรา</a></li>
-              <li class="dropdown">
-                <a id="divShowUser" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="javascript:changePage('./html/profile.html');">แก้ไขข้อมูลส่วนตัว</a></li>
-                  <li><a href="javascript:logout();">ออกจากระบบ</a></li>
-                  <!--<li><a href="http://getbootstrap.com/2.3.2/examples/hero.html#">Something else here</a></li>
-                  <li class="divider"></li>
-                  <li class="nav-header">Nav header</li>
-                  <li><a href="http://getbootstrap.com/2.3.2/examples/hero.html#">Separated link</a></li>
-                  <li><a href="http://getbootstrap.com/2.3.2/examples/hero.html#">One more separated link</a></li>-->
-                </ul>
-              </li>
-            </ul>
-          </div><!--/.nav-collapse -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!--Library Table-->
+  <script src="./library/bootgrid/jquery.bootgrid.js"></script>
+  <script src="./library/bootgrid/jquery.bootgrid.fa.js"></script>
+  <link href="./library/bootgrid/jquery.bootgrid.css" rel="stylesheet">
+
+  <link href="./library/bootstrap-responsive.css" rel="stylesheet">
+  <!--Override CSS-->
+  <!--    <link href="./css/bootstrap.css" rel="stylesheet">-->
+  <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/style.css" rel="stylesheet">
+  <link href="./css/override.css" rel="stylesheet">
+  <script>
+    //_gUserEmail = 'tutor1@gmail.com';  //bypass login
+    _gUserType = 'student';
+    _gRec = {
+      recId: null,
+      recType: null
+    };
+    _gUser = {
+      turId: null,
+      turName: null
+    };
+    _gUser.turId = 11;
+    _gUser.turName = 'Admin1';
+    _gGridGroupCourse = null;
+
+  </script>
+</head>
+
+<body data-gr-c-s-loaded="true">
+  <!--
+  <div id="divMainNavBar" class="navbar navbar-inverse navbar-fixed-top" style="display:none;">
+    <div class="navbar-inner">
+      <div class="container">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="brand" href="javascript:loadMainPage();">Tutor</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li><a href="javascript:changePage('./html/schedule.html');">ตารางสอน</a></li>
+            <li><a href="javascript:changePage('./html/rate.html');">อัตราค่าเรียน</a></li>
+            <li><a href="javascript:changePage('./html/contact.html');">ติดต่อเรา</a></li>
+            <li class="dropdown">
+              <a id="divShowUser" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="javascript:changePage('./html/profile.html');">แก้ไขข้อมูลส่วนตัว</a></li>
+                <li><a href="javascript:logout();">ออกจากระบบ</a></li>
+              </ul>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-    <div id="divMainContainer" class="container">
+  </div>-->
+  <!--
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li>
+      <li><a href="#">Page 3</a></li>
+    </ul>
+  </div>
+</nav>-->
 
-    </div> <!-- /container -->
+
+  <nav id="divMainNavBar" class="navbar navbar-expand-lg navbar-dark bg-primary" style="display:none;">
+
+    <div class="container-fluid">
+
+      <!--<div class="navbar-header">-->
+
+      <a class="navbar-brand mb-0 h1" href="javascript:loadMainPage();">พนักงานรับงานสอนพิเศษ</a>
+      <!--  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+    </div>-->
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="nav navbar-nav ml-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown">แก้ไขข้อมูลวิชาเรียนและอัตราค่าสอน</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="javascript:changePage('./html/edtiGroupCourse.html');">กลุ่มวิชาเรียน</a>
+              <a class="dropdown-item" href="javascript:changePage('./html/editSubGroupCourse.html');">กลุ่มวิชาเรียนย่อย</a>
+              <a class="dropdown-item" href="javascript:changePage('./html/editCourse.html');">วิชาเรียน</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:changePage('./html/schedule.html');">รายงาน</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:changePage('./html/rate.html');">พนักงานรับงานสอน</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a id="divShowUser" class="nav-link dropdown-toggle" data-toggle="dropdown">User</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="javascript:changePage('./html/profile.html');">ข้อมูลส่วนตัว</a>
+              <a class="dropdown-item" href="javascript:changePage('./html/profile.html');">ข้อมูลการรับงาน</a>
+              <a class="dropdown-item" href="javascript:logout();">ออกจากระบบ</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- 
+ <a class="navbar-brand" href="#">Navbar</a>
+ <div class="collapse navbar-collapse" id="navbarColor01">
+   <ul class="navbar-nav mr-auto">
+     <li class="nav-item active">
+       <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" href="#">Features</a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" href="#">Pricing</a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" href="#">About</a>
+     </li>
+   </ul>
+ </div>-->
+  </nav>
+  <div id="divMainContainer" class="container">
+
+  </div>
+  <!-- /container -->
 
 
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./library/jquery.js"></script>
+  <!-- Le javascript
+================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <!--
     <script src="./library/bootstrap-transition.js"></script>
+   
     <script src="./library/bootstrap-alert.js"></script>
     <script src="./library/bootstrap-modal.js"></script>
     <script src="./library/bootstrap-dropdown.js"></script>
@@ -96,70 +170,82 @@
     <script src="./library/bootstrap-button.js"></script>
     <script src="./library/bootstrap-collapse.js"></script>
     <script src="./library/bootstrap-carousel.js"></script>
-    <script src="./library/bootstrap-typeahead.js"></script>
+    <script src="./library/bootstrap-typeahead.js"></script>-->
 
-    <script>
-        jQuery( document ).ready(function() {
-          console.log( "ready!" );
-          if(_gUserEmail == null){
-            jQuery("#divMainContainer").load('./html/login.html');
-          }
-          else{
-            loadMainPage();
-          }
-        });
-  
-        function changePage(page) {
-          jQuery("#divMainContainer").load(page);
+  <script>
+
+    jQuery(document).ready(function () {
+      console.log("ready!");
+      if (_gUser.turId == null) {
+        jQuery("#divMainContainer").load('./html/login.html');
+      }
+      else {
+        loadMainPage();
+      }
+    });
+
+    function changePage(page) {
+      jQuery("#divMainContainer").load(page);
+    }
+
+    function login(email, password) {
+      console.log("email=", email);
+      console.log("password=", password);
+      var data = {
+        email: email,
+        password: password
+      }
+      console.log(data);
+      //if(_gUserEmail){   //call web service for check user credential
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/tutor/login",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        success: function (data, status, jqXHR) {
+          _gUser.turId = data.data.id;
+          _gUser.turName = data.data.name;
+          console.log(_gUser.turId);
+          loadMainPage();
+          // alert("Tutor ID : " + data.data.id);
+        },
+
+        error: function (jqXHR, status) {
+          // error handler
+          console.log(jqXHR);
+          alert('fail' + status.code);
         }
+      });
 
-        function login(email,password){
-          console.log("email=", email);
-          console.log("password=", password);
-          var data = {
-            email: email,
-            password:password
-          }
-          console.log(data);
-          if(_gUserEmail){   //call web service for check user credential
-            $.ajax({
-              type: "POST",
-              url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/tutor/login",
-              data: JSON.stringify(data),
-              contentType: "application/json; charset=utf-8",
-              crossDomain: true,
-              dataType: "json",
-              success: function (data, status, jqXHR) {
+      //testOnly
 
-                 alert("Tutor ID : " + data.data.id);
-              },
 
-              error: function (jqXHR, status) {
-                 // error handler
-                 console.log(jqXHR);
-                 alert('fail' + status.code);
-              }
-            });
-            loadMainPage();
-          }
-        }
+      // }
+    }
 
-        function loadMainPage(){
-          if(_gUserEmail){
-            jQuery("#divMainContainer").load('./html/main.html');
-            jQuery("#divMainNavBar").css('display', '');
-            jQuery("#divShowUser").html(_gUserEmail);
-          }
-          else{
-            console.log("pls check user credential");
-          }
-        }
+    function loadMainPage() {
+      if (_gUser.turId != null) {
+        jQuery("#divMainContainer").load('./html/main.html');
+        jQuery("#divMainNavBar").css('display', '');
+        jQuery("#divShowUser").html(_gUser.turName);
 
-        function logout(){
-          //_gUserEmail = null;
-          jQuery("#divMainContainer").load('./html/login.html');
-          jQuery("#divMainNavBar").css('display', 'none');
-        }
-      </script>
+        //_gUserType
 
-</body></html>
+      }
+      else {
+        console.log("pls check user credential");
+      }
+    }
+
+    function logout() {
+      //_gUserEmail = null;
+      jQuery("#divMainContainer").load('./html/login.html');
+      jQuery("#divMainNavBar").css('display', 'none');
+    }
+  </script>
+
+</body>
+
+</html>
