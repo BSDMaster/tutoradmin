@@ -6,16 +6,21 @@
 </head>
 
 <body>
-    <div class="label-header">กลุ่มวิชาเรียน</div>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary container-btn-add-right" data-toggle="modal" data-target="#modalAddGroupCourse">
-        เพิ่ม
-    </button>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item active">อัตราค่าเรียนพิเศษ</li>
+        </ol>
+    </div>
+    <div class="label-header">อัตราค่าเรียนพิเศษ</div>
+
     <table id="gridGroupCourse" class="table table-condensed table-hover table-striped">
         <thead>
             <tr>
-                <th data-column-id="id" data-identifier="true" data-type="numeric">ลำดับ</th>
-                <th data-column-id="groupCourseName">ชื่อกลุ่มวิชา</th>
+                <th data-column-id="id" data-identifier="true" data-type="numeric">รหัสกลุ่มวิชาเรียน</th>
+                <th data-column-id="groupCourseName">ชื่อกลุ่มวิชาเรียน</th>
                 <th data-column-id="onePerson">1 คน</th>
                 <th data-column-id="twoPerson">2 คน</th>
                 <th data-column-id="threePerson">3 คน</th>
@@ -68,6 +73,11 @@
     </div>
 
     <script>
+        jQuery(document).ready(function () {
+            console.log("Load on edit group course page");
+
+        });
+
         //grid Class
         _gGridGroupCourse = $("#gridGroupCourse").bootgrid({
             formatters: {
@@ -89,6 +99,8 @@
                 _gGridGroupCourse.bootgrid('remove', rows);
             });
         });
+
+        
 
         $("#btnSaveAddGroupCourse").on("click", function (e) {
             var txtGroupCourseName = $("#txtGroupCourseName").val();

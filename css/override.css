@@ -8,6 +8,10 @@ div font {
     font-size: inherit;
 }
 
+table {
+    font-size: 1.1em;
+}
+
 label {
     font-size: 1.2rem;
     font-weight: 500;
@@ -26,9 +30,11 @@ label {
 }
 
 /* override bootgrid (table) */
+/*
 .search.form-group{
     display: none;
 }
+*/
 
 .actions.btn-group{
     display: none;
@@ -39,4 +45,6 @@ label {
     background-repeat: repeat;
 }
 
-
+.modal-backdrop.fade {
+    opacity: 0.5;
+}

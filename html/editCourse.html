@@ -6,25 +6,41 @@
 </head>
 
 <body>
-    <div class="label-header">วิชา</div>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item active">วิชาเรียน</li>
+        </ol>
+    </div>
+    <div class="alert alert-dismissible alert-success" style="display: none;">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>บันทึกข้อมูลสำเร็จ</strong>
+        </div>
+        <div class="alert alert-dismissible alert-danger" style="display: none;">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
+        </div>
+    <div class="label-header">วิชาเรียน</div>
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary container-btn-add-right" data-toggle="modal" data-target="#modalAddCourse">
+    <button type="button" id="addSubjectBtn" class="btn btn-primary container-btn-add-right" data-toggle="modal" data-target="#modalAddCourse">
         เพิ่ม
     </button>
     <table id="gridCourse" class="table table-condensed table-hover table-striped">
         <thead>
             <tr>
-                <th data-column-id="id" data-identifier="true" data-type="numeric">ลำดับ</th>
+                <th data-column-id="id" data-type="numeric">รหัสวิชา</th>
+                <th data-column-id="courseName">ชื่อวิชา</th>
                 <th data-column-id="groupCourseName">ชื่อกลุ่มวิชา</th>
-                <th data-column-id="courseName">วิชา</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+                <th data-column-id="activeFlag">Active</th>
+                <th data-column-id="action" data-sortable="false" data-searchable="false">Action</th>
             </tr>
         </thead>
     </table>
 
     <!-- Modal Add Class-->
-    <div class="modal fade" id="modalAddCourse" tabindex="-1" role="dialog" aria-labelledby="modalAddCourseLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalAddCourse" tabindex="-1" role="dialog" aria-labelledby="modalAddCourseLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -36,14 +52,26 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="dropdownGroupName">ชื่อกลุ่มวิชา</label>
-                            <select class="form-control" id="dropdownGroupName">
-                            </select>
+                            <label for="txtSubjId">รหัสวิชา</label>
+                            <input class="form-control" id="txtSubjId" readonly>
                         </div>
                         <div class="form-group">
                             <label for="txtCourseName">ชื่อวิชา</label>
                             <input class="form-control" id="txtCourseName">
                         </div>
+                        <div class="form-group">
+                            <div class="custom-control">
+                                <input type="checkbox" id="activeCheck" checked>
+                                <label for="activeCheck">Active</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>ชื่อกลุ่มวิชา</label>
+                            <div class="card fixedHeightContainer ">
+                                <div id="cblist" class="content"></div>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -55,6 +83,141 @@
     </div>
 
     <script>
+        var gridCourse = $("#gridCourse");
+        var subjectdetails = [];
+        var subjectCatagories = [];
+        jQuery(document).ready(function () {
+            console.log("Load on edit course page");
+            // gridSubGroupCourse.bootgrid('clear');  
+            initialEditCourseData();
+            initialParentCatData();
+
+
+        });
+
+        function initialEditCourseData() {
+            console.log("initial data");
+            subjectdetails = [];
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/subjectdetail/list",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.subjectDetails);
+                    subjectdetails = data.data.subjectDetails;
+                    console.log(subjectdetails);
+                    for (var i = 0; i < subjectdetails.length; i++) {
+                        console.log("data : " + subjectdetails[i].subjId);
+                        appendSubject(subjectdetails[i], i);
+                    }
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
+        function initialParentCatData() {
+            console.log("initial parent cat data");
+
+            subjectCatagories = [];
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/subjectcatagory/parentlist",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.subjectCatagories);
+                    subjectCatagories = data.data.subjectCatagories;
+                    for (var i = 0; i < subjectCatagories.length; i++) {
+                        addCheckbox(subjectCatagories[i].subcName, subjectCatagories[i].subcId);
+                    }
+                    //    $("#catagoryTable").attr('data-url',subjectCatagories);
+                    /*   for (var i = 0; i < subjectCatagories.length; i++) {
+                           addRow(subjectCatagories[i].subcName);
+                       }*/
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
+        function initialEditSubjectDetail(id) {
+            console.log("initial subject detail");
+            var catagories = [];
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/subjectdetail/get/" + id,
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.subjectDetails);
+                    catagories = data.data.subjectDetails;
+                    console.log(catagories);
+                    for (var i = 0; i < catagories.length; i++) {
+                        var subcId = catagories[i].subjectCatagory.subcId;
+                        $("#cb" + subcId).prop('checked', true);
+                    }
+                    /*
+                    for (var i = 0; i < subjectdetails.length; i++) {
+                        console.log("data : " + subjectdetails[i].subjId);
+                        appendSubject(subjectdetails[i], i);
+                    }*/
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
+
+        function appendSubject(subjectdetail, i) {
+            var divSignActive = "<div class='signActive'></div>";
+            if (subjectdetail.subjActiveFlag == 'N') {
+                divSignActive = "<div class='signInActive'></div>";
+            }
+
+            var actionTag = "";
+            if (subjectdetail.isDeleteable == 'Y') {
+                actionTag = "<button id='editBtn' type='button' class='btn btn-xs btn-default command-edit' data-row-id='" + i + "'><div class='fa-pencil'></div></button> "
+                    + "<button id='deleteBtn' type='button' class='btn btn-xs btn-default command-delete' data-row-id='" + i + "'><div class='fa-trash-o'></div></button>";
+            } else {
+                actionTag = "<button id='editBtn' disabled type='button' class='btn btn-xs btn-default command-edit' data-row-id='" + i + "'><div class='fa-pencil'></div></button> "
+                    + "<button id='deleteBtn' disabled type='button' class='btn btn-xs btn-default command-delete' data-row-id='" + i + "'><div class='fa-trash-o'></div></button>";
+            }
+
+            gridCourse.bootgrid("append", [
+                {
+                    "id": subjectdetail.subjId,
+                    "courseName": subjectdetail.subject.subjName,
+                    "groupCourseName": subjectdetail.subjectCatagories,
+                    "activeFlag": divSignActive,
+                    "action": actionTag
+                }
+            ]);
+        }
+
+        function addCheckbox(name, subcId) {
+            var container = $('#cblist');
+            /*
+            <input type="checkbox" class="custom-control-input" id="activeCheck" checked>
+                                <label class="custom-control-label" for="activeCheck">Active</label>
+            */
+            container.append('&nbsp;<input type="checkbox" value="' + subcId + '" id="cb' + subcId + '">');
+            container.append('<label for="cb' + subcId + '">&nbsp;&nbsp;' + name + '</label></input>');
+            //    $('<input />', { type: 'checkbox', id: 'cb' + i, value: name }).appendTo(container);
+            //    $('<label />', { 'for': 'cb' + i, text: 'a&nbsp;&nbsp;a' + name}).appendTo(container);
+            container.append('<br>');
+        }
+
         //grid Class
         if (_gGridGroupCourse != null) {
             var groupCourseData = _gGridGroupCourse.bootgrid().data('.rs.jquery.bootgrid').rows;
@@ -62,29 +225,99 @@
                 $('#dropdownGroupName').append('<option value="' + groupCourseData[i].groupCourseName + '">' + groupCourseData[i].groupCourseName + '</option>');
             }
         }
-
-        var gridCourse = $("#gridCourse").bootgrid({
-            formatters: {
-                "taxi": function (column, row) {
-                    return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\">Car<span class=\"fa fa-pencil\"></span></button> "
-                },
-                "commands": function (column, row) {
-                    console.log("row=", row);
-                    return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\">Edit<span class=\"fa fa-pencil\"></span></button> " +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\">Delete<span class=\"fa fa-trash-o\"></span></button>";
-                }
-            }
-        }).on("loaded.rs.jquery.bootgrid", function () {
+        $("#gridCourse").bootgrid().on("loaded.rs.jquery.bootgrid", function () {
             gridCourse.find(".command-edit").on("click", function (e) {
-                alert("You pressed edit on row: " + $(this).data("row-id"));
+                var i = $(this).data("row-id");
+                editCourse(i);
             }).end().find(".command-delete").on("click", function (e) {
-                var rows = [];
-                rows[0] = parseInt($(this).data("row-id"));
-                gridCourse.bootgrid('remove', rows);
+                var i = $(this).data("row-id");
+                var r = confirm("ต้องการลบข้อมูลรหัสวิชา " + subjectdetails[i].subjId + " ใช่หรือไม่");
+                if (r == true) {
+                    removeSubject(i);
+                }
             });
         });
 
+        $("#addSubjectBtn").on("click", function () {
+            for (var j = 0; j < subjectCatagories.length; j++) {
+                var subcId = subjectCatagories[j].subcId;
+                $("#cb" + subcId).prop('checked', false);
+            }
+            $(".modal-title").text("เพิ่มวิชาเรียน");
+            $("#txtSubjId").val("");
+            $("#txtCourseName").val("");
+
+            $('#activeCheck').prop('checked', true);
+
+        });
+        function editCourse(i) {
+
+            for (var j = 0; j < subjectCatagories.length; j++) {
+                var subcId = subjectCatagories[j].subcId;
+                $("#cb" + subcId).prop('checked', false);
+            }
+            console.log("Edit");
+            $("#btnSaveAddGroupCourse").data('myval', i);
+            console.log("Edit popup : " + i);
+            $(".modal-title").text("แก้ไขวิชาเรียน");
+            $("#txtSubjId").val(subjectdetails[i].subject.subjId);
+            $("#txtCourseName").val(subjectdetails[i].subject.subjName);
+            if (subjectdetails[i].subjActiveFlag == 'N') {
+                $('#activeCheck').prop('checked', false);
+            } else {
+                $('#activeCheck').prop('checked', true);
+            }
+            initialEditSubjectDetail(subjectdetails[i].subject.subjId);
+            /*
+           
+            $("#txtSubGroupCourseName").val(subjectCatagories[i].subcName);
+            if (subjectCatagories[i].parentSubjectCatagory != null) {
+                $("#dropdownGroupName").val(subjectCatagories[i].parentSubjectCatagory.subcId);
+            } else {
+                $("#dropdownGroupName").val(-1);
+            }
+            
+            $("#dropdownGroupName option:selected").text();*/
+            $('#modalAddCourse').modal('show');
+
+
+        }
+
+
         $("#btnSaveAddGroupCourse").on("click", function (e) {
+            var catInt = [];
+            for (var j = 0; j < subjectCatagories.length; j++) {
+                var subcId = subjectCatagories[j].subcId;
+                var checkBoxVal = $("#cb" + subcId).val();
+                console.log("subcId :" + subcId);
+                if ($("#cb" + subcId).is(":checked")) {
+                    catInt.push(checkBoxVal);
+                    console.log("Checkbox val : " + checkBoxVal);
+                }
+            }
+            var txtSubjId = $("#txtSubjId").val();
+            var txtCourseName = $("#txtCourseName").val();
+            var chkBoxFlag = $('#activeCheck');
+            var activeFlag = "Y";
+            if (!$("#activeCheck").is(':checked')) {
+                activeFlag = "N";
+            }
+
+            console.log("txtSubjId=", txtSubjId);
+            console.log("txtCourseName=", txtCourseName);
+            console.log("activeFlag=", activeFlag);
+            console.log("catInt=", catInt);
+            if (!txtSubjId) {
+                console.log("ADD");
+                addSubjectService(txtCourseName, activeFlag, catInt);
+            } else {
+                console.log("UPDATE");
+                updateSubjectService(txtSubjId, txtCourseName, activeFlag, catInt);
+            }
+            $("#btnSaveAddGroupCourse").data('myval', -1);
+            $('#modalAddCourse').modal('hide');
+
+            /*
             var txtGroupCourseName = $("#dropdownGroupName option:selected").text();
             var txtCourseName = $("#txtCourseName").val();
             console.log("txtGroupCourseName=", txtGroupCourseName);
@@ -100,8 +333,105 @@
             }
             else {
                 alert("invalid input");
-            }
+            }*/
         });
+
+        function addSubjectService(subjName, activeFlag, catInt) {
+            console.log("initial data");
+            var bodyRequest = {
+                "subjName": subjName,
+                "subjActiveFlag": activeFlag,
+                "catInt": catInt
+            };
+            console.log(bodyRequest);
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/subjectdetail/create",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(bodyRequest),
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    var messages = data.message;
+                    var alert;
+                    if (data.status == 200) {
+                        alert = $(".alert-success");
+                    } else {
+                        alert = $(".alert-danger");
+                    }
+                    alert.find("strong").text(messages);
+                    alert.show();
+
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
+        function updateSubjectService(subjId, subjName, activeFlag, catInt) {
+            console.log("initial data");
+            var bodyRequest = {
+                "subjId":subjId,
+                "subjName": subjName,
+                "subjActiveFlag": activeFlag,
+                "catInt": catInt
+            };
+            console.log(bodyRequest);
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/subjectdetail/update",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(bodyRequest),
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    var messages = data.message;
+                    var alert;
+                    if (data.status == 200) {
+                        alert = $(".alert-success");
+                    } else {
+                        alert = $(".alert-danger");
+                    }
+                    alert.find("strong").text(messages);
+                    alert.show();
+
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
+        function removeSubject(i) {
+            console.log("removeSubject : " + i);
+            var deleteId = subjectdetails[i].subdId;
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/subjectdetail/delete/" + deleteId,
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    var messages = data.message;
+                    var alert;
+                    if (data.status == 200) {
+                        alert = $(".alert-success");
+                    } else {
+                        alert = $(".alert-danger");
+                    }
+                    alert.find("strong").text(messages);
+                    alert.show();
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
     </script>
 </body>
 

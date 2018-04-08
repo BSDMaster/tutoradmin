@@ -4,9 +4,23 @@
 
 </head>
 <body>
+<div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">หน้าหลัก</li>
+        </ol>
+</div>
 <br><br>
 <div class="container">
-
+        <table class="table table-hover" id="waitingtable">
+            <tr class="table-primary">
+              <th scope="col">ชื่อนักเรียน</th>
+                <th scope="col">วิชาและระดับชั้น</th>
+                <th scope="col">วัน เวลาและสถานที่สอน</th>
+                <th scope="col">ชื่อติวเตอร์</th>
+                <th scope="col">เบอร์โทรติดต่อของติวเตอร์</th>
+                <th scope="col">ค่าแนะนำ</th>
+            </tr>
+        </table></p>
 </div>
 
 <script>
@@ -20,7 +34,7 @@
 
         });
         function setUpTable(){
-            var url = "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/rectutor/waitingacceptlist/"+_gUser.turId
+            var url = "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/rectutor/waitingacceptlist/";
             console.log(url);
             $.getJSON(url, function(json_data){
                 console.log(json_data);
@@ -31,19 +45,20 @@
                     $('#badgenum').text(json_data.data.size);
                      $.each(recommendTutors, function(index, result){
                     var table_row = $('<tr onClick="javascript:loadClassDetail('+result.recId+',\''+result.clsType+'\');">', {});
-                    
-                     var table_cell1 = $('<td>', {html: result.subjectAndGroupDetailName});
-                     var table_cell2 = $('<td>', {html: result.recTimeLoc});
-                     var table_cell3 = $('<td>', {html: result.recPrice});
-                     table_cell3.attr("align","right");
+                    var table_cell1 = $('<td>', {html: result.stuName});
+                     var table_cell2 = $('<td>', {html: result.subjectAndGroupDetailName});
+                     var table_cell3 = $('<td>', {html: result.recTimeLoc});
+                    var table_cell4 = $('<td>', {html: result.tutorName});
+                    var table_cell5 = $('<td>', {html: result.tutorContact});
+                     var table_cell6 = $('<td>', {html: result.recPrice});
+                     table_cell6.attr("align","right");
                      //var table_cell4 = $('<td>', {html: '<a href=javascript:changePage(&#39;./html/schedule.html&#39;);>HTML Images'+index+'</a>'});
 
                      //var table_cell4 = $('<td>',{html: '<button type="button" class="btn btn-success" onClick="javascript:changePage(&#39;./html/pay.html&#39;);">ชำระเงิน</button>'});
                      
                     // var table_cell4 = $('<td>',{html: '<button type="button" class="btn btn-success" onClick="javascript:accept(event,'+result.recId+',\''+result.clsType+'\');">รับงานสอน</button>'});
-                     var table_cell4 = $('<td>',{html: '<button type="button" class="btn btn-success btn-lg" href="#" onClick="javascript:accept(event,'+result.recId+',\''+result.clsType+'\');">รับงานสอน</button>'});
-                     table_cell4.attr("align","right");
-                     table_row.append(table_cell1,table_cell2,table_cell3,table_cell4);
+
+                     table_row.append(table_cell1,table_cell2,table_cell3,table_cell4,table_cell5,table_cell6);
                      table_obj.append(table_row);
                 });
                 } else {

@@ -37,3 +37,58 @@
 .login-container{
     width: 500px;
 }
+
+.signActive{
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+ /*   background-color: green;*/
+    background-image: url("../images/icons8-checked_checkbox.png");
+}
+
+.signInActive{
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+ /*   background-color: red;*/
+    background-image: url("../images/icons8-unchecked_checkbox.png");
+}
+
+.ten {
+    width: 10%;
+  }
+.twenty {
+    width: 20%;
+}
+.thirty {
+    width: 30%;
+}
+
+.fa-pencil{
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-edit_property.png");
+}
+.fa-trash-o{
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-trash.png");
+}
+.fixedHeightContainer
+{
+  float:left;
+  height: 250px;
+  width: 100%;
+  padding:5px; 
+}
+.content
+{
+  height:224px;
+   overflow:auto;
+}
