@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage();">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item active" id="breadcrumbrequestclass">รหัสคำร้องเลขที่ </li>
+        </ol>
+    </div>
+    <br>
+    <div class="alert alert-dismissible alert-success" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert"></button>
+        <strong>บันทึกข้อมูลสำเร็จ</strong>
+    </div>
+    <div class="alert alert-dismissible alert-danger" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert"></button>
+        <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
+    </div>
+    <div class="label-header" id="headerreqclass">ข้อมูลคำร้อง</div>
+    <div style="margin-top:30px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3">รหัสคำร้อง :</label>
+                            <label class="col-lg-9 labelnormal" id="lblReqId"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ประเภทคำร้อง :</label>
+                            <label class="col-lg-9 labelnormal" id="lblReqType"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">สถานะคำร้อง :</label>
+                            <label class="col-lg-9 labelnormal" id="lblReqStatus"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">สาเหตุ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblReqReason"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ชื่อผู้ยื่นคำร้อง :</label>
+                            <label class="col-lg-9 labelnormal" id="lblReqRequester"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">วันที่ยื่นคำร้อง :</label>
+                            <label class="col-lg-9 labelnormal" id="lblReqCreatedDate"></label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="label-header" id="headerstuclass">งานสอน</div>
+    <div style="margin-top:30px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3">รหัสงานสอน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblClsId">คณิตศาสตร์</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">วิชา :</label>
+                            <label class="col-lg-9 labelnormal" id="lblClsSubjectCat">คณิตศาสตร์</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ภาษาที่ใช้สอน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblClsProgram">ปกติ</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="label-header">ข้อมูลนักเรียน</div>
+    <div style="margin-top:30px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3">ชื่อ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuName"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">เบอร์โทรติดต่อ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuTel"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">อีเมล์ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuEmail"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">เพศ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuSex">ชาย</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ระดับชั้น :</label>
+                            <label class="col-lg-9 labelnormal" id="lblevel">ประถมศึกษาปีที่ 6</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">สถานศึกษา :</label>
+                            <label class="col-lg-9 labelnormal" id="lblSchool">โรงเรียน</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">จำนวนนักเรียน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblNumOfStudent">1</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div style="display: none;" id="tutorSection">
+        <div class="label-header">ข้อมูลติวเตอร์</div>
+        <div style="margin-top:30px;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-3">ชื่อ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblTurName"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">เบอร์โทรติดต่อ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblTurTel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">อีเมล์ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblTurEmail"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">เพศ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblTurSex">ชาย</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">คณะ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblTurFac"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">สถาบัน :</label>
+                                <label class="col-lg-9 labelnormal" id="lblTurUni"></label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="label-header">ข้อมูลวัน เวลา สถานที่เรียน</div>
+    <div style="margin:30px;">
+        <table id="gridClassTime" class="table table-condensed table-hover table-striped scroll">
+            <thead>
+                <tr>
+                    <th data-column-id="day" data-width="10%">วัน</th>
+                    <th data-column-id="time" data-width="30%">เวลา</th>
+                    <th data-column-id="location" data-width="60%">สถานที่</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="form-group col-lg-12">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <button type="button" class="btn btn-primary" id="btnApproveRequest">อนุมัติ</button>
+                    <button type="button" class="btn btn-primary" id="btnApproveRequestAndPay">อนุมัติและชำระเงินคืนติวเตอร์</button>
+                    <button type="button" class="btn btn-secondary" id="btnRejectRequest">ไม่อนุมัติ</button>
+                </div>
+                <div class="col-lg-4"></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var _reqId;
+    jQuery(document).ready(function () {
+        initialClassDetailData();
+    });
+
+    var gridClassTime = $("#gridClassTime").bootgrid({
+        navigation: 0,
+        labels: {
+            noResults: 'ไม่พบรายการ'
+        }
+    });
+
+    function initialClassDetailData() {
+
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "classrequest/getdetail/" + _gSelectedReqId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+
+                var classDetail = data.data.classDetailView;
+                var classRequest = data.data.classRequest;
+                console.log(classDetail);
+                $('#breadcrumbrequestclass').text('รหัสคำร้องเลขที่ ' + classRequest.reqId);
+                _reqId = classRequest.reqId;
+                $('#lblReqId').text(classRequest.reqId);
+                $('#lblReqType').text(classRequest.reqType);
+                $('#lblReqStatus').text(classRequest.reqStatus.reqStatusName);
+                $('#lblReqReason').text(classRequest.reqReason);
+                $('#lblReqRequester').text(classRequest.reqRequester);
+                $('#lblReqCreatedDate').text(classRequest.reqCreatedDate);
+                if (classRequest.reqType == 1 || classRequest.reqType == 4) {
+                    $('#btnApproveRequestAndPay').hide();
+                } else {
+                    $('#btnApproveRequestAndPay').show();
+                }
+                $('#headerstuclass').text('งานสอนเลขที่ ' + classDetail.clsId);
+                $('#lblClsId').text(classDetail.clsId);
+                $('#lblClsSubjectCat').text(classDetail.subjectAndGroupDetailName);
+                $('#lblClsProgram').text(classDetail.program);
+                $('#lblClsPrice').text(classDetail.recPrice);
+                $('#lblClsStuSex').text(classDetail.stuSex);
+                $('#lblClsLevel').text(classDetail.stuLevel);
+                $('#lblClsSchool').text(classDetail.stuSchool);
+                $('#lblClsNumOfStudent').text(classDetail.numOfStu);
+                $('#lblStuName').text(classDetail.stuName);
+                $('#lblStuTel').text(classDetail.stuTel);
+                $('#lblStuEmail').text(classDetail.stuEmail);
+                if (classDetail.turName) {
+                    $('#lblTurName').text(classDetail.turName);
+                    $('#lblTurTel').text(classDetail.turTel);
+                    $('#lblTurEmail').text(classDetail.turEmail);
+                    $('#lblTurFac').text(classDetail.turFac);
+                    $('#lblTurUni').text(classDetail.turUni);
+                    $('#lblTurSex').text(classDetail.turSex);
+                    $('#tutorSection').show();
+                } else {
+                    $('#tutorSection').hide();
+                }
+                var classTimeDetail = classDetail.recommendTimelocationList;
+                for (var i = 0; i < classTimeDetail.length; i++) {
+                    appendClassTime(classTimeDetail[i], i);
+                }
+            },
+            error: function (jqXHR, status) {
+            }
+
+        });
+
+    }
+
+    function appendClassTime(time, i) {
+        gridClassTime.bootgrid("append", [
+            {
+                "day": time.day,
+                "time": time.time,
+                "location": time.location
+            }
+        ]);
+    }
+
+     $("#btnApproveRequest").on("click", function (e) {
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "classrequest/approve/" + _gSelectedReqId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+                $(".alert-success").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            },
+            error: function (jqXHR, status) {
+                $(".alert-danger").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            }
+        });
+     });
+     $("#btnApproveRequestAndPay").on("click", function (e) {
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "classrequest/approveandpay/" + _gSelectedReqId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+                $(".alert-success").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            },
+            error: function (jqXHR, status) {
+                $(".alert-danger").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            }
+        });
+     });
+     $("#btnRejectRequest").on("click", function (e) {
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "classrequest/reject/" + _gSelectedReqId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+                $(".alert-success").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            },
+            error: function (jqXHR, status) {
+                $(".alert-danger").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            }
+        });
+     });
+
+
+</script>
+
+</html>

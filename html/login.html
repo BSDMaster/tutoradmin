@@ -11,42 +11,30 @@
 </head>
 
 <body>
-    <div class="container login-container">
-        <ul class="nav nav-tabs" id="loginTabs">
-            <li class="nav-item active">
-                <a data-toggle="tab" href="#home" tabindex="0">นักเรียนหรือผู้ปกครอง&nbsp;&nbsp;
-                    <span class="badge badge-pill badge-danger" id="badgenum"></span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a data-toggle="tab" href="#profile" tabindex="1">ติวเตอร์</a>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="form-group">
-                <label for="txtLoginEmail">E-mail Address</label>
-                <input type="email" class="form-control" id="txtLoginEmail" aria-describedby="emailHelp">
-            </div>
-            <div class="form-group">
-                <label for="txtLoginPassword">Password</label>
-                <input class="form-control" id="txtLoginPassword" type="password">
-            </div>
-            <button type="button" class="btn btn-primary" id="btnLogin">Login</button>
+    <div class="container login-container" style="margin-top: 30px;">
+        <div class="form-group">
+            <label for="txtLoginEmail">E-mail Address</label>
+            <input type="email" class="form-control" id="txtLoginEmail" aria-describedby="emailHelp">
         </div>
+        <div class="form-group">
+            <label for="txtLoginPassword">Password</label>
+            <input class="form-control" id="txtLoginPassword" type="password">
+        </div>
+        <button type="button" class="btn btn-primary" id="btnLogin">Login</button>
     </div>
     <script>
-        $(document).ready(function () {
-            // The on tab shown event
-            $('.nav-tabs a').on('shown.bs.tab', function (e) {
-                var tabIndex = e.currentTarget.tabIndex;
-                if(tabIndex != null && tabIndex != 0){
-                    _gUserType = "tutor";
-                }
-            });
+        jQuery(document).ready(function () {
+            console.log("ready!");
+            if (_gUser.stfId == null) {
+                jQuery("#txtLoginEmail").val('staff1@gmail.com');
+                jQuery("#txtLoginPassword").val('1234');
+            }
+            else {
+                // loadMainPage();
+            }
         });
 
         jQuery("#btnLogin").click(function () {
-            console.log("_gUserType = ", _gUserType);
             var email = jQuery("#txtLoginEmail").val();
             var password = jQuery("#txtLoginPassword").val();
             window.parent.login(email, password);

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage();">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item active">ข้อมูลติวเตอร์</li>
+        </ol>
+    </div>
+    <br>
+    <div class="alert alert-dismissible alert-success" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>บันทึกข้อมูลสำเร็จ</strong>
+    </div>
+    <div class="alert alert-dismissible alert-danger" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
+    </div>
+    <div class="label-header">ข้อมูลติวเตอร์</div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <form class="form-horizontal">
+                    <div class="form-group required">
+                        <label  class="col-lg-2 labelform">ชื่อ</label>
+                        <div id="txtFirstName" class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label id="txtLastName" class="col-lg-2 labelform">นามสกุล</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group">
+                        <label id="txtNickname" class="col-lg-2">ชื่อเล่น</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label id="txtEmail" class="col-lg-2 labelform">อีเมล์</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label id="txtTel" class="col-lg-2 labelform">เบอร์โทรมือถือ</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label id="dropdownSex" class="col-lg-2 labelform">เพศ</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label id="dropdownUniversity" class="col-lg-2 labelform">สถาบันศึกษา</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label id="dropdownFaculty" class="col-lg-2 labelform">คณะ</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label id="pickerBirthdate" class="col-lg-2 labelform">วัน เดือน ปีเกิด</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label id="" class="col-lg-2 labelform">เอกสารสำเนาบัตรประชาชน</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group">
+                        <label id="txtAddress" class="col-lg-2 ">ที่อยู่ปัจจุบัน</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group">
+                        <label id="txtClip" class="col-lg-2">คลิปตัวอย่างงานสอน</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group">
+                        <label id="txtOthers" class="col-lg-2">ข้อมูลงานสอนเพิ่มเติม</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <div class="form-group">
+                        <label id="" class="col-lg-2">รูปโปรไฟล์</label>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4">
+                            <button type="button" class="btn btn-primary btn-lg" id="btnApproveTutor">อนุมัติ</button>
+                            <button type="button" class="btn btn-secondary btn-lg" id="btnRejectTutor">ไม่อนุมัติ</button>
+                        </div>
+                        <div class="col-lg-4"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+
+</body>
+<script>
+
+    jQuery(document).ready(function () {
+        initialTutorProfile();
+    });
+
+
+    function initialTutorProfile() {
+        console.log(_gSelectedTurId);
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "tutor/getprofile/" + _gSelectedTurId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+                var tutor = data.data.tutorProfileView;
+                console.log(tutor);
+                $('#txtFirstName').text(tutor.turFirstname);
+                $('#txtLastName').next().text(tutor.turLastname);
+                $('#txtNickname').next().text(tutor.turNickname);
+                $('#txtTel').next().text(tutor.turTel);
+                $('#txtAddress').next().text(tutor.turAddress);
+                $('#txtEmail').next().text(tutor.turEmail);
+                // $('#pickerBirthdate').val();
+                $('#dropdownSex').next().text(tutor.turSex);
+                $('#dropdownUniversity').next().text(tutor.university);
+                $('#dropdownFaculty').next().text(tutor.faculty);
+                $('#txtClip').next().text(tutor.turClip);
+            },
+            error: function (jqXHR, status) {
+            }
+
+        });
+    }
+
+    $("#btnApproveTutor").on("click", function (e) {
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "tutor/approve/"+_gSelectedTurId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+                $(".alert-success").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            },
+            error: function (jqXHR, status) {
+                $(".alert-danger").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            }
+
+        });
+    });
+    $("#btnRejectTutor").on("click", function (e) {
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "tutor/reject/"+_gSelectedTurId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+                $(".alert-success").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            },
+            error: function (jqXHR, status) {
+                $(".alert-danger").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            }
+
+        });
+    });
+</script>
+
+</html>

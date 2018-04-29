@@ -5,7 +5,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-  <title>Tutor</title>
+  <title>ADMIN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <meta name="description" content="">
@@ -31,19 +31,15 @@
   <link href="./css/override.css" rel="stylesheet">
   <script>
     //_gUserEmail = 'tutor1@gmail.com';  //bypass login
-    _gUserType = 'student';
-    _gRec = {
-      recId: null,
-      recType: null
-    };
     _gUser = {
-      turId: null,
-      turName: null
+      stfId: null,
+      stfName: null,
+      stfRole: null
     };
-    _gUser.turId = 11;
-    _gUser.turName = 'Admin1';
-    _gGridGroupCourse = null;
-
+    _gNoResultFound = 'ไม่พบรายการ';
+    _gServiceURL = 'http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/';
+    _gSelectedTurId = null;
+    _gSelectedReqId = null;
   </script>
 </head>
 
@@ -90,62 +86,82 @@
   </div>
 </nav>-->
 
-
-  <nav id="divMainNavBar" class="navbar navbar-expand-lg navbar-dark bg-dark" style="display:none;">
-
+<nav id="divStaff1" class="navbar navbar-expand-lg navbar-dark bg-dark" style="display:none;">
     <div class="container-fluid">
-
-      <!--<div class="navbar-header">-->
-
-      <a class="navbar-brand mb-0 h1" href="javascript:loadMainPage();">พนักงานรับงานสอนพิเศษ</a>
-      <!--  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-    </div>-->
-      <div class="collapse navbar-collapse" id="navbarResponsive">
+      <a class="navbar-brand mb-0 h1" href="javascript:loadMainPage();">เจ้าของกิจการ</a>
+      <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav ml-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown">แก้ไขข้อมูลวิชาเรียน</a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="javascript:changePage('./html/editSubGroupCourse.html');">กลุ่มวิชาเรียน</a>
-              <a class="dropdown-item" href="javascript:changePage('./html/editCourse.html');">วิชาเรียน</a>
-            </div>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="javascript:changePage('./html/edtiGroupCourse.html');">อัตราค่าเรียนพิเศษ</a>
+            <li class="nav-item">
+              <a class="nav-link" href="javascript:changePage('./html/schedule.html');">รายงาน</a>
             </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript:changePage('./html/schedule.html');">รายงาน</a>
-          </li>
           <li class="nav-item dropdown">
-            <a id="divShowUser" class="nav-link dropdown-toggle" data-toggle="dropdown">User</a>
+            <a id="divShowUser1" class="nav-link dropdown-toggle" data-toggle="dropdown">User</a>
             <div class="dropdown-menu">
               <a class="dropdown-item" href="javascript:changePage('./html/profile.html');">ข้อมูลส่วนตัว</a>
-              <a class="dropdown-item" href="javascript:changePage('./html/profile.html');">ข้อมูลการรับงาน</a>
               <a class="dropdown-item" href="javascript:logout();">ออกจากระบบ</a>
             </div>
           </li>
         </ul>
       </div>
     </div>
-    <!-- 
- <a class="navbar-brand" href="#">Navbar</a>
- <div class="collapse navbar-collapse" id="navbarColor01">
-   <ul class="navbar-nav mr-auto">
-     <li class="nav-item active">
-       <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-     </li>
-     <li class="nav-item">
-       <a class="nav-link" href="#">Features</a>
-     </li>
-     <li class="nav-item">
-       <a class="nav-link" href="#">Pricing</a>
-     </li>
-     <li class="nav-item">
-       <a class="nav-link" href="#">About</a>
-     </li>
-   </ul>
- </div>-->
   </nav>
+  <nav id="divStaff2" class="navbar navbar-expand-lg navbar-dark bg-dark" style="display:none;">
+    <div class="container-fluid">
+      <a class="navbar-brand mb-0 h1" href="javascript:loadMainPage();">พนักงานรับงานสอนพิเศษ</a>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item dropdown ">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown">แก้ไขข้อมูลวิชาเรียน</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="javascript:changePage('./html/editSubGroupCourse.html');">กลุ่มวิชาเรียน</a>
+                <a class="dropdown-item" href="javascript:changePage('./html/editCourse.html');">วิชาเรียน</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="javascript:changePage('./html/edtiGroupCourse.html');">แก้ไขอัตราค่าเรียนพิเศษ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="javascript:changePage('./html/schedule.html');">รายงาน</a>
+            </li>
+          <li class="nav-item dropdown">
+            <a id="divShowUser2" class="nav-link dropdown-toggle" data-toggle="dropdown">User</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="javascript:changePage('./html/profile.html');">ข้อมูลส่วนตัว</a>
+              <a class="dropdown-item" href="javascript:logout();">ออกจากระบบ</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <nav id="divStaff3" class="navbar navbar-expand-lg navbar-dark bg-dark" style="display:none;">
+      <div class="container-fluid">
+        <a class="navbar-brand mb-0 h1" href="javascript:loadMainPage();">พนักงานจัดหาติวเตอร์</a>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="javascript:changePage('./html/edtiGroupCourse.html');">รายการติวเตอร์ที่รอการอนุมัติ</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="javascript:changePage('./html/edtiGroupCourse.html');">รายการแนะนำงานสอนที่รอตรวจสอบผลการชำระเงิน</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="javascript:changePage('./html/edtiGroupCourse.html');">รายการงานสอนที่รอการอนุมัติ</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="javascript:changePage('./html/schedule.html');">รายงาน</a>
+              </li>
+            <li class="nav-item dropdown">
+              <a id="divShowUser3" class="nav-link dropdown-toggle" data-toggle="dropdown">User</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="javascript:changePage('./html/profile.html');">ข้อมูลส่วนตัว</a>
+                <a class="dropdown-item" href="javascript:logout();">ออกจากระบบ</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   <div id="divMainContainer" class="container">
 
   </div>
@@ -175,11 +191,11 @@
 
     jQuery(document).ready(function () {
       console.log("ready!");
-      if (_gUser.turId == null) {
+      if (_gUser.stfId == null) {
         jQuery("#divMainContainer").load('./html/login.html');
       }
       else {
-        loadMainPage();
+        // loadMainPage();
       }
     });
 
@@ -198,15 +214,17 @@
       //if(_gUserEmail){   //call web service for check user credential
       $.ajax({
         type: "POST",
-        url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/tutor/login",
+        url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/staff/login",
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-          _gUser.turId = data.data.id;
-          _gUser.turName = data.data.name;
-          console.log(_gUser.turId);
+          console.log(data);
+          _gUser.stfId = data.data.stfId;
+          _gUser.stfName = data.data.stfName;
+          _gUser.stfRole = data.data.stfRole;
+          
           loadMainPage();
           // alert("Tutor ID : " + data.data.id);
         },
@@ -225,13 +243,25 @@
     }
 
     function loadMainPage() {
-      if (_gUser.turId != null) {
-        jQuery("#divMainContainer").load('./html/main.html');
-        jQuery("#divMainNavBar").css('display', '');
-        jQuery("#divShowUser").html(_gUser.turName);
-
-        //_gUserType
-
+      
+      if (_gUser.stfRole == 2) {
+        jQuery("#divMainContainer").load('./html/main2.html');
+        jQuery("#divShowUser2").html(_gUser.stfName);
+        jQuery('#divStaff1').hide();
+        jQuery('#divStaff2').show();
+        jQuery('#divStaff3').hide();
+      } else if (_gUser.stfRole == 3) {
+        jQuery("#divMainContainer").load('./html/main3.html');
+        jQuery("#divShowUser3").html(_gUser.stfName);
+        jQuery('#divStaff1').hide();
+        jQuery('#divStaff2').hide();
+        jQuery('#divStaff3').show();
+      } else if (_gUser.stfRole == 1) {
+        jQuery("#divMainContainer").load('./html/main1.html');
+        jQuery("#divShowUser1").html(_gUser.stfName);
+        jQuery('#divStaff1').show();
+        jQuery('#divStaff2').hide();
+        jQuery('#divStaff3').hide();
       }
       else {
         console.log("pls check user credential");
@@ -239,9 +269,10 @@
     }
 
     function logout() {
-      //_gUserEmail = null;
       jQuery("#divMainContainer").load('./html/login.html');
-      jQuery("#divMainNavBar").css('display', 'none');
+      jQuery("#divStaff1").css('display', 'none');
+      jQuery("#divStaff2").css('display', 'none');
+      jQuery("#divStaff3").css('display', 'none');
     }
   </script>
 

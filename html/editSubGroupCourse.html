@@ -203,19 +203,19 @@
         });
 */
         $("#addSubjectGroupBtn").on("click", function () {
-        //    var id = $(this).data('id');
-        //    console.log("Add popup : " + id);
-        //    if (id == -1) {
-                $(".modal-title").text("เพิ่มกลุ่มวิชาเรียน");
-                $("#txtSubGroupId").val("");
-                $("#txtSubGroupCourseName").val("");
-                $("#dropdownGroupName").val(-1);
-                $('#activeCheck').prop('checked', true);
-         //   }
-
+            console.log("addSubjectGroupBtn");
+            $(".modal-title").text("เพิ่มกลุ่มวิชาเรียน");
+            $("#txtSubGroupId").val("");
+            $("#txtSubGroupId").hide();
+            $('label[for="txtSubGroupId"]').hide();
+            $("#txtSubGroupCourseName").val("");
+            $("#dropdownGroupName").val(-1);
+            $('#activeCheck').prop('checked', true);
         });
+    
         function editGroupCourse(i) {
-
+            $("#txtSubGroupId").show();
+            $('label[for="txtSubGroupId"]').show();
             $("#btnSaveAddGroupCourse").data('myval', i);
             console.log("Edit popup : " + i);
             console.log("Catagory : " + subjectCatagories[i].subcName);
@@ -234,10 +234,7 @@
             }
             $("#dropdownGroupName option:selected").text();
             $('#modalAddSubGroupCourse').modal('show');
-
-
         }
-
 
         $("#btnSaveAddGroupCourse").on("click", function (e) {
             // edit or update

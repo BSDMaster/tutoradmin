@@ -14,18 +14,26 @@
             <li class="breadcrumb-item active">อัตราค่าเรียนพิเศษ</li>
         </ol>
     </div>
+    <div class="alert alert-dismissible alert-success" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>บันทึกข้อมูลสำเร็จ</strong>
+    </div>
+    <div class="alert alert-dismissible alert-danger" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
+    </div>
     <div class="label-header">อัตราค่าเรียนพิเศษ</div>
 
     <table id="gridGroupCourse" class="table table-condensed table-hover table-striped">
         <thead>
             <tr>
-                <th data-column-id="id" data-identifier="true" data-type="numeric">รหัสกลุ่มวิชาเรียน</th>
+                <th data-column-id="subcId" data-identifier="true" data-type="numeric">รหัสกลุ่มวิชาเรียน</th>
                 <th data-column-id="groupCourseName">ชื่อกลุ่มวิชาเรียน</th>
-                <th data-column-id="onePerson">1 คน</th>
-                <th data-column-id="twoPerson">2 คน</th>
-                <th data-column-id="threePerson">3 คน</th>
-                <th data-column-id="upperFourPerson">4 คนขึ้นไป</th>
-                <th data-column-id="commands" data-formatter="commands" data-sortable="false"></th>
+                <th data-column-id="onePerson" data-searchable="false">1 คน</th>
+                <th data-column-id="twoPerson" data-searchable="false">2 คน</th>
+                <th data-column-id="threePerson" data-searchable="false">3 คน</th>
+                <th data-column-id="upperFourPerson" data-searchable="false">4 คนขึ้นไป</th>
+                <th data-column-id="action" data-sortable="false" data-searchable="false">Action</th>
             </tr>
         </thead>
     </table>
@@ -35,7 +43,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalAddGroupCourseLabel">เพิ่มกลุ่มวิชาเรียน</h5>
+                    <h5 class="modal-title" id="modalAddGroupCourseLabel">แก้ไขอัตราค่าเรียนพิเศษ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -43,24 +51,28 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="txtGroupCourseName">ชื่อกลุ่มวิชา</label>
-                            <input type="email" class="form-control" id="txtGroupCourseName">
+                            <label for="txtSubGroupId">รหัสกลุ่มวิชาเรียน</label>
+                            <input class="form-control" id="txtSubGroupId" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtGroupCourseName">ชื่อกลุ่มวิชา</label> 
+                            <input type="text" class="form-control" id="txtGroupCourseName" readonly>
                         </div>
                         <div class="form-group">
                             <label for="txtOnePerson">1 คน</label>
-                            <input type="email" class="form-control" id="txtOnePerson">
+                            <input type="number"  maxlength="5" required class="form-control" id="txtOnePerson">
                         </div>
                         <div class="form-group">
                             <label for="txtTwoPerson">2 คน</label>
-                            <input type="email" class="form-control" id="txtTwoPerson">
+                            <input type="number" maxlength="5" class="form-control" id="txtTwoPerson">
                         </div>
                         <div class="form-group">
                             <label for="txtThreePerson">3 คน</label>
-                            <input type="email" class="form-control" id="txtThreePerson">
+                            <input type="number" maxlength="5" class="form-control" id="txtThreePerson">
                         </div>
                         <div class="form-group">
                             <label for="txtUpperFourPerson">4 คนขึ้นไป</label>
-                            <input type="email" class="form-control" id="txtUpperFourPerson">
+                            <input type="number" maxlength="5" class="form-control" id="txtUpperFourPerson">
                         </div>
                     </form>
                 </div>
@@ -73,57 +85,121 @@
     </div>
 
     <script>
+        var subjectprices = [];
         jQuery(document).ready(function () {
             console.log("Load on edit group course page");
-
+            initialParentCatData();
         });
 
-        //grid Class
-        _gGridGroupCourse = $("#gridGroupCourse").bootgrid({
-            formatters: {
-                "taxi": function (column, row) {
-                    return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\">Car<span class=\"fa fa-pencil\"></span></button> "
+        function initialParentCatData() {
+            console.log("initial parent cat data");
+            subjectprices = [];
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/subjectprice/list",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.subjectPriceViews);
+                    subjectprices = data.data.subjectPriceViews;
+                    for (var i = 0; i < subjectprices.length; i++) {
+                        appendSubjectPrice(subjectprices[i], i);
+                    }
+           //         _gGridGroupCourse.load( "#gridGroupCourse" );
+          //          _gGridGroupCourse.bootgrid('reload');
                 },
-                "commands": function (column, row) {
-                    console.log("row=", row);
-                    return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\">Edit<span class=\"fa fa-pencil\"></span></button> " +
-                        "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\">Delete<span class=\"fa fa-trash-o\"></span></button>";
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
                 }
-            }
-        }).on("loaded.rs.jquery.bootgrid", function () {
+            });
+        }
+
+        //grid Class
+        _gGridGroupCourse = $("#gridGroupCourse").bootgrid().on("loaded.rs.jquery.bootgrid", function () {
             _gGridGroupCourse.find(".command-edit").on("click", function (e) {
-                alert("You pressed edit on row: " + $(this).data("row-id"));
-            }).end().find(".command-delete").on("click", function (e) {
-                var rows = [];
-                rows[0] = parseInt($(this).data("row-id"));
-                _gGridGroupCourse.bootgrid('remove', rows);
+                var i = $(this).data("row-id");
+                $("#txtSubGroupId").val(subjectprices[i].subcId);
+                $("#txtGroupCourseName").val(subjectprices[i].subcName);
+                $("#txtOnePerson").val(subjectprices[i].price1);
+                $("#txtTwoPerson").val(subjectprices[i].price2);
+                $("#txtThreePerson").val(subjectprices[i].price3);
+                $("#txtUpperFourPerson").val(subjectprices[i].price4);
+                $('#modalAddGroupCourse').modal('show');
             });
         });
 
-        
+        function appendSubjectPrice(subjectprice, i) {
+            var actionTag = "<button id='editBtn' type='button' class='btn btn-xs btn-default command-edit' data-row-id='" + i + "'><div class='fa-pencil'></div></button>";
+            _gGridGroupCourse.bootgrid("append", [
+                {
+                    "subcId": subjectprice.subcId,
+                    "groupCourseName": subjectprice.subcName,
+                    "onePerson": subjectprice.price1,
+                    "twoPerson": subjectprice.price2,
+                    "threePerson": subjectprice.price3,
+                    "upperFourPerson": subjectprice.price4,
+                    "action": actionTag
+                }
+            ]);
+        }
+
+
+
+
 
         $("#btnSaveAddGroupCourse").on("click", function (e) {
-            var txtGroupCourseName = $("#txtGroupCourseName").val();
+            var txtSubcId = $("#txtSubGroupId").val();
             var txtOnePerson = $("#txtOnePerson").val();
             var txtTwoPerson = $("#txtTwoPerson").val();
             var txtThreePerson = $("#txtThreePerson").val();
             var txtUpperFourPerson = $("#txtUpperFourPerson").val();
-            if (txtGroupCourseName && txtOnePerson && txtTwoPerson && txtThreePerson && txtUpperFourPerson) {
-                _gGridGroupCourse.bootgrid("append", [
-                    {
-                        "id": _gGridGroupCourse.bootgrid("getTotalRowCount") + 1,
-                        "groupCourseName": txtGroupCourseName,
-                        "onePerson": txtOnePerson,
-                        "twoPerson": txtTwoPerson,
-                        "threePerson": txtThreePerson,
-                        "upperFourPerson": txtUpperFourPerson
-                    }
-                ]);
+            if (txtOnePerson && txtTwoPerson && txtThreePerson && txtUpperFourPerson) {
+                updateSubjectPriceService(txtSubcId, txtOnePerson, txtTwoPerson, txtThreePerson, txtUpperFourPerson)
             }
             else {
                 alert("invalid input");
             }
+            $('#modalAddGroupCourse').modal('hide');
         });
+
+        function updateSubjectPriceService(subcId, txtOnePerson, txtTwoPerson, txtThreePerson, txtUpperFourPerson) {
+            console.log("initial data subcId :" + subcId);
+            var bodyRequest = {
+                "subcId": parseInt(subcId),
+                "price1": parseInt(txtOnePerson),
+                "price2": parseInt(txtTwoPerson),
+                "price3": parseInt(txtThreePerson),
+                "price4": parseInt(txtUpperFourPerson)
+            };
+            console.log(bodyRequest);
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/subjectprice/update",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(bodyRequest),
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    var messages = data.message;
+                    var alert;
+                    if (data.status == 200) {
+                        initialParentCatData();
+                        alert = $(".alert-success");
+                    } else {
+                        alert = $(".alert-danger");
+                    }
+                    alert.find("strong").text(messages);
+                    alert.show();
+
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
     </script>
 </body>
 

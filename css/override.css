@@ -1,6 +1,7 @@
 .navbar .nav{
     float: right;
 }
+/*
 div {
     font-size: 1.1em;
 }
@@ -15,6 +16,14 @@ table {
 label {
     font-size: 1.2rem;
     font-weight: 500;
+}*/
+body {
+    font-size: 1.2em;
+    color: #424242
+}
+body font {
+    font-size: inherit;
+    
 }
 
 .modal-dialog {
@@ -47,4 +56,9 @@ label {
 
 .modal-backdrop.fade {
     opacity: 0.5;
+}
+
+.modal-header .close {
+    margin-right: 0;
+    margin-left: 0;
 }

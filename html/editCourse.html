@@ -15,13 +15,13 @@
         </ol>
     </div>
     <div class="alert alert-dismissible alert-success" style="display: none;">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>บันทึกข้อมูลสำเร็จ</strong>
-        </div>
-        <div class="alert alert-dismissible alert-danger" style="display: none;">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
-        </div>
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>บันทึกข้อมูลสำเร็จ</strong>
+    </div>
+    <div class="alert alert-dismissible alert-danger" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
+    </div>
     <div class="label-header">วิชาเรียน</div>
     <!-- Button trigger modal -->
     <button type="button" id="addSubjectBtn" class="btn btn-primary container-btn-add-right" data-toggle="modal" data-target="#modalAddCourse">
@@ -207,20 +207,14 @@
 
         function addCheckbox(name, subcId) {
             var container = $('#cblist');
-            /*
-            <input type="checkbox" class="custom-control-input" id="activeCheck" checked>
-                                <label class="custom-control-label" for="activeCheck">Active</label>
-            */
             container.append('&nbsp;<input type="checkbox" value="' + subcId + '" id="cb' + subcId + '">');
             container.append('<label for="cb' + subcId + '">&nbsp;&nbsp;' + name + '</label></input>');
-            //    $('<input />', { type: 'checkbox', id: 'cb' + i, value: name }).appendTo(container);
-            //    $('<label />', { 'for': 'cb' + i, text: 'a&nbsp;&nbsp;a' + name}).appendTo(container);
             container.append('<br>');
         }
 
         //grid Class
-        if (_gGridGroupCourse != null) {
-            var groupCourseData = _gGridGroupCourse.bootgrid().data('.rs.jquery.bootgrid').rows;
+        if (gridCourse != null) {
+            var groupCourseData = gridCourse.bootgrid().data('.rs.jquery.bootgrid').rows;
             for (var i = 0; i < groupCourseData.length; i++) {
                 $('#dropdownGroupName').append('<option value="' + groupCourseData[i].groupCourseName + '">' + groupCourseData[i].groupCourseName + '</option>');
             }
@@ -239,24 +233,20 @@
         });
 
         $("#addSubjectBtn").on("click", function () {
-            for (var j = 0; j < subjectCatagories.length; j++) {
-                var subcId = subjectCatagories[j].subcId;
-                $("#cb" + subcId).prop('checked', false);
-            }
             $(".modal-title").text("เพิ่มวิชาเรียน");
             $("#txtSubjId").val("");
             $("#txtCourseName").val("");
-
             $('#activeCheck').prop('checked', true);
-
-        });
-        function editCourse(i) {
-
+            $('#txtSubjId').hide();
+            $('label[for="txtSubjId"]').hide();
             for (var j = 0; j < subjectCatagories.length; j++) {
                 var subcId = subjectCatagories[j].subcId;
                 $("#cb" + subcId).prop('checked', false);
             }
-            console.log("Edit");
+        });
+        function editCourse(i) {
+            $('#txtSubjId').show();
+            $('label[for="txtSubjId"]').show();
             $("#btnSaveAddGroupCourse").data('myval', i);
             console.log("Edit popup : " + i);
             $(".modal-title").text("แก้ไขวิชาเรียน");
@@ -268,19 +258,11 @@
                 $('#activeCheck').prop('checked', true);
             }
             initialEditSubjectDetail(subjectdetails[i].subject.subjId);
-            /*
-           
-            $("#txtSubGroupCourseName").val(subjectCatagories[i].subcName);
-            if (subjectCatagories[i].parentSubjectCatagory != null) {
-                $("#dropdownGroupName").val(subjectCatagories[i].parentSubjectCatagory.subcId);
-            } else {
-                $("#dropdownGroupName").val(-1);
+            for (var j = 0; j < subjectCatagories.length; j++) {
+                var subcId = subjectCatagories[j].subcId;
+                $("#cb" + subcId).prop('checked', false);
             }
-            
-            $("#dropdownGroupName option:selected").text();*/
             $('#modalAddCourse').modal('show');
-
-
         }
 
 
