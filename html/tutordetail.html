@@ -11,6 +11,9 @@
             <li class="breadcrumb-item">
                 <a href="javascript:loadMainPage();">หน้าหลัก</a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="javascript:changePage('./html/tutorlist.html');">รายชื่อติวเตอร์</a>
+            </li>
             <li class="breadcrumb-item active">ข้อมูลติวเตอร์</li>
         </ol>
     </div>
@@ -23,111 +26,186 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
     </div>
-    <div class="label-header">ข้อมูลติวเตอร์</div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="label-header" id="divHeaderTutorDetail">ข้อมูลติวเตอร์รหัส </div>
+            <div id="divRejectFlag" class="fa-reject-o" style="margin-top:10px;margin-left:5px;margin-right:5px;"></div>
+            <div id="divNonVerifiedFlag" class="fa-nonverified-o" style="margin-top:10px;margin-left:5px;margin-right:5px;"></div>
+            <div id="divVerifiedFlag" class="fa-verified-o" style="margin-top:10px;margin-left:5px;margin-right:5px;"></div>
+            <div id="divLockFlag" class="fa-lock-o" style="margin-top:10px;margin-left:5px;margin-right:5px;"></div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 ">
+                <button type="button" class="btn btn-danger btn-lg pull-right" id="btnRejectTutorDetail" onClick="javascript:rejectTutorDetailConfirmPopup();"
+                    style="margin:5px;">ไม่อนุมัติผลการตรวจสอบประวัติ</button>
+                <button type="button" class="btn btn-success btn-lg pull-right" id="btnApproveTutorDetail" onClick="javascript:approveTutorDetailConfirmPopup();"
+                    style="margin:5px;">อนุมัติผลการตรวจสอบประวัติ</button>
+                <button type="button" class="btn btn-primary btn-lg pull-right" id="btnUnlockTutorDetail" onClick="javascript:unlockTutorDetailConfirmPopup();"
+                    style="margin:5px;">ปลดล็อค</button>
+            </div>
+        </div>
+    </div>
     <br>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
                 <form class="form-horizontal">
                     <div class="form-group required">
-                        <label  class="col-lg-2 labelform">ชื่อ</label>
+                        <label class="col-lg-2 labelform">ชื่อ</label>
                         <div id="txtFirstName" class="col-lg-4">
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <div class="form-group required">
-                        <label id="txtLastName" class="col-lg-2 labelform">นามสกุล</label>
-                        <div class="col-lg-4">
+                        <label class="col-lg-2 labelform">นามสกุล</label>
+                        <div id="txtLastName" class="col-lg-4">
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <div class="form-group">
-                        <label id="txtNickname" class="col-lg-2">ชื่อเล่น</label>
-                        <div class="col-lg-4">
+                        <label class="col-lg-2">ชื่อเล่น</label>
+                        <div id="txtNickname" class="col-lg-4">
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <div class="form-group required">
-                        <label id="txtEmail" class="col-lg-2 labelform">อีเมล์</label>
-                        <div class="col-lg-4">
+                        <label class="col-lg-2 labelform">อีเมล์</label>
+                        <div id="txtEmail" class="col-lg-4">
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <div class="form-group required">
-                        <label id="txtTel" class="col-lg-2 labelform">เบอร์โทรมือถือ</label>
-                        <div class="col-lg-4">
+                        <label class="col-lg-2 labelform">เบอร์โทรมือถือ</label>
+                        <div id="txtTel" class="col-lg-4">
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <div class="form-group required">
-                        <label id="dropdownSex" class="col-lg-2 labelform">เพศ</label>
-                        <div class="col-lg-4">
+                        <label class="col-lg-2 labelform">เพศ</label>
+                        <div id="dropdownSex" class="col-lg-4">
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <div class="form-group required">
-                        <label id="dropdownUniversity" class="col-lg-2 labelform">สถาบันศึกษา</label>
-                        <div class="col-lg-4">
+                        <label class="col-lg-2 labelform">สถาบันศึกษา</label>
+                        <div id="dropdownUniversity" class="col-lg-4">
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <div class="form-group required">
-                        <label id="dropdownFaculty" class="col-lg-2 labelform">คณะ</label>
-                        <div class="col-lg-4">
+                        <label class="col-lg-2 labelform">คณะ</label>
+                        <div id="dropdownFaculty" class="col-lg-4">
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <div class="form-group required">
-                        <label id="pickerBirthdate" class="col-lg-2 labelform">วัน เดือน ปีเกิด</label>
-                        <div class="col-lg-4">
+                        <label class="col-lg-2 labelform">วัน เดือน ปีเกิด</label>
+                        <div id="pickerBirthdate" class="col-lg-4">
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <div class="form-group required">
-                        <label id="" class="col-lg-2 labelform">เอกสารสำเนาบัตรประชาชน</label>
-                        <div class="col-lg-4">
+                        <label class="col-lg-2 labelform">เอกสารสำเนาบัตรประชาชน</label>
+                        <div id="" class="col-lg-4">
+                            <button class="btn btn-xs btn-default" type='button'>
+                                <div class='fa-download-o'></div>
+                            </button>
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <div class="form-group">
-                        <label id="txtAddress" class="col-lg-2 ">ที่อยู่ปัจจุบัน</label>
-                        <div class="col-lg-4">
+                        <label class="col-lg-2 ">ที่อยู่ปัจจุบัน</label>
+                        <div id="txtAddress" class="col-lg-4">
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <div class="form-group">
-                        <label id="txtClip" class="col-lg-2">คลิปตัวอย่างงานสอน</label>
-                        <div class="col-lg-4">
+                        <label for="player" class="col-lg-2">คลิปตัวอย่างงานสอน</label>
+                        <div class="col-lg-5" id="player">
                         </div>
-                        <div class="col-lg-6"></div>
+                        <div class="col-lg-5">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label id="txtOthers" class="col-lg-2">ข้อมูลงานสอนเพิ่มเติม</label>
-                        <div class="col-lg-4">
-                        </div>
-                        <div class="col-lg-6"></div>
-                    </div>
-                    <div class="form-group">
-                        <label id="" class="col-lg-2">รูปโปรไฟล์</label>
-                        <div class="col-lg-4">
+                        <label class="col-lg-2">ข้อมูลงานสอนเพิ่มเติม</label>
+                        <div id="txtOthers" class="col-lg-4">
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
                     <br>
-                    <br>
-                    <div class="form-group">
-                        <div class="col-lg-4"></div>
-                        <div class="col-lg-4">
-                            <button type="button" class="btn btn-primary btn-lg" id="btnApproveTutor">อนุมัติ</button>
-                            <button type="button" class="btn btn-secondary btn-lg" id="btnRejectTutor">ไม่อนุมัติ</button>
-                        </div>
-                        <div class="col-lg-4"></div>
-                    </div>
                 </form>
             </div>
         </div>
     </div>
     <br>
+    <!-- Approve Tutor Modal -->
+    <div class="modal fade" id="modalConfirmApproveTutorDetail" tabindex="-1" role="dialog" aria-labelledby="confirmApproveTutorDetailLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="confirmApproveTutorDetailLabel">ยืนยันอนุมัติติวเตอร์</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="divConfirmApproveDetailMsg">
+                    ท่านต้องการยืนยันการอนุมัติผลการตรวจสอบติวเตอร์
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="javascript:approveverifytutorDetail()">อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- Reject Tutor Modal -->
+    <div class="modal fade" id="modalConfirmRejectTutorDetail" tabindex="-1" role="dialog" aria-labelledby="confirmRejectTutorDetailLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="confirmRejectTutorDetailLabel">ยืนยันไม่อนุมัติติวเตอร์</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="divConfirmRejectDetailMsg">
+                    ติวเตอร์นี้ไม่ผ่านการตรวจสอบประวัติและคุณสมบัติ ท่านต้องการปฏิเสธคำขอสมัครสมาชิก
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="javascript:rejecttutorDetail()">ไม่อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- Modal Unlock -->
+    <div class="modal fade" id="modalConfirmUnlockTutorDetail" tabindex="-1" role="dialog" aria-labelledby="modalConfirmUnlockTutorDetailLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalConfirmUnlockTutorDetailLabel">ยืนยัน</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="divConfirmUnlockDetailMsg">
+                        ท่านต้องการ unlock
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="javascript:unlockTutorDetail()" value="">อนุมติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 <script>
@@ -148,17 +226,56 @@
             success: function (data, status, jqXHR) {
                 var tutor = data.data.tutorProfileView;
                 console.log(tutor);
+                $('#divHeaderTutorDetail').text('ข้อมูลติวเตอร์รหัส ' + tutor.turId);
                 $('#txtFirstName').text(tutor.turFirstname);
-                $('#txtLastName').next().text(tutor.turLastname);
-                $('#txtNickname').next().text(tutor.turNickname);
-                $('#txtTel').next().text(tutor.turTel);
-                $('#txtAddress').next().text(tutor.turAddress);
-                $('#txtEmail').next().text(tutor.turEmail);
+                $('#txtLastName').text(tutor.turLastname);
+                $('#txtNickname').text(tutor.turNickname);
+                $('#txtTel').text(tutor.turTel);
+                $('#txtAddress').text(tutor.turAddress);
+                $('#txtEmail').text(tutor.turEmail);
                 // $('#pickerBirthdate').val();
-                $('#dropdownSex').next().text(tutor.turSex);
-                $('#dropdownUniversity').next().text(tutor.university);
-                $('#dropdownFaculty').next().text(tutor.faculty);
-                $('#txtClip').next().text(tutor.turClip);
+                $('#dropdownSex').text(tutor.turSex);
+                $('#dropdownUniversity').text(tutor.university.uniName);
+                $('#dropdownFaculty').text(tutor.faculty.facName);
+                
+                if (tutor.verifyFlag == 'Y') {
+                    $('#divRejectFlag').hide();
+                    $('#divNonVerifiedFlag').hide();
+                    $('#divVerifiedFlag').show();
+                    $('#btnApproveTutorDetail').hide();
+                    $('#btnRejectTutorDetail').hide();
+                } else if (tutor.verifyFlag == 'N') {
+                    $('#divRejectFlag').hide();
+                    $('#divNonVerifiedFlag').show();
+                    $('#divVerifiedFlag').hide();
+                    $('#btnApproveTutorDetail').show();
+                    $('#btnRejectTutorDetail').show();
+                } else {
+                    $('#divRejectFlag').show();
+                    $('#divNonVerifiedFlag').hide();
+                    $('#divVerifiedFlag').hide();
+                    $('#btnApproveTutorDetail').hide();
+                    $('#btnRejectTutorDetail').hide();
+                }
+                if (tutor.isBlock == 'Y') {
+                    $('#btnUnlockTutorDetail').show();
+                    $('#divLockFlag').show();
+                } else {
+                    $('#btnUnlockTutorDetail').hide();
+                    $('#divLockFlag').hide();
+                }
+                
+/*
+                tag.src = "https://www.youtube.com/iframe_api";
+                var firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);*/
+                
+                if (tutor.turClip!=null) {
+                    console.log('tutor.turClip',tutor.turClip);
+                    var videoId = getYoutubeVideoID(tutor.turClip);
+                    onYouTubeIframeAPIReady(videoId);
+                }
+
             },
             error: function (jqXHR, status) {
             }
@@ -166,42 +283,123 @@
         });
     }
 
-    $("#btnApproveTutor").on("click", function (e) {
+    var player;
+    function onYouTubeIframeAPIReady(videoId) {
+        player = new YT.Player('player', {
+            height: '300',
+            width: '300',
+            videoId: videoId
+        });
+    }
+
+
+    function getYoutubeVideoID(url) {
+        var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match && match[2].length == 11) {
+            return match[2];
+        } else {
+            return "";
+        }
+    }
+
+    function approveTutorDetailConfirmPopup() {
+        $('#divConfirmApproveDetailMsg').text('กรุณากดปุ่มยืนยันหากท่านต้องการยืนยันการอนุมัติผลการตรวจสอบติวเตอร์รหัส '+_gSelectedTurId);
+        $('#modalConfirmApproveTutorDetail').modal('show');
+    }
+    function approveverifytutorDetail() {
+        $('#modalConfirmApproveTutorDetail').modal('hide');
         $.ajax({
             type: "GET",
-            url: _gServiceURL + "tutor/approve/"+_gSelectedTurId,
+            url: _gServiceURL + "tutor/approve/" + _gSelectedTurId,
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
             dataType: "json",
             success: function (data, status, jqXHR) {
-                $(".alert-success").show();
+                var messages = data.message;
+                var alert;
+                if (data.status == 200) {
+                    alert = $(".alert-success");
+                    initialTutorProfile();
+                } else {
+                    alert = $(".alert-danger");
+                }
+                alert.find("strong").text(messages);
+                alert.show();
                 $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
             },
             error: function (jqXHR, status) {
                 $(".alert-danger").show();
                 $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
             }
-
         });
-    });
-    $("#btnRejectTutor").on("click", function (e) {
+    }
+    function rejectTutorDetailConfirmPopup() {
+        $('#divConfirmRejectDetailMsg').text('กรุณากดปุ่มยืนยันหากท่านต้องการยืนยันว่าติวเตอร์รหัส '+_gSelectedTurId+'  ไม่ผ่านการตรวจสอบประวัติและคุณสมบัติ ท่านต้องการปฏิเสธคำขอสมัครสมาชิก');
+        $('#modalConfirmRejectTutorDetail').modal('show');
+    }
+    function rejecttutorDetail() {
+        $('#modalConfirmRejectTutorDetail').modal('hide');
         $.ajax({
             type: "GET",
-            url: _gServiceURL + "tutor/reject/"+_gSelectedTurId,
+            url: _gServiceURL + "tutor/reject/" + _gSelectedTurId,
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
             dataType: "json",
             success: function (data, status, jqXHR) {
-                $(".alert-success").show();
+                var messages = data.message;
+                var alert;
+                if (data.status == 200) {
+                    alert = $(".alert-success");
+                    initialTutorProfile();
+                } else {
+                    alert = $(".alert-danger");
+                }
+                alert.find("strong").text(messages);
+                alert.show();
                 $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
             },
             error: function (jqXHR, status) {
                 $(".alert-danger").show();
                 $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
             }
-
         });
-    });
+    }
+    // Unlock 
+    function unlockTutorDetailConfirmPopup() {
+        $('#divConfirmUnlockDetailMsg').text('กรุณากดปุ่มยืนยันหากท่านต้องการปลดล็อคติวเตอร์รหัส ' + _gSelectedTurId);
+        $('#modalConfirmUnlockTutorDetail').modal('show');
+    }
+
+    function unlockTutorDetail(){
+
+        $('#modalConfirmUnlockTutorDetail').modal('hide');
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "tutor/unlockblacklist/" + _gSelectedTurId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+                var messages = data.message;
+                var alert;
+                if (data.status == 200) {
+                    alert = $(".alert-success");
+                    initialTutorProfile();
+                } else {
+                    alert = $(".alert-danger");
+                }
+                alert.find("strong").text(messages);
+                alert.show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            },
+            error: function (jqXHR, status) {
+                $(".alert-danger").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            }
+        });
+    }
+
 </script>
 
 </html>

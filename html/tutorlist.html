@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage()">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item active">รายชื่อติวเตอร์</li>
+        </ol>
+    </div>
+    <div class="alert alert-dismissible alert-success" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>บันทึกข้อมูลสำเร็จ</strong>
+    </div>
+    <div class="alert alert-dismissible alert-danger" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
+    </div>
+    <div class="label-header">รายชื่อติวเตอร์</div>
+    <!-- Button trigger modal -->
+
+    <table id="gridTutorList" class="table table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th data-column-id="turId">รหัสติวเตอร์</th>
+                <th data-column-id="turName">ชื่อ สกุล</th>
+                <th data-column-id="turSex">เพศ</th>
+                <th data-column-id="turTel">เบอร์โทรศัพท์</th>
+                <th data-column-id="cancelTimes">จำนวนครั้งที่ยกเลิกงานสอน</th>
+                <th data-column-id="action" data-sortable="false" data-searchable="false">Action</th>
+            </tr>
+        </thead>
+    </table>
+
+    <!-- Modal Unlock -->
+    <div class="modal fade" id="modalConfirmUnlockTutor" tabindex="-1" role="dialog" aria-labelledby="modalConfirmUnlockTutorLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalConfirmUnlockTutorLabel">ยืนยัน</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="divConfirmUnlockTutorMsg">
+                    <form>
+                        ท่านต้องการ unlock
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" id="btnSaveUnlockTutor" value="">อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Approve -->
+    <div class="modal fade" id="modalConfirmApproveTutor" tabindex="-1" role="dialog" aria-labelledby="modalConfirmApproveTutorLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalConfirmApproveTutorLabel">ยืนยัน</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="divConfirmApproveTutorMsg">
+                    <form>
+                        ท่านต้องการ unlock
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" id="btnSaveApproveTutor" value="">อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var gridTutorList = $("#gridTutorList");
+        var _gTutors = [];
+        jQuery(document).ready(function () {
+            console.log("Load on edit course page");
+            initialTutors();
+
+
+        });
+
+        function initialTutors() {
+            console.log("initial data");
+            gridTutorList.bootgrid('clear');
+            _gTutors = [];
+            $.ajax({
+                type: "GET",
+                url: _gServiceURL + "tutor/list",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.tutorProfileViews);
+                    _gTutors = data.data.tutorProfileViews;
+                    console.log(_gTutors);
+                    for (var i = 0; i < _gTutors.length; i++) {
+                        appendTutors(_gTutors[i], i);
+                    }
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
+        function appendTutors(tutor, i) {
+            var actionTag = "<button type='button' class='btn btn-xs btn-default command-detail' data-row-id='" + i + "'><div class='fa-detail-o'></div></button> ";
+            if (tutor.verifyFlag == 'N') {
+                actionTag += "<button type='button' class='btn btn-xs btn-default command-verified' data-row-id='" + i + "'><div class='fa-verified-o'></div></button> ";
+            }
+            if (tutor.isBlock == 'Y') {
+                actionTag += "<button type='button' class='btn btn-xs btn-default command-unlock' data-row-id='" + i + "'><div class='fa-unlock-o'></div></button> ";
+            }
+            gridTutorList.bootgrid("append", [
+                {
+                    "turId": tutor.turId,
+                    "turName": tutor.turName,
+                    "turSex": tutor.turSex,
+                    "turTel": tutor.turTel,
+                    "cancelTimes": tutor.declineTimes + tutor.cancelTimes,
+                    "action": actionTag
+                }
+            ]);
+        }
+
+
+        $("#gridTutorList").bootgrid(
+            {
+                rowCount: 20
+            }
+        ).on("loaded.rs.jquery.bootgrid", function () {
+            gridTutorList.find(".command-detail").on("click", function (e) {
+                var i = $(this).data("row-id");
+                gotoTutorDetailsPage(i);
+            });
+            gridTutorList.find(".command-unlock").on("click", function (e) {
+                var i = $(this).data("row-id");
+                unlockTutorConfirmPopup(i);
+            });
+            gridTutorList.find(".command-verified").on("click", function (e) {
+                var i = $(this).data("row-id");
+                approveTutorConfirmPopup(i);
+            });
+        });
+
+        function gotoTutorDetailsPage(i) {
+            _gSelectedTurId = _gTutors[i].turId;
+            changePage('./html/tutordetail.html');
+        }
+        function unlockTutorConfirmPopup(i) {
+            $("#btnSaveUnlockTutor").prop('value', _gTutors[i].turId);
+            $('#divConfirmUnlockTutorMsg').text('กรุณากดปุ่มยืนยันหากท่านต้องการปลดล็อคติวเตอร์รหัส ' + _gTutors[i].turId + " ชื่อ " + _gTutors[i].turName);
+            $('#modalConfirmTutorUnlock').modal('show');
+        }
+
+        $("#btnSaveUnlockTutor").on("click", function (e) {
+            var turId = parseInt($("#btnSaveUnlockTutor").prop('value'));
+            console.log("unlock tutor id " + turId);
+            $.ajax({
+                type: "GET",
+                url: _gServiceURL + "tutor/unlockblacklist/" + turId,
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    var messages = data.message;
+                    var alert;
+                    if (data.status == 200) {
+                        alert = $(".alert-success");
+                        initialTutors();
+                    } else {
+                        alert = $(".alert-danger");
+                    }
+                    alert.find("strong").text(messages);
+                    alert.show();
+
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+            $('#modalConfirmUnlockTutor').modal('hide');
+        });
+        function approveTutorConfirmPopup(i) {
+            $("#btnSaveApproveTutor").prop('value', _gTutors[i].turId);
+            $('#divConfirmApproveTutorMsg').text('กรุณากดปุ่มยืนยันหากท่านต้องการยืนยันการอนุมัติผลการตรวจสอบติวเตอร์รหัส ' + _gTutors[i].turId + " ชื่อ " + _gTutors[i].turName);
+            $('#modalConfirmApproveTutor').modal('show');
+        }
+        $("#btnSaveApproveTutor").on("click", function (e) {
+            var turId = parseInt($("#btnSaveApproveTutor").prop('value'));
+            console.log("unlock tutor id " + turId);
+            $.ajax({
+                type: "GET",
+                url: _gServiceURL + "tutor/approve/" + turId,
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    var messages = data.message;
+                    var alert;
+                    if (data.status == 200) {
+                        alert = $(".alert-success");
+                        initialTutors();
+                    } else {
+                        alert = $(".alert-danger");
+                    }
+                    alert.find("strong").text(messages);
+                    alert.show();
+
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+            $('#modalConfirmApproveTutor').modal('hide');
+        });
+
+    </script>
+</body>
+
+</html>

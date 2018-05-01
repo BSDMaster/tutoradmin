@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage();">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item active" id="breadcrumbrecclass">รายการแนะนำงานสอนเลขที่ </li>
+        </ol>
+    </div>
+    <br>
+    <div class="alert alert-dismissible alert-success" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert"></button>
+        <strong>บันทึกข้อมูลสำเร็จ</strong>
+    </div>
+    <div class="alert alert-dismissible alert-danger" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert"></button>
+        <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
+    </div>
+    <div class="label-header" id="headerpaymentdetail">ข้อมูลการชำระเงิน</div>
+    <div style="margin-top:30px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3">วันที่ชำระเงิน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblPaidDate"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">เอกสารการชำระเงิน :</label>
+                            <div class="col-lg-9">
+                                <button class="btn btn-xs btn-default" type='button'>
+                                    <div class='fa-download-o'></div>
+                                </button>
+                            </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="label-header" id="headerrecclass">ข้อมูลแนะนำงานสอน</div>
+    <div style="margin-top:30px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3">รหัสงานสอน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblClsId"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">วิชา :</label>
+                            <label class="col-lg-9 labelnormal" id="lblSubjectCat">คณิตศาสตร์</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ภาษาที่ใช้สอน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblProgram">ปกติ</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ค่าแนะนำงานสอน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblPrice">2000.00</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="label-header" id="headertutordetail">ข้อมูลติวเตอร์</div>
+    <div style="margin-top:30px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3">ชื่อ สกุลติวเตอร์ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblTurName"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">เพศ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblTurSex"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">เบอร์โทรศัพท์ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblTurTel"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">อีเมล์ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblTurEmail"></label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="label-header">ข้อมูลนักเรียน</div>
+    <div style="margin-top:30px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3" for="lblStuName">ชื่อ สกุลนักเรียน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuName"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3" for="lblStuTel">เบอร์โทรศัพท์ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuTel"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3" for="lblStuEmail">อีเมล์ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuEmail"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">เพศ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuSex">ชาย</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ระดับชั้น :</label>
+                            <label class="col-lg-9 labelnormal" id="lblLevel">ประถมศึกษาปีที่ 6</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">สถานศึกษา :</label>
+                            <label class="col-lg-9 labelnormal" id="lblSchool">โรงเรียน</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">จำนวนนักเรียน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblNumOfStudent">1</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="label-header">ข้อมูลวัน เวลา สถานที่เรียน</div>
+    <div style="margin:30px;">
+        <table id="gridTime" class="table table-condensed table-hover table-striped scroll">
+            <thead>
+                <tr>
+                    <th data-column-id="day" data-width="10%">วัน</th>
+                    <th data-column-id="time" data-width="30%">เวลา</th>
+                    <th data-column-id="location" data-width="50%">สถานที่</th>
+                    <th data-column-id="map" data-width="10%" data-sortable="false" data-searchable="false">แนะนำเส้นทาง</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <br>
+    <!-- GOogle Map Modal -->
+    <div class="modal fade" id="modalGoogleDirectionMap" tabindex="-1" role="dialog" aria-labelledby="modalGoogleDirectionLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content contentmap">
+                <div class="modal-body mapbody">
+                    <div id="divMapClass" class="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Approve Payment Modal -->
+    <div class="modal fade" id="modalConfirmApprovePayment" tabindex="-1" role="dialog" aria-labelledby="confirmApprovePaymentLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="confirmApprovePaymentLabel">ยืนยันผลการตรวจสอบการชำระเงิน</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    อนุมัติผลการตรวจสอบการชำระเงิน
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" onClick="javascript:approveverifypayment();">อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- Reject Payment Modal -->
+    <div class="modal fade" id="modalConfirmRejectPayment" tabindex="-1" role="dialog" aria-labelledby="confirmRejectPaymentLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="confirmRejectPaymentLabel">ยืนยันผลการตรวจสอบการชำระเงิน</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ไม่อนุมัติผลการตรวจสอบการชำระเงิน
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" onClick="javascript:rejectverifypayment();">ไม่อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="form-group col-lg-12">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <button type="button" class="btn btn-primary btn-lg" id="btnApprovePayment" data-toggle="modal" data-target="#modalConfirmApprovePayment">อนุมัติ</button>
+                    <button type="button" class="btn btn-secondary btn-lg" id="btnRejectPayment" data-toggle="modal" data-target="#modalConfirmRejectPayment">ไม่อนุมัติ</button>
+                </div>
+                <div class="col-lg-4"></div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+</body>
+<script>
+
+    var _mapRecClassDetail;
+    var _directionsDisplayRecClass;
+    var _recclasstimes = [];
+    jQuery(document).ready(function () {
+        initialData();
+    });
+
+    var gridTime = $("#gridTime").bootgrid({
+        navigation: 0,
+        labels: {
+            noResults: 'ไม่พบรายการ'
+        }
+    }).on("loaded.rs.jquery.bootgrid", function () {
+        gridTime.find(".command-open").on("click", function (e) {
+            var i = parseInt($(this).data("row-id"));
+            openmap(i);
+        });
+    });
+
+    function initialData() {
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "rectutor/classdetail/payment/" + _gSelectedRecId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+                var classDetail = data.data.classDetailView;
+                $('#breadcrumbrecclass').text('ข้อมูลการชำระเงินรายการแนะนำงานสอนเลขที่ ' + classDetail.recId);
+                $('#headerpaymentdetail').text('ข้อมูลการชำระเงินรายการแนะนำงานสอนเลขที่ ' + classDetail.recId);
+                $('#lblClsId').text(classDetail.clsId);
+                $('#lblPaidDate').text(classDetail.paidDate);
+                $('#lblSlip').text(classDetail.paidFile);
+                $('#lblTurName').text(classDetail.turName);
+                $('#lblTurSex').text(classDetail.turSex);
+                $('#lblTurTel').text(classDetail.turTel);
+                $('#lblTurEmail').text(classDetail.turEmail);
+                $('#lblSubjectCat').text(classDetail.subjectAndGroupDetailName);
+                $('#lblProgram').text(classDetail.program);
+                $('#lblPrice').text(classDetail.recPrice);
+                $('#lblStuName').text(classDetail.stuName);
+                $('#lblStuEmail').text(classDetail.stuEmail);
+                $('#lblStuTel').text(classDetail.stuTel);
+                $('#lblStuSex').text(classDetail.stuSex);
+                $('#lblLevel').text(classDetail.stuLevel);
+                $('#lblSchool').text(classDetail.stuSchool);
+                $('#lblNumOfStudent').text(classDetail.numOfStu);
+                _recclasstimes = classDetail.recommendTimelocationList;
+                for (var i = 0; i < _recclasstimes.length; i++) {
+                    appendTime(_recclasstimes[i], i);
+                }
+                initmap();
+            },
+            error: function (jqXHR, status) {
+            }
+
+        });
+
+    }
+
+    function appendTime(time, i) {
+        gridTime.bootgrid("append", [
+            {
+                "day": time.day,
+                "time": time.time,
+                "location": time.location,
+                "map": "<button id='mapBtn' type='button' class='btn btn-xs btn-default command-open' data-row-id='" + i + "'><div class='fa-waypoint'></div></button> "
+            }
+        ]);
+    }
+    function initmap() {
+        _directionsDisplayRecClass = new google.maps.DirectionsRenderer();
+        var latLog = new google.maps.LatLng(13.736334, 100.531102);
+        _mapRecClassDetail = new google.maps.Map(document.getElementById('divMapClass'), {
+            center: latLog,
+            zoom: 15
+            //,disableDefaultUI: true
+        });
+        _directionsDisplayRecClass.setMap(_mapRecClassDetail);
+    }
+
+
+    function openmap(id) {
+        console.log("OPENMAP");
+        var time = _recclasstimes[id];
+        var travelMode = 'DRIVING';
+        if (time.travelType == 'T') {
+            travelMode = 'TRANSIT';
+        }
+        console.log(time);
+        var startlatLog = new google.maps.LatLng(time.startLat, time.startLong);
+        var endlatLog = new google.maps.LatLng(time.latitude, time.longitude);
+        var directionsService = new google.maps.DirectionsService();
+
+        directionsService.route({
+            origin: startlatLog,
+            destination: endlatLog,
+            travelMode: travelMode
+        }, function (response, status) {
+            if (status === 'OK') {
+                console.log("direction display");
+                console.log(_mapRecClassDetail);
+
+                _directionsDisplayRecClass.setDirections(response);
+                setTimeout(function () {
+                    //your code to be executed after 1 second
+                    _mapRecClassDetail.setZoom(12);
+                }, 1000);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+
+        $("#modalGoogleDirectionMap").modal('show');
+    }
+    function approveverifypayment() {
+        console.log('approveverifypayment');
+
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "rectutor/approvebystaff/" + _gSelectedRecId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+                $(".alert-success").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            },
+            error: function (jqXHR, status) {
+                $(".alert-danger").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            }
+        });
+        $("#modalConfirmApprovePayment").modal('hide');
+    }
+    function rejectverifypayment() {
+        console.log('rejectverifypayment');
+
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "rectutor/rejectbystaff/" + _gSelectedRecId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+                $(".alert-success").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            },
+            error: function (jqXHR, status) {
+                $(".alert-danger").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            }
+        });
+        $("#modalConfirmRejectPayment").modal('hide');
+    }
+
+</script>
+
+</html>

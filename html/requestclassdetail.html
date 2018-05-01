@@ -46,6 +46,10 @@
                             <label class="col-lg-9 labelnormal" id="lblReqReason"></label>
                         </div>
                         <div class="form-group">
+                            <label class="col-lg-3">จำนวนเงินหากต้องชำระคืนติวเตอร์ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblReqPrice"></label>
+                        </div>
+                        <div class="form-group">
                             <label class="col-lg-3">ชื่อผู้ยื่นคำร้อง :</label>
                             <label class="col-lg-9 labelnormal" id="lblReqRequester"></label>
                         </div>
@@ -179,14 +183,80 @@
             <div class="form-group col-lg-12">
                 <div class="col-lg-4"></div>
                 <div class="col-lg-4">
-                    <button type="button" class="btn btn-primary" id="btnApproveRequest">อนุมัติ</button>
-                    <button type="button" class="btn btn-primary" id="btnApproveRequestAndPay">อนุมัติและชำระเงินคืนติวเตอร์</button>
-                    <button type="button" class="btn btn-secondary" id="btnRejectRequest">ไม่อนุมัติ</button>
+                    <button type="button" class="btn btn-primary btn-lg" id="btnApproveRequest" data-toggle="modal" data-target="#modalConfirmApproveRequest">อนุมัติ</button>
+                    <button type="button" class="btn btn-primary btn-lg" id="btnApproveRequestAndPay" data-toggle="modal" data-target="#modalConfirmApproveAndPayRequest">อนุมัติและชำระเงินคืนติวเตอร์</button>
+                    <button type="button" class="btn btn-secondary btn-lg" id="btnRejectRequest" data-toggle="modal" data-target="#modalConfirmRejectRequest">ไม่อนุมัติ</button>
                 </div>
                 <div class="col-lg-4"></div>
             </div>
         </div>
     </div>
+    <!-- Approve Request Modal -->
+    <div class="modal fade" id="modalConfirmApproveRequest" tabindex="-1" role="dialog" aria-labelledby="confirmApproveRequestLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="confirmApproveRequestLabel">อนุมัติคำขอ</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="divBodyApproveModal">
+                    ท่านต้องการอนุมัติคำขอ
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" onClick="javascript:approveRequest();">อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- Approve and pay request Modal -->
+    <div class="modal fade" id="modalConfirmApproveAndPayRequest" tabindex="-1" role="dialog" aria-labelledby="confirmApproveAndPayRequestLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="confirmApproveAndPayRequestLabel">อนุมัติคำขอ</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="divBodyApproveAndPayModal">
+                    ท่านต้องการอนุมัติคำขอ
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" onClick="javascript:approveAndPayRequest();">อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- Approve and pay request Modal -->
+    <div class="modal fade" id="modalConfirmRejectRequest" tabindex="-1" role="dialog" aria-labelledby="confirmRejectRequestLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="confirmRejectRequestLabel">ปฏิเสธคำขอ</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="divBodyRejectModal">
+                    ท่านต้องการปฏิเสธคำขอหมายเลข
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" onClick="javascript:rejectRequest();">ไม่อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
 </body>
 <script>
     var _reqId;
@@ -212,17 +282,22 @@
             success: function (data, status, jqXHR) {
 
                 var classDetail = data.data.classDetailView;
-                var classRequest = data.data.classRequest;
+                var classRequest = data.data.classRequestView;
                 console.log(classDetail);
-                $('#breadcrumbrequestclass').text('รหัสคำร้องเลขที่ ' + classRequest.reqId);
+                console.log(classRequest);
+                $('#breadcrumbrequestclass').text('คำขอเลขที่ ' + classRequest.reqId);
                 _reqId = classRequest.reqId;
+                $('#divBodyApproveModal').text('ท่านต้องการอนุมัติคำขอเลขที่ ' + classRequest.reqId);
+                $('#divBodyApproveAndPayModal').text('ท่านต้องการอนุมัติคำขอเลขที่ ' + classRequest.reqId + ' และชำระเงินค่าแนะนำคืนให้ติวเตอร์ในราคา '+classRequest.reqPrice+' บาท');
+                $('#divBodyRejectModal').text('ท่านต้องการปฏิเสธคำขอเลขที่ ' + classRequest.reqId);
                 $('#lblReqId').text(classRequest.reqId);
                 $('#lblReqType').text(classRequest.reqType);
-                $('#lblReqStatus').text(classRequest.reqStatus.reqStatusName);
+                $('#lblReqStatus').text(classRequest.reqStatusName);
                 $('#lblReqReason').text(classRequest.reqReason);
+                $('#lblReqPrice').text(classRequest.reqPrice+' บาท');
                 $('#lblReqRequester').text(classRequest.reqRequester);
                 $('#lblReqCreatedDate').text(classRequest.reqCreatedDate);
-                if (classRequest.reqType == 1 || classRequest.reqType == 4) {
+                if (classRequest.reqTypeId == 1) {
                     $('#btnApproveRequestAndPay').hide();
                 } else {
                     $('#btnApproveRequestAndPay').show();
@@ -272,7 +347,8 @@
         ]);
     }
 
-     $("#btnApproveRequest").on("click", function (e) {
+    function approveRequest() {
+        console.log('Approve Request');
         $.ajax({
             type: "GET",
             url: _gServiceURL + "classrequest/approve/" + _gSelectedReqId,
@@ -280,6 +356,7 @@
             crossDomain: true,
             dataType: "json",
             success: function (data, status, jqXHR) {
+                loadMainPage();
                 $(".alert-success").show();
                 $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
             },
@@ -288,8 +365,9 @@
                 $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
             }
         });
-     });
-     $("#btnApproveRequestAndPay").on("click", function (e) {
+        $('#modalConfirmApproveRequest').modal('hide');
+    }
+    function approveAndPayRequest() {
         $.ajax({
             type: "GET",
             url: _gServiceURL + "classrequest/approveandpay/" + _gSelectedReqId,
@@ -297,6 +375,7 @@
             crossDomain: true,
             dataType: "json",
             success: function (data, status, jqXHR) {
+                loadMainPage();
                 $(".alert-success").show();
                 $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
             },
@@ -305,8 +384,9 @@
                 $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
             }
         });
-     });
-     $("#btnRejectRequest").on("click", function (e) {
+        $('#modalConfirmApproveAndPayRequest').modal('hide');
+    }
+    function rejectRequest() {
         $.ajax({
             type: "GET",
             url: _gServiceURL + "classrequest/reject/" + _gSelectedReqId,
@@ -314,6 +394,7 @@
             crossDomain: true,
             dataType: "json",
             success: function (data, status, jqXHR) {
+                loadMainPage();
                 $(".alert-success").show();
                 $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
             },
@@ -322,7 +403,8 @@
                 $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
             }
         });
-     });
+        $('#modalConfirmRejectRequest').modal('hide');
+    }
 
 
 </script>

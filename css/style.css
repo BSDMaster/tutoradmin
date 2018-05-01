@@ -80,6 +80,70 @@
     background-repeat: no-repeat;
     background-image: url("../images/icons8-trash.png");
 }
+.fa-calendar-times-o{
+    width: 15px;
+    height: auto;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-calendar.png");
+}
+
+.fa-waypoint{
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-treasure_map.png");
+}
+.fa-download-o{
+    width: 30px;
+    height: 30px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-downloads_folder.png");
+}
+.fa-unlock-o{
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-unlock_2.png");
+}
+.fa-lock-o{
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-lock_2.png");
+}
+.fa-detail-o{
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-details_pane.png");
+}
+.fa-verified-o{
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-id_verified.png");
+}
+.fa-reject-o{
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-id_not_verified.png");
+}
+.fa-nonverified-o{
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-parse_from_clipboard.png");
+}
 .fixedHeightContainer
 {
   float:left;
@@ -91,4 +155,53 @@
 {
   height:224px;
    overflow:auto;
+}
+
+.map {
+    height:100%;
+    
+}
+
+.searchPanel{
+    position: absolute;
+    top: 10px;
+    padding: 0px;
+    z-index: -1; position:relative;
+    padding: 5px;
+    padding-right: 25px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.btn-google-pin{
+    width: 34px;
+    height: 34px;
+}
+
+
+.btn-google-search{
+    top: 2px;
+    width: 45px;
+    height: 30px;
+    text-align: center;
+}
+
+.img-google-pin {
+    width: 20px;
+    height: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/icons8-marker.png");
+}
+.content
+{
+  height:224px;
+   overflow:auto;
+}
+.right {
+    float: right;
+    /*padding: 10px;*/
+    height: 30px;
 }

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage()">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item active">การตั้งค่า</li>
+        </ol>
+    </div>
+    <div class="alert alert-dismissible alert-success" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>บันทึกข้อมูลสำเร็จ</strong>
+    </div>
+    <div class="alert alert-dismissible alert-danger" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
+    </div>
+    <div class="label-header">การตั้งค่า</div>
+    <!-- Button trigger modal -->
+
+    <table id="gridConfiguration" class="table table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th data-column-id="name">ชื่อการตั้งค่า</th>
+                <th data-column-id="value">ค่า</th>
+                <th data-column-id="createdDate">วันที่สร้าง</th>
+                <th data-column-id="updatedDate">วันที่แก้ไขล่าสุด</th>
+                <th data-column-id="action" data-sortable="false" data-searchable="false">Action</th>
+            </tr>
+        </thead>
+    </table>
+
+    <!-- Modal Add Class-->
+    <div class="modal fade" id="modalEditConfiguration" tabindex="-1" role="dialog" aria-labelledby="modalEditConfigurationLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditConfigurationLabel">แก้ไข</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="txtConfType">ค่า</label>
+                            <input class="form-control" id="txtConfType" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtConfValue">ค่า</label>
+                            <input class="form-control" id="txtConfValue">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveConfiguation">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var gridConfiguration = $("#gridConfiguration");
+        var _gConfigurations = [];
+        jQuery(document).ready(function () {
+            console.log("Load on edit course page");
+            initialConfigurationData();
+
+
+        });
+
+        function initialConfigurationData() {
+            console.log("initial data");
+            gridConfiguration.bootgrid('clear');
+            _gConfigurations = [];
+            $.ajax({
+                type: "GET",
+                url: _gServiceURL + "configuration/list",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.configurationViews);
+                    _gConfigurations = data.data.configurationViews;
+                    console.log(_gConfigurations);
+                    for (var i = 0; i < _gConfigurations.length; i++) {
+                        appendConfiguration(_gConfigurations[i], i);
+                    }
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
+        function appendConfiguration(configuration, i) {
+            var actionTag = "<button type='button' class='btn btn-xs btn-default command-edit' data-row-id='" + i + "'><div class='fa-pencil'></div></button> ";
+            gridConfiguration.bootgrid("append", [
+                {
+                    "name": configuration.confType,
+                    "value": configuration.confValue,
+                    "createdDate": configuration.confCreatedDate,
+                    "updatedDate": configuration.confUpdatedDate,
+                    "action": actionTag
+                }
+            ]);
+        }
+
+
+        $("#gridConfiguration").bootgrid().on("loaded.rs.jquery.bootgrid", function () {
+            gridConfiguration.find(".command-edit").on("click", function (e) {
+                var i = $(this).data("row-id");
+                editConfiguration(i);
+            });
+        });
+
+        function editConfiguration(i) {
+            $("#txtConfValue").val(_gConfigurations[i].confValue);
+            $("#txtConfType").val(_gConfigurations[i].confType);
+            $('#modalEditConfiguration').modal('show');
+        }
+
+
+        $("#btnSaveConfiguation").on("click", function (e) {
+            var txtConfValue = $("#txtConfValue").val();
+            var txtConfType = $("#txtConfType").val();
+
+            console.log("txtConfValue=", txtConfValue);
+            console.log("txtConfType=", txtConfType);
+            updateConfigurationService(txtConfValue, txtConfType);
+            $('#modalEditConfiguration').modal('hide');
+        });
+
+        function updateConfigurationService(txtConfValue, txtConfType) {
+            console.log("update data");
+            var bodyRequest = {
+                "confType": txtConfType,
+                "confValue": txtConfValue
+            };
+            console.log(bodyRequest);
+            $.ajax({
+                type: "POST",
+                url:  _gServiceURL + "configuration/update",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(bodyRequest),
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    var messages = data.message;
+                    var alert;
+                    if (data.status == 200) {
+                        alert = $(".alert-success");
+                        initialConfigurationData();
+                    } else {
+                        alert = $(".alert-danger");
+                    }
+                    alert.find("strong").text(messages);
+                    alert.show();
+
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
+    </script>
+</body>
+
+</html>
