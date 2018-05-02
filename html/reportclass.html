@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage()">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage()">รายงาน</a>
+            </li>
+            <li class="breadcrumb-item active">รายงานการลงทะเบียนเรียน</li>
+        </ol>
+    </div>
+    <div class="label-header">รายงานการลงทะเบียนเรียน</div>
+    <!-- Button trigger modal -->
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <form class="form-horizontal">
+                    <div class="form-group required">
+                        <label class="col-lg-2 labelform">วันที่เริ่มต้น</label>
+                        <div class="col-lg-4">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <div class="fa fa-calendar-times-o"></div>
+                                </div>
+                                <input class="form-control" id="pickerClassStartDate" name="date" placeholder="DD/MM/YYY" type="text" readonly/>
+                            </div>
+                        </div>
+                        <label class="col-lg-1 labelform">วันที่สิ้นสุด</label>
+                        <div class="col-lg-4">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <div class="fa fa-calendar-times-o"></div>
+                                </div>
+                                <input class="form-control" id="pickerClassEndDate" name="date" placeholder="DD/MM/YYY" type="text" readonly/>
+                            </div>
+                        </div>
+                        <div class="col-lg-1"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-lg-2 labelform">สถานะการลงทะเบียน</label>
+                        <div class="col-lg-4">
+                            <select class="custom-select" id="dropdownClassStatus">
+                            </select>
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-4">
+                            <button type="button" class="btn btn-primary btn-lg" onClick="javascript:initialClassReportData();"
+                                style="margin:5px;">ค้นหา</button>
+                        </div>
+                        <div class="col-lg-1"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <table id="gridClassReport" class="table table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th data-column-id="clsId" data-width="10%">รหัส</th>
+                <th data-column-id="stuName" data-width="20%">ชื่อนักเรียน</th>
+                <th data-column-id="subject" data-width="30%">วิชาเรียน</th>
+                <th data-column-id="type" data-width="10%">ประเภทการลงทะเบียน</th>
+                <th data-column-id="status" data-width="20%">สถานะ</th>
+                <th data-column-id="action" data-width="10%" data-sortable="false" data-searchable="false">Action</th>
+            </tr>
+        </thead>
+    </table>
+
+    <script>
+        var gridClassReport = $("#gridClassReport");
+        var _gClassReport = [];
+        jQuery(document).ready(function () {
+            console.log("Load on course page");
+            var date_input = $('input[name="date"]'); //our date input has the name "date"
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            date_input.datepicker({
+                format: 'dd-mm-yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+            })
+            // initialClassReportData();
+            initialClassStatusReport();
+
+        });
+        function initialClassStatusReport() {
+            console.log("initial data");
+            $('#dropdownClassStatus').empty();
+            $.ajax({
+                type: "GET",
+                url: _gServiceURL + "report/classstatus",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.classStatuses);
+                    var classStatuses = data.data.classStatuses;
+                    console.log(classStatuses);
+                    for (var i = 0; i < classStatuses.length; i++) {
+                        $('#dropdownClassStatus').append('<option value="' + classStatuses[i].cosStatusId + '">' + classStatuses[i].cosStatusName + '</option>');
+                    }
+                    $("#dropdownClassStatus").val($("#dropdownClassStatus option:first").val());
+                    
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+        function initialClassReportData() {
+            console.log("initial data");
+            var startDate = $('#pickerClassStartDate').val();
+            var endDate = $('#pickerClassEndDate').val();
+            var statusId = parseInt($('#dropdownClassStatus option:selected').val());
+            gridClassReport.bootgrid('clear');
+            _gClassReport = [];
+            var bodyRequest = {
+                startDate:startDate,
+                endDate:endDate,
+                statusId:statusId
+            };
+            $.ajax({
+                type: "POST",
+                url: _gServiceURL + "report/getclass",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(bodyRequest),
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.classViews);
+                    _gClassReport = data.data.classViews;
+                    console.log(_gClassReport);
+                    for (var i = 0; i < _gClassReport.length; i++) {
+                        appendClassReport(_gClassReport[i], i);
+                    }
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
+        function appendClassReport(clazz, i) {
+            var actionTag = "<button type='button' class='btn btn-xs btn-default command-detail' data-row-id='" + i + "'><div class='fa-detail-o'></div></button> ";
+            gridClassReport.bootgrid("append", [
+                {
+                    "clsId": clazz.confType,
+                    "stuName": clazz.confValue,
+                    "subject": clazz.confCreatedDate,
+                    "type": clazz.confUpdatedDate,
+                    "status": clazz.confUpdatedDate,
+                    "action": actionTag
+                }
+            ]);
+        }
+
+
+        $("#gridClassReport").bootgrid(
+            {
+                labels: {
+                    noResults: 'ไม่พบรายการ'
+                }
+            }
+        ).on("loaded.rs.jquery.bootgrid", function () {
+            gridClassReport.find(".command-detail").on("click", function (e) {
+                var i = $(this).data("row-id");
+                openClassDetailReport(i);
+            });
+        });
+
+        function openClassDetailReport(i) {
+
+        }
+
+
+
+    </script>
+</body>
+
+</html>

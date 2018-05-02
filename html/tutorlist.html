@@ -28,12 +28,13 @@
     <table id="gridTutorList" class="table table-condensed table-hover table-striped">
         <thead>
             <tr>
-                <th data-column-id="turId">รหัสติวเตอร์</th>
-                <th data-column-id="turName">ชื่อ สกุล</th>
-                <th data-column-id="turSex">เพศ</th>
-                <th data-column-id="turTel">เบอร์โทรศัพท์</th>
-                <th data-column-id="cancelTimes">จำนวนครั้งที่ยกเลิกงานสอน</th>
-                <th data-column-id="action" data-sortable="false" data-searchable="false">Action</th>
+                <th data-column-id="turId" data-width="10%">รหัสติวเตอร์</th>
+                <th data-column-id="turName" data-width="30%">ชื่อ สกุล</th>
+                <th data-column-id="turSex" data-width="10%">เพศ</th>
+                <th data-column-id="turTel" data-width="10%" data-align="center">เบอร์โทรศัพท์</th>
+                <th data-column-id="turEvaScore" data-width="15%" data-align="center">คะแนนประเมินงานสอน</th>
+                <th data-column-id="cancelTimes" data-width="15%" data-align="center">จำนวนครั้งที่ยกเลิกงานสอน</th>
+                <th data-column-id="action" data-width="10%" data-sortable="false" data-searchable="false">Action</th>
             </tr>
         </thead>
     </table>
@@ -135,6 +136,7 @@
                     "turName": tutor.turName,
                     "turSex": tutor.turSex,
                     "turTel": tutor.turTel,
+                    "turEvaScore": tutor.turEvaScore,
                     "cancelTimes": tutor.declineTimes + tutor.cancelTimes,
                     "action": actionTag
                 }

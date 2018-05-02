@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <label class="col-lg-3">จำนวนเงินหากต้องชำระคืนติวเตอร์ :</label>
-                            <label class="col-lg-9 labelnormal" id="lblReqPrice"></label>
+                            <label class="col-lg-9 labelnormal" id="lblReqReturnPrice"></label>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-3">ชื่อผู้ยื่นคำร้อง :</label>
@@ -80,6 +80,14 @@
                         <div class="form-group">
                             <label class="col-lg-3">ภาษาที่ใช้สอน :</label>
                             <label class="col-lg-9 labelnormal" id="lblClsProgram">ปกติ</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ประเภทงานสอน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblClsSpec">ปกติ</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ค่าแนะนำงานสอน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblClsPrice">2000.00</label>
                         </div>
                     </form>
                 </div>
@@ -288,13 +296,13 @@
                 $('#breadcrumbrequestclass').text('คำขอเลขที่ ' + classRequest.reqId);
                 _reqId = classRequest.reqId;
                 $('#divBodyApproveModal').text('ท่านต้องการอนุมัติคำขอเลขที่ ' + classRequest.reqId);
-                $('#divBodyApproveAndPayModal').text('ท่านต้องการอนุมัติคำขอเลขที่ ' + classRequest.reqId + ' และชำระเงินค่าแนะนำคืนให้ติวเตอร์ในราคา '+classRequest.reqPrice+' บาท');
+                $('#divBodyApproveAndPayModal').text('ท่านต้องการอนุมัติคำขอเลขที่ ' + classRequest.reqId + ' และชำระเงินค่าแนะนำคืนให้ติวเตอร์ในราคา ' + classRequest.reqPrice + ' บาท');
                 $('#divBodyRejectModal').text('ท่านต้องการปฏิเสธคำขอเลขที่ ' + classRequest.reqId);
                 $('#lblReqId').text(classRequest.reqId);
                 $('#lblReqType').text(classRequest.reqType);
                 $('#lblReqStatus').text(classRequest.reqStatusName);
                 $('#lblReqReason').text(classRequest.reqReason);
-                $('#lblReqPrice').text(classRequest.reqPrice+' บาท');
+                $('#lblReqPrice').text(classRequest.reqPrice + ' บาท');
                 $('#lblReqRequester').text(classRequest.reqRequester);
                 $('#lblReqCreatedDate').text(classRequest.reqCreatedDate);
                 if (classRequest.reqTypeId == 1) {
@@ -307,6 +315,11 @@
                 $('#lblClsSubjectCat').text(classDetail.subjectAndGroupDetailName);
                 $('#lblClsProgram').text(classDetail.program);
                 $('#lblClsPrice').text(classDetail.recPrice);
+                if (classDetail.recReturnPrice != "" || classDetail.recReturnPrice != null) {
+                    $('#lblClsReturnPrice').text(classDetail.recReturnPrice);
+                } else {
+                    $('#lblClsReturnPrice').text("0.00");
+                }
                 $('#lblClsStuSex').text(classDetail.stuSex);
                 $('#lblClsLevel').text(classDetail.stuLevel);
                 $('#lblClsSchool').text(classDetail.stuSchool);
@@ -314,6 +327,11 @@
                 $('#lblStuName').text(classDetail.stuName);
                 $('#lblStuTel').text(classDetail.stuTel);
                 $('#lblStuEmail').text(classDetail.stuEmail);
+                if (classDetail.isSpec == 'Y') {
+                    $('#lblClsSpec').text('ระบุติวเตอร์');
+                } else {
+                    $('#lblClsSpec').text('ไม่ระบุติวเตอร์');
+                }
                 if (classDetail.turName) {
                     $('#lblTurName').text(classDetail.turName);
                     $('#lblTurTel').text(classDetail.turTel);

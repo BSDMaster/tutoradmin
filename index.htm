@@ -33,7 +33,10 @@
   <script src="https://www.youtube.com/iframe_api"></script>
   <!--Google Map-->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3CqYZxIposJwTiB-GAGSYBRRHIi0x6_Y&libraries=places&language=th-TH"></script>
-
+  <!-- Bootstrap Date-Picker Plugin -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"
+  />
   <script>
     //_gUserEmail = 'tutor1@gmail.com';  //bypass login
     _gUser = {
@@ -129,9 +132,12 @@
           <li class="nav-item">
             <a class="nav-link" href="javascript:changePage('./html/edtiGroupCourse.html');">แก้ไขอัตราค่าเรียนพิเศษ</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript:changePage('./html/schedule.html');">รายงาน</a>
-          </li>
+          <li class="nav-item dropdown ">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown">รายงาน</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="javascript:changePage('./html/reportclass.html');">รายงานการลงทะเบียนเรียน</a>
+              </div>
+            </li>
           <li class="nav-item dropdown">
             <a id="divShowUser2" class="nav-link dropdown-toggle" data-toggle="dropdown">User</a>
             <div class="dropdown-menu">

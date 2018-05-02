@@ -135,6 +135,12 @@
                         </div>
                         <div class="col-lg-6"></div>
                     </div>
+                    <div class="form-group">
+                            <label class="col-lg-2">ผลการประเมิน</label>
+                            <div id="lblEvaScore" class="col-lg-4">
+                            </div>
+                            <div class="col-lg-6"></div>
+                        </div>
                     <br>
                 </form>
             </div>
@@ -227,6 +233,7 @@
                 var tutor = data.data.tutorProfileView;
                 console.log(tutor);
                 $('#divHeaderTutorDetail').text('ข้อมูลติวเตอร์รหัส ' + tutor.turId);
+                $('#lblEvaScore').text(tutor.turEvaScore);
                 $('#txtFirstName').text(tutor.turFirstname);
                 $('#txtLastName').text(tutor.turLastname);
                 $('#txtNickname').text(tutor.turNickname);

@@ -28,11 +28,11 @@
     <table id="gridConfiguration" class="table table-condensed table-hover table-striped">
         <thead>
             <tr>
-                <th data-column-id="name"  data-width="20%">ชื่อการตั้งค่า</th>
-                <th data-column-id="value" data-width="45%">ค่า</th>
-                <th data-column-id="createdDate" data-width="15%">วันที่สร้าง</th>
-                <th data-column-id="updatedDate" data-width="15%">วันที่แก้ไขล่าสุด</th>
-                <th data-column-id="action" data-width="5%" data-sortable="false" data-searchable="false">Action</th>
+                <th data-column-id="name">ชื่อการตั้งค่า</th>
+                <th data-column-id="value">ค่า</th>
+                <th data-column-id="createdDate">วันที่สร้าง</th>
+                <th data-column-id="updatedDate">วันที่แก้ไขล่าสุด</th>
+                <th data-column-id="action" data-sortable="false" data-searchable="false">Action</th>
             </tr>
         </thead>
     </table>
@@ -51,17 +51,14 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="txtConfType">ชื่อการตั้งค่า</label>
+                            <label for="txtConfType">ค่า</label>
                             <input class="form-control" id="txtConfType" readonly>
                         </div>
-                        <div class="form-group" id="divConfValueTextField">
+                        <div class="form-group">
                             <label for="txtConfValue">ค่า</label>
                             <input class="form-control" id="txtConfValue">
                         </div>
-                        <div class="form-group" id="divConfValueTextArea">
-                            <label for="txtAreaConfValue">ค่า</label>
-                            <textarea rows="3" class="form-control"  id="txtAreaConfValue"></textarea>
-                        </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -129,30 +126,15 @@
         });
 
         function editConfiguration(i) {
+            $("#txtConfValue").val(_gConfigurations[i].confValue);
             $("#txtConfType").val(_gConfigurations[i].confType);
-            console.log('Type :',_gConfigurations[i].confType);
-            if (_gConfigurations[i].confType == 'ACCOUNT_INFO') {
-                console.log('Type :IN');
-                $('#divConfValueTextField').hide();
-                $('#divConfValueTextArea').show();
-                $("#txtAreaConfValue").val(_gConfigurations[i].confValue);
-            } else {
-                $('#divConfValueTextField').show();
-                $('#divConfValueTextArea').hide();
-                $("#txtConfValue").val(_gConfigurations[i].confValue);
-            }
             $('#modalEditConfiguration').modal('show');
         }
 
 
         $("#btnSaveConfiguation").on("click", function (e) {
-            var txtConfValue="";
+            var txtConfValue = $("#txtConfValue").val();
             var txtConfType = $("#txtConfType").val();
-            if (txtConfType == 'ACCOUNT_INFO') {
-                txtConfValue = $("#txtAreaConfValue").val();
-            } else {
-                txtConfValue = $("#txtConfValue").val();
-            }
 
             console.log("txtConfValue=", txtConfValue);
             console.log("txtConfType=", txtConfType);
@@ -169,7 +151,7 @@
             console.log(bodyRequest);
             $.ajax({
                 type: "POST",
-                url: _gServiceURL + "configuration/update",
+                url:  _gServiceURL + "configuration/update",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(bodyRequest),
                 crossDomain: true,
