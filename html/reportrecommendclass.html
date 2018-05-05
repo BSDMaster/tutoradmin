@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage()">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage()">รายงาน</a>
+            </li>
+            <li class="breadcrumb-item active">รายงานการแนะนำงานสอน</li>
+        </ol>
+    </div>
+    <div class="label-header">รายงานการแนะนำงานสอน</div>
+    <!-- Button trigger modal -->
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <form class="form-horizontal">
+                    <div class="form-group required">
+                        <label class="col-lg-2 labelform">วันที่ลงทะเบียนเรียน</label>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <div class="fa fa-calendar-times-o"></div>
+                                </div>
+                                <input class="form-control" id="pickerRecClassStartDate" name="date" placeholder="DD/MM/YYY" type="text" readonly/>
+                            </div>
+                        </div>
+                        <label class="col-lg-2 labelform">ถึง</label>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <div class="fa fa-calendar-times-o"></div>
+                                </div>
+                                <input class="form-control" id="pickerRecClassEndDate" name="date" placeholder="DD/MM/YYY" type="text" readonly/>
+                            </div>
+                        </div>
+                        <div class="col-lg-2"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-lg-2 labelform">ชื่อ สกุลนักเรียน</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="txtSearchStudentName">
+                        </div>
+                        <label class="col-lg-2 labelform">สถานะการแนะนำงานสอน</label>
+                        <div class="col-lg-3">
+                            <select class="custom-select" id="dropdownRecTutorStatus" multiple>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <button type="button" class="btn btn-primary btn-lg" onClick="javascript:initialRectutorReportData();" style="margin:5px;">ค้นหา</button>
+                            <button type="button" class="btn btn-default btn-lg" onClick="javascript:cleanRecTutorSearchData();" style="margin:5px;">ล้างข้อมูล</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <table id="gridRecTutorReport" class="table table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th data-column-id="recId" data-width="5%">รหัส</th>
+                <th data-column-id="stuName" data-width="10%">ชื่อนักเรียน</th>
+                <th data-column-id="subject" data-width="15%">วิชาเรียน</th>
+                <th data-column-id="times" data-width="30%">วัน เวลาและสถานที่เรียน</th>
+                <th data-column-id="turName" data-width="10%">ชื่อติวเตอร์</th>
+                <th data-column-id="turTel" data-width="10%">เบอร์โทรติวเตอร์</th>
+                <th data-column-id="status" data-width="15%">สถานะ</th>
+                <th data-column-id="action" data-width="5%" data-sortable="false" data-searchable="false"></th>
+            </tr>
+        </thead>
+    </table>
+
+    <script>
+        var gridRecTutorReport = $("#gridRecTutorReport");
+        var _gRecTutorReport = [];
+        jQuery(document).ready(function () {
+            console.log("Load on course page");
+            var date_input = $('input[name="date"]'); //our date input has the name "date"
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            date_input.datepicker({
+                format: 'dd/mm/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+            })
+            $('#pickerRecClassStartDate').val('11/03/2018');
+            $('#pickerRecClassEndDate').val('11/05/2018');
+
+            initialRectutorStatusData();
+            //   initialRecStudentNameData();
+
+        });
+        function initialRectutorStatusData() {
+            console.log("initial data");
+            $('#dropdownRecTutorStatus').empty();
+            $.ajax({
+                type: "GET",
+                url: _gServiceURL + "report/recommendstatus",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.recommendStatuses);
+                    var recommendstatus = data.data.recommendStatuses;
+                    console.log(recommendstatus);
+                    for (var i = 0; i < recommendstatus.length; i++) {
+                        $('#dropdownRecTutorStatus').append('<option value="' + recommendstatus[i].recStatusId + '">' + recommendstatus[i].recStatusName + '</option>');
+                    }
+                    $("#dropdownRecTutorStatus").val($("#dropdownRecTutorStatus option:first").val());
+
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+        function initialRecStudentNameData() {
+            console.log("initial data");
+            $('#dropdownRecStudentName').empty();
+            $.ajax({
+                type: "GET",
+                url: _gServiceURL + "report/studentlist",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.students);
+                    var students = data.data.students;
+                    console.log(students);
+                    for (var i = 0; i < students.length; i++) {
+                        $('#dropdownRecStudentName').append('<option value="' + students[i].stuId + '">' + students[i].stuFirstname + " " + students[i].stuLastname + '</option>');
+                    }
+                    $("#dropdownRecStudentName").val($("#dropdownRecStudentName option:first").val());
+
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+        function initialRectutorReportData() {
+            console.log("initial data");
+            var startDate = $('#pickerRecClassStartDate').val();
+            var endDate = $('#pickerRecClassEndDate').val();
+            var selectedStatusIds = [];
+            $('#dropdownRecTutorStatus :selected').each(function () {
+                if ($(this).val() == "0" || $(this).val() == 0) {
+
+                } else {
+                    selectedStatusIds.push(parseInt($(this).val()));
+                }
+            });
+
+            // var studentId = parseInt($('#dropdownRecStudentName option:selected').val());
+            var studentName = $('#txtSearchStudentName').val();
+            gridRecTutorReport.bootgrid('clear');
+            _gRecTutorReport = [];
+            var bodyRequest = {
+                startDate: startDate,
+                endDate: endDate,
+                statusIds: selectedStatusIds,
+                studentName: studentName
+            };
+            $.ajax({
+                type: "POST",
+                url: _gServiceURL + "report/getrecommendclass",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(bodyRequest),
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.recommendTutorViews);
+                    _gRecTutorReport = data.data.recommendTutorViews;
+                    console.log(_gRecTutorReport);
+                    for (var i = 0; i < _gRecTutorReport.length; i++) {
+                        appendRectutorReport(_gRecTutorReport[i], i);
+                    }
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
+        function appendRectutorReport(rectutor, i) {
+
+            var actionTag = "<button type='button' class='btn btn-xs btn-default command-detail' data-row-id='" + i + "'><div class='fa-detail-o'></div></button> ";
+            gridRecTutorReport.bootgrid("append", [
+                {
+                    "recId": rectutor.recId,
+                    "stuName": rectutor.stuName,
+                    "subject": rectutor.subjectAndGroupDetailName,
+                    "times": rectutor.recTimeLoc,
+                    "turName": rectutor.tutorName,
+                    "turTel": rectutor.tutorContact,
+                    "status": rectutor.status,
+                    "action": actionTag
+                }
+            ]);
+        }
+
+
+        $("#gridRecTutorReport").bootgrid(
+            {
+                labels: {
+                    noResults: 'ไม่พบรายการ'
+                }
+            }
+        ).on("loaded.rs.jquery.bootgrid", function () {
+            gridRecTutorReport.find(".command-detail").on("click", function (e) {
+                var i = $(this).data("row-id");
+                openRectutorDetailReport(i);
+            });
+        });
+
+        function openRectutorDetailReport(i) {
+            if (_gRecTutorReport[i].clsType == 'M') {
+                _gSelectedRecId = _gRecTutorReport[i].recId;
+                changePage('./html/recmergedclassdetailstaff.html');
+            } else {
+                _gSelectedRecId = _gRecTutorReport[i].recId;
+                changePage('./html/recclassdetailstaff.html');
+            }
+
+        }
+
+        function cleanRecTutorSearchData() {
+            $("#dropdownRecTutorStatus").val($("#dropdownRecTutorStatus option:first").val());
+            $('#txtSearchStudentName').val('');
+        }
+
+
+    </script>
+</body>
+
+</html>

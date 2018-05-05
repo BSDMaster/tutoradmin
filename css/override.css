@@ -144,3 +144,16 @@ body font {
 .labelnormal {
     font-weight: normal !important;
 }
+
+.table-hover tbody tr{
+    cursor: pointer;
+}
+
+.bootgrid-table td  {
+    white-space:pre-wrap; 
+    word-wrap:break-word;
+}
+
+.bootgrid-table thead{
+    background-color: #c5e6f8;
+}

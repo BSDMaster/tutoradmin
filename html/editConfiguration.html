@@ -28,11 +28,11 @@
     <table id="gridConfiguration" class="table table-condensed table-hover table-striped">
         <thead>
             <tr>
-                <th data-column-id="name"  data-width="20%">ชื่อการตั้งค่า</th>
-                <th data-column-id="value" data-width="45%">ค่า</th>
-                <th data-column-id="createdDate" data-width="15%">วันที่สร้าง</th>
+                <th data-column-id="name"  data-width="17%">ชื่อการตั้งค่า</th>
+                <th data-column-id="value" data-width="33%">ค่า</th>
+                <th data-column-id="details" data-width="30%">รายละเอียด</th>
                 <th data-column-id="updatedDate" data-width="15%">วันที่แก้ไขล่าสุด</th>
-                <th data-column-id="action" data-width="5%" data-sortable="false" data-searchable="false">Action</th>
+                <th data-column-id="action" data-width="5%" data-sortable="false" data-searchable="false"></th>
             </tr>
         </thead>
     </table>
@@ -113,7 +113,7 @@
                 {
                     "name": configuration.confType,
                     "value": configuration.confValue,
-                    "createdDate": configuration.confCreatedDate,
+                    "details": configuration.confDetails,
                     "updatedDate": configuration.confUpdatedDate,
                     "action": actionTag
                 }

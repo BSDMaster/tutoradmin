@@ -281,6 +281,12 @@
                 $('#lblLevel').text(classDetail.stuLevel);
                 $('#lblSchool').text(classDetail.stuSchool);
                 $('#lblNumOfStudent').text(classDetail.numOfStu);
+                $('#lblSpec').text();
+                if (classDetail.isSpec == 'Y') {
+                    $('#lblSpec').text('ระบุติวเตอร์');
+                } else {
+                    $('#lblSpec').text('ไม่ระบุติวเตอร์');
+                }
                 _recclasstimes = classDetail.recommendTimelocationList;
                 for (var i = 0; i < _recclasstimes.length; i++) {
                     appendTime(_recclasstimes[i], i);
