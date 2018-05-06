@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage()">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item active">รายงานติวเตอร์และวิชาสอน</li>
+        </ol>
+    </div>
+    <div class="alert alert-dismissible alert-success" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>บันทึกข้อมูลสำเร็จ</strong>
+    </div>
+    <div class="alert alert-dismissible alert-danger" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
+    </div>
+    <div class="label-header">รายงานติวเตอร์และวิชาสอน</div>
+    <br>
+    <!-- Button trigger modal -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <form class="form-horizontal">
+                    <div class="form-group required">
+                        <label class="col-lg-2 labelform">ชื่อ สกุลติวเตอร์</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="txtSearchTutorName">
+                        </div>
+                        <label class="col-lg-2 labelform">เพศ</label>
+                        <div class="col-lg-3">
+                            <select class="custom-select" id="dropdownTutorSex">
+                                <option selected value="null">ไม่ระบุ</option>
+                                <option value="M">ชาย</option>
+                                <option value="F">หญิง</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-lg-2 labelform">วิชาสอน</label>
+                        <div class="col-lg-3">
+                            <select class="custom-select" id="dropdownTutorSubject">
+                            </select>
+                        </div>
+                        <label class="col-lg-2 labelform">กลุ่มวิชาสอน</label>
+                        <div class="col-lg-3">
+                            <select class="custom-select" id="dropdownTutorSubjectCatagory">
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <button type="button" class="btn btn-primary btn-lg" onClick="javascript:initialTutorReportData();">ค้นหา</button>
+                            <button type="button" class="btn btn-default btn-lg" onClick="javascript:cleanTutorSearchData();">ล้างข้อมูล</button>
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <table id="gridTutorList" class="table table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th data-column-id="turId" data-width="10%">รหัสติวเตอร์</th>
+                <th data-column-id="turName" data-width="15%">ชื่อ สกุล</th>
+                <th data-column-id="turSex" data-width="10%">เพศ</th>
+                <th data-column-id="turTel" data-width="10%" data-align="center">เบอร์โทรศัพท์</th>
+                <th data-column-id="turSubject" data-width="30%">วิชาและกลุ่มวิชาสอน</th>
+                <th data-column-id="action" data-width="5%" data-sortable="false" data-searchable="false">Action</th>
+            </tr>
+        </thead>
+    </table>
+
+    <!-- Modal Unlock -->
+    <div class="modal fade" id="modalConfirmUnlockTutor" tabindex="-1" role="dialog" aria-labelledby="modalConfirmUnlockTutorLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalConfirmUnlockTutorLabel">ยืนยัน</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="divConfirmUnlockTutorMsg">
+                    <form>
+                        ท่านต้องการ unlock
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" id="btnSaveUnlockTutor" value="">อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Approve -->
+    <div class="modal fade" id="modalConfirmApproveTutor" tabindex="-1" role="dialog" aria-labelledby="modalConfirmApproveTutorLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalConfirmApproveTutorLabel">ยืนยัน</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="divConfirmApproveTutorMsg">
+                    <form>
+                        ท่านต้องการ unlock
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary btn-lg" id="btnSaveApproveTutor" value="">อนุมัติ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var subjectDetailForApplyJobViews = [];
+        var gridTutorList = $("#gridTutorList");
+        var _gTutors = [];
+        jQuery(document).ready(function () {
+            console.log("Load on edit course page");
+            //  initialTutors();
+            getSubjectForApplyJob();
+
+
+        });
+
+        function initialTutorReportData() {
+            console.log("initial data");
+            gridTutorList.bootgrid('clear');
+            _gTutors = [];
+            var sex = $("#dropdownTutorSex option:selected").val();
+            var subjectId = parseInt($("#dropdownTutorSubject option:selected").val());
+            var subjectCatagoryId = parseInt($("#dropdownTutorSubjectCatagory option:selected").val());
+            var tutorName = $('#txtSearchTutorName').val();
+            console.log(sex);
+            console.log(subjectId);
+            console.log(subjectCatagoryId);
+            console.log(tutorName);
+            var requestBody = {
+                turName : tutorName,
+                turSex : sex,
+                subjId : subjectId,
+                subcId : subjectCatagoryId
+            };
+            console.log(requestBody);
+            $.ajax({
+                type: "POST",
+                url: _gServiceURL + "report/tutorlist",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(requestBody),
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.tutorProfileViews);
+                    _gTutors = data.data.tutorProfileViews;
+                    console.log(_gTutors);
+                    for (var i = 0; i < _gTutors.length; i++) {
+                        appendTutors(_gTutors[i], i);
+                    }
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
+        function appendTutors(tutor, i) {
+            var actionTag = "<button type='button' class='btn btn-xs btn-default command-detail' data-row-id='" + i + "'><div class='fa-detail-o'></div></button> ";
+            gridTutorList.bootgrid("append", [
+                {
+                    "turId": tutor.turId,
+                    "turName": tutor.turName,
+                    "turSex": tutor.turSex,
+                    "turTel": tutor.turTel,
+                    "turSubject": tutor.turSubject,
+                    "action": actionTag
+                }
+            ]);
+        }
+
+
+        $("#gridTutorList").bootgrid(
+            {
+                rowCount: 20
+            }
+        ).on("loaded.rs.jquery.bootgrid", function () {
+            gridTutorList.find(".command-detail").on("click", function (e) {
+                var i = $(this).data("row-id");
+                gotoTutorDetailsPage(i);
+            });
+            gridTutorList.find(".command-unlock").on("click", function (e) {
+                var i = $(this).data("row-id");
+                unlockTutorConfirmPopup(i);
+            });
+            gridTutorList.find(".command-verified").on("click", function (e) {
+                var i = $(this).data("row-id");
+                approveTutorConfirmPopup(i);
+            });
+        });
+
+        function gotoTutorDetailsPage(i) {
+            _gSelectedTurId = _gTutors[i].turId;
+            _gTutorDetailFrom = "R";
+            changePage('./html/tutordetail.html');
+        }
+        function unlockTutorConfirmPopup(i) {
+            $("#btnSaveUnlockTutor").prop('value', _gTutors[i].turId);
+            $('#divConfirmUnlockTutorMsg').text('กรุณากดปุ่มยืนยันหากท่านต้องการปลดล็อคติวเตอร์รหัส ' + _gTutors[i].turId + " ชื่อ " + _gTutors[i].turName);
+            $('#modalConfirmTutorUnlock').modal('show');
+        }
+
+        $("#btnSaveUnlockTutor").on("click", function (e) {
+            var turId = parseInt($("#btnSaveUnlockTutor").prop('value'));
+            console.log("unlock tutor id " + turId);
+            $.ajax({
+                type: "GET",
+                url: _gServiceURL + "tutor/unlockblacklist/" + turId,
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    var messages = data.message;
+                    var alert;
+                    if (data.status == 200) {
+                        alert = $(".alert-success");
+                        initialTutors();
+                    } else {
+                        alert = $(".alert-danger");
+                    }
+                    alert.find("strong").text(messages);
+                    alert.show();
+
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+            $('#modalConfirmUnlockTutor').modal('hide');
+        });
+        function approveTutorConfirmPopup(i) {
+            $("#btnSaveApproveTutor").prop('value', _gTutors[i].turId);
+            $('#divConfirmApproveTutorMsg').text('กรุณากดปุ่มยืนยันหากท่านต้องการยืนยันการอนุมัติผลการตรวจสอบติวเตอร์รหัส ' + _gTutors[i].turId + " ชื่อ " + _gTutors[i].turName);
+            $('#modalConfirmApproveTutor').modal('show');
+        }
+        $("#btnSaveApproveTutor").on("click", function (e) {
+            var turId = parseInt($("#btnSaveApproveTutor").prop('value'));
+            console.log("unlock tutor id " + turId);
+            $.ajax({
+                type: "GET",
+                url: _gServiceURL + "tutor/approve/" + turId,
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    var messages = data.message;
+                    var alert;
+                    if (data.status == 200) {
+                        alert = $(".alert-success");
+                        initialTutors();
+                    } else {
+                        alert = $(".alert-danger");
+                    }
+                    alert.find("strong").text(messages);
+                    alert.show();
+
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+            $('#modalConfirmApproveTutor').modal('hide');
+        });
+
+        function getSubjectForApplyJob() {
+            subjectDetailForApplyJobViews = [];
+            console.log("initial data for subject list");
+            $.ajax({
+                type: "GET",
+                url: _gServiceURL + "subjectdetail/listforapplyjob",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    console.log(data.data.subjectDetailForApplyJobViews);
+                    var messages = data.message;
+                    var alert;
+                    if (data.status == 200) {
+                        subjectDetailForApplyJobViews = data.data.subjectDetailForApplyJobViews;
+                        $('#dropdownTutorSubject').append('<option value="' + 0 + '">ไม่ระบุ</option>');
+
+                        for (var i = 0; i < subjectDetailForApplyJobViews.length; i++) {
+                            $('#dropdownTutorSubject').append('<option value="' + subjectDetailForApplyJobViews[i].subject.subjId + '">' + subjectDetailForApplyJobViews[i].subject.subjName + '</option>');
+                        }
+                        $('#dropdownTutorSubjectCatagory').append('<option value="' + 0 + '">ไม่ระบุ</option>');
+
+                    }
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+        $("#dropdownTutorSubject").change(function () {
+            var subjId = this.value;
+            $('#dropdownTutorSubjectCatagory').empty();
+            $('#dropdownTutorSubjectCatagory').append('<option value="' + 0 + '">ไม่ระบุ</option>');
+            if (subjId == 0) {
+            } else {
+
+                var subjectDetailForApplyJobViewsBySubjid = subjectDetailForApplyJobViews.filter(function (el) {
+                    return el.subjId == subjId;
+                });
+                console.log(subjectDetailForApplyJobViewsBySubjid);
+                if (subjectDetailForApplyJobViewsBySubjid[0]) {
+                    var subjectCatagories = subjectDetailForApplyJobViewsBySubjid[0].subjectCatagories;
+                    console.log(subjectCatagories);
+                    for (var i = 0; i < subjectCatagories.length; i++) {
+                        $('#dropdownTutorSubjectCatagory').append('<option value="' + subjectCatagories[i].subcId + '">' + subjectCatagories[i].subcName + '</option>');
+                    }
+                }
+            }
+        });
+
+        function cleanTutorSearchData() {
+            $("#dropdownTutorSex").val($("#dropdownTutorSex option:first").val());
+            $("#dropdownTutorSubject").val($("#dropdownTutorSubject option:first").val());
+            $("#dropdownTutorSubjectCatagory").val($("#dropdownTutorSubjectCatagory option:first").val());
+            $('#txtSearchTutorName').val('');
+        }
+    </script>
+</body>
+
+</html>

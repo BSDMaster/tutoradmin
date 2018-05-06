@@ -6,12 +6,24 @@
 </head>
 
 <body>
-    <div>
+    <div id="breadcrumbMainMenuRecMergedclass">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="javascript:loadMainPage();">หน้าหลัก</a>
             </li>
-            <li class="breadcrumb-item active" id="breadcrumbrecmerged">รายการแนะนำงานสอนเลขที่ </li>
+            <li class="breadcrumb-item active" id="breadcrumbrecmerged1">รายการแนะนำงานสอนเลขที่ </li>
+        </ol>
+    </div>
+    <br>
+    <div id="breadcrumbReportRecMergedclass">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage();">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="javascript:changePage('./html/reportrecommendclass.html');">รายงานรายการแนะนำงานสอน</a>
+            </li>
+            <li class="breadcrumb-item active" id="breadcrumbrecmerged2">รายการแนะนำงานสอนเลขที่ </li>
         </ol>
     </div>
     <br>
@@ -23,21 +35,32 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
     </div>
-    <div class="label-header" id="headerpaymentdetailmerged">ข้อมูลการชำระเงิน</div>
-    <div style="margin-top:30px;">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-lg-3">วันที่ชำระเงิน :</label>
-                            <label class="col-lg-9 labelnormal" id="lblMPaidDate"></label>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-3">เอกสารการชำระเงิน :</label>
-                            <label class="col-lg-9 labelnormal" id="lblMSlip"></label>
-                        </div>
-                    </form>
+
+    <div class="container-fluid" id="divApprovePaymentMergedBtn">
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#modalConfirmMergedApprovePayment">อนุมัติ</button>
+                <button type="button" class="btn btn-secondary btn-lg pull-right" data-toggle="modal" data-target="#modalConfirmMergedRejectPayment">ไม่อนุมัติ</button>
+            </div>
+        </div>
+    </div>
+    <div id="divPaymentInfoMerged">
+        <div class="label-header" id="headerpaymentdetailmerged">ข้อมูลการชำระเงิน</div>
+        <div style="margin-top:30px;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-3">วันที่ชำระเงิน :</label>
+                                <label class="col-lg-9 labelnormal" id="lblMPaidDate"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">เอกสารการชำระเงิน :</label>
+                                <label class="col-lg-9 labelnormal" id="lblMSlip"></label>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -313,18 +336,6 @@
     </div>
     <br>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="form-group col-lg-12">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalConfirmMergedApprovePayment">อนุมัติ</button>
-                    <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#modalConfirmMergedRejectPayment">ไม่อนุมัติ</button>
-                </div>
-                <div class="col-lg-4"></div>
-            </div>
-        </div>
-    </div>
     <br>
 
 </body>
@@ -334,7 +345,16 @@
     var _times1;
     var _times2;
     jQuery(document).ready(function () {
+        if (_gRecMergedClassFrom == 'R') {
+            $('#breadcrumbReportRecMergedclass').show();
+            $('#breadcrumbMainMenuRecMergedclass').hide();
+        } else {
+
+            $('#breadcrumbReportRecMergedclass').hide();
+            $('#breadcrumbMainMenuRecMergedclass').show();
+        }
         initialRecMergedDataForStaff();
+
     });
     var gridTime1 = $("#gridTime1").bootgrid({
         navigation: 0,
@@ -370,13 +390,24 @@
             dataType: "json",
             success: function (data, status, jqXHR) {
                 console.log(data.data)
-                $('#breadcrumbrecmerged').text('ข้อมูลการชำระเงินรายการแนะนำงานสอนเลขที่ ' + _gSelectedRecId);
+                $('#breadcrumbrecmerged1').text('ข้อมูลการชำระเงินรายการแนะนำงานสอนเลขที่ ' + _gSelectedRecId);
+                $('#breadcrumbrecmerged2').text('ข้อมูลการชำระเงินรายการแนะนำงานสอนเลขที่ ' + _gSelectedRecId);
                 $('#headerpaymentdetailmerged').text('ข้อมูลการชำระเงินรายการแนะนำงานสอนเลขที่ ' + _gSelectedRecId);
                 //_gSelectedMerId = data.data.merId;
                 var classDetail1 = data.data.classDetailView1;
                 $('#lblClsId1').text(classDetail1.clsId);
-                $('#lblMPaidDate').text(classDetail1.paidDate);
-                $('#lblMSlip').text(classDetail1.paidFile);
+                if (classDetail1.paidDate == "" || !classDetail1.paidDate) {
+                    $("#divPaymentInfoMerged").hide();
+                } else {
+                    $("#divPaymentInfoMerged").show();
+                    $('#lblMPaidDate').text(classDetail1.paidDate);
+                    $('#lblMSlip').text(classDetail1.paidFile);
+                }
+                if (classDetail1.statusId == 4) {
+                    $('#divApprovePaymentMergedBtn').show();
+                } else {
+                    $('#divApprovePaymentMergedBtn').hide();
+                }
                 $('#lblMTurName').text(classDetail1.turName);
                 $('#lblMTurSex').text(classDetail1.turSex);
                 $('#lblMTurTel').text(classDetail1.turTel);

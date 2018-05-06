@@ -6,12 +6,23 @@
 </head>
 
 <body>
-    <div>
+    <div id="breadcrumbMainMenuRecclass">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="javascript:loadMainPage();">หน้าหลัก</a>
             </li>
-            <li class="breadcrumb-item active" id="breadcrumbrecclass">รายการแนะนำงานสอนเลขที่ </li>
+            <li class="breadcrumb-item active" id="breadcrumbrecclass1">รายการแนะนำงานสอนเลขที่ </li>
+        </ol>
+    </div>
+    <div id="breadcrumbReportRecclass">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage();">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="javascript:changePage('./html/reportrecommendclass.html');">รายงานรายการแนะนำงานสอน</a>
+            </li>
+            <li class="breadcrumb-item active" id="breadcrumbrecclass2">รายการแนะนำงานสอนเลขที่ </li>
         </ol>
     </div>
     <br>
@@ -23,26 +34,36 @@
         <button type="button" class="close" data-dismiss="alert"></button>
         <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
     </div>
-    <div class="label-header" id="headerpaymentdetail">ข้อมูลการชำระเงิน</div>
-    <div style="margin-top:30px;">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-lg-3">วันที่ชำระเงิน :</label>
-                            <label class="col-lg-9 labelnormal" id="lblPaidDate"></label>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-3">เอกสารการชำระเงิน :</label>
-                            <div class="col-lg-9">
-                                <button class="btn btn-xs btn-default" type='button'>
-                                    <div class='fa-download-o'></div>
+    <div class="container-fluid" id="divApprovePaymentBtn">
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="button" class="btn btn-danger btn-lg pull-right" id="btnRejectPayment" style="margin:5px;" data-toggle="modal" data-target="#modalConfirmRejectPayment">ไม่อนุมัติ</button>
+                <button type="button" class="btn btn-success btn-lg pull-right" id="btnApprovePayment" style="margin:5px;" data-toggle="modal" data-target="#modalConfirmApprovePayment">อนุมัติ</button>
+            </div>
+        </div>
+    </div>
+    <div id="divPaymentInfo">
+        <div class="label-header" id="headerpaymentdetail">ข้อมูลการชำระเงิน</div>
+        <div style="margin-top:30px;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-3">วันที่ชำระเงิน :</label>
+                                <label class="col-lg-9 labelnormal" id="lblPaidDate"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">เอกสารการชำระเงิน :</label>
+                                <div class="col-lg-9">
+                                    <button class="btn btn-xs btn-default" type='button'>
+                                        <div class='fa-download-o'></div>
+                                    </button>
+                                </div>
                                 </button>
                             </div>
-                            </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,6 +94,10 @@
                         <div class="form-group">
                             <label class="col-lg-3">ค่าแนะนำงานสอน :</label>
                             <label class="col-lg-9 labelnormal" id="lblPrice">2000.00</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">สถานะการแนะนำงานสอน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblRecStatus"></label>
                         </div>
                     </form>
                 </div>
@@ -217,18 +242,7 @@
         </div>
     </div>
     <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="form-group col-lg-12">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <button type="button" class="btn btn-primary btn-lg" id="btnApprovePayment" data-toggle="modal" data-target="#modalConfirmApprovePayment">อนุมัติ</button>
-                    <button type="button" class="btn btn-secondary btn-lg" id="btnRejectPayment" data-toggle="modal" data-target="#modalConfirmRejectPayment">ไม่อนุมัติ</button>
-                </div>
-                <div class="col-lg-4"></div>
-            </div>
-        </div>
-    </div>
+
     <br>
 
 </body>
@@ -239,6 +253,14 @@
     var _recclasstimes = [];
     jQuery(document).ready(function () {
         initialData();
+        if (_gRecClassFrom == 'R') {
+            $('#breadcrumbReportRecclass').show();
+            $('#breadcrumbMainMenuRecclass').hide();
+        } else {
+
+            $('#breadcrumbReportRecclass').hide();
+            $('#breadcrumbMainMenuRecclass').show();
+        }
     });
 
     var gridTime = $("#gridTime").bootgrid({
@@ -262,11 +284,24 @@
             dataType: "json",
             success: function (data, status, jqXHR) {
                 var classDetail = data.data.classDetailView;
-                $('#breadcrumbrecclass').text('ข้อมูลการชำระเงินรายการแนะนำงานสอนเลขที่ ' + classDetail.recId);
+                console.log(classDetail);
+                $('#breadcrumbrecclass1').text('ข้อมูลการชำระเงินรายการแนะนำงานสอนเลขที่ ' + classDetail.recId);
+                $('#breadcrumbrecclass2').text('ข้อมูลการชำระเงินรายการแนะนำงานสอนเลขที่ ' + classDetail.recId);
                 $('#headerpaymentdetail').text('ข้อมูลการชำระเงินรายการแนะนำงานสอนเลขที่ ' + classDetail.recId);
                 $('#lblClsId').text(classDetail.clsId);
-                $('#lblPaidDate').text(classDetail.paidDate);
-                $('#lblSlip').text(classDetail.paidFile);
+                if (classDetail.paidDate == "" || !classDetail.paidDate) {
+                    $('#divPaymentInfo').hide();
+                } else {
+                    $('#divPaymentInfo').show();
+                    $('#lblPaidDate').text(classDetail.paidDate);
+                    $('#lblSlip').text(classDetail.paidFile);
+                }
+                if (classDetail.statusId == 4) {
+                    $('#divApprovePaymentBtn').show();
+                } else {
+                    $('#divApprovePaymentBtn').hide();
+                }
+                $('#lblRecStatus').text(classDetail.statusName);
                 $('#lblTurName').text(classDetail.turName);
                 $('#lblTurSex').text(classDetail.turSex);
                 $('#lblTurTel').text(classDetail.turTel);

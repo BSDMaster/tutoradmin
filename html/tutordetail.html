@@ -6,17 +6,28 @@
 </head>
 
 <body>
-    <div>
+    <div id="breadcrumbBlacklistTutor">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="javascript:loadMainPage();">หน้าหลัก</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="javascript:changePage('./html/tutorlist.html');">รายชื่อติวเตอร์</a>
+                <a href="javascript:changePage('./html/tutorblacklist.html');">ติวเตอร์ Blackilist</a>
             </li>
             <li class="breadcrumb-item active">ข้อมูลติวเตอร์</li>
         </ol>
     </div>
+    <div id="breadcrumbReportTutor">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="javascript:loadMainPage();">หน้าหลัก</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="javascript:changePage('./html/reporttutorlist.html');">รายงานรายการติวเตอร์และวิชาสอน</a>
+                </li>
+                <li class="breadcrumb-item active">ข้อมูลติวเตอร์</li>
+            </ol>
+        </div>
     <br>
     <div class="alert alert-dismissible alert-success" style="display: none;">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -147,8 +158,32 @@
         </div>
     </div>
     <div class="label-header">ข้อมูลวิชาสอน</div>
-    
+    <table id="gridTutorSubject" class="table table-condensed table-hover table-striped scroll">
+            <thead>
+                <tr>
+                    <th data-column-id="id" data-width="10%" data-identifier="true" data-type="numeric">#</th>
+                    <th data-column-id="class" data-width="40%">วิชา</th>
+                    <th data-column-id="level" data-width="30%">ระดับชั้น</th>
+                    <th data-column-id="exp" data-width="20%">ประสบการณ์สอน</th>
+                </tr>
+            </thead>
+        </table>
     <div class="label-header">ข้อมูลวัน เวลา และสถานที่</div>
+    <table id="gridJobDetail" class="table table-condensed table-hover table-striped scroll">
+            <thead>
+                <tr>
+                    <th data-column-id="id" data-width="3%" data-identifier="true" data-type="numeric">#</th>
+                    <th data-column-id="day" data-width="9%">วัน</th>
+                    <th data-column-id="time" data-width="12%">เวลาว่าง</th>
+                    <th data-column-id="startPlace" data-width="20%">สถานที่เริ่มต้นเดินทาง</th>
+                    <th data-column-id="endPlace" data-width="20%">สถานที่สิ้นสุดเดินทาง</th>
+                    <th data-column-id="car" data-width="9%" data-sortable="false">รถยนต์ส่วนตัว</th>
+                    <th data-column-id="bus" data-width="9%" data-sortable="false">รถประจำทาง</th>
+                    <th data-column-id="bts" data-width="9%" data-sortable="false">รถไฟฟ้า</th>
+                    <th data-column-id="taxi" data-width="9%" data-sortable="false">รถแท็กซี่</th>
+                </tr>
+            </thead>
+        </table>
     </div>
     <br>
     <!-- Approve Tutor Modal -->
@@ -222,6 +257,14 @@
 
     jQuery(document).ready(function () {
         initialTutorProfile();
+        initialSubjectAndTimes();
+        if (_gTutorDetailFrom=="B") {
+            $("#breadcrumbBlacklistTutor").show();
+            $("#breadcrumbReportTutor").hide();
+        } else if (_gTutorDetailFrom=="R") {
+            $("#breadcrumbBlacklistTutor").hide();
+            $("#breadcrumbReportTutor").show();
+        }
     });
 
 
@@ -293,6 +336,52 @@
 
         });
     }
+
+    function initialSubjectAndTimes() {
+            console.log('initial data');
+            $.ajax({
+                type: "GET",
+                url: _gServiceURL + "tutor/getworkdetail/" + _gSelectedTurId,
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+                    var tutorView = data.data.tutorView;
+                    console.log(tutorView);
+                    var messages = data.message;
+                    var alert;
+                    if (tutorView != null) {
+                        /*
+                        if (tutorView.englishFlag == 'Y') {
+                            $('#chkEnglishFlag').prop('checked', true);
+                        }
+                        if (tutorView.interFlag == 'Y') {
+                            $('#chkInterFlag').prop('checked', true);
+                        }*/
+                        console.log('tutorView.maxClsPerDay');
+                        console.log(tutorView.maxClsPerDay);
+                        $('#optMaxWorkPerDay').val(tutorView.maxClsPerDay);
+                        $('#optMaxWork').val(tutorView.maxCls);
+                        var applySubjects = tutorView.subjectDetailViews;
+                        var applyDays = tutorView.tutorAvailableTimeloacations;
+                        for (var i = 0; i < applySubjects.length; i++) {
+                            console.log("data : " + applySubjects[i]);
+                            appendApplySubjectList(applySubjects[i], i);
+                        }
+                        for (var j = 0; j < applyDays.length; j++) {
+                            console.log("data : " + applyDays[j]);
+                            appendApplyDayList(applyDays[j], j);
+                        }
+                    }
+
+                },
+                error: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    alert('fail' + status.code);
+                }
+            });
+        }
+
 
     var player;
     function onYouTubeIframeAPIReady(videoId) {
@@ -411,6 +500,94 @@
         });
     }
 
+        var gridJobDetail = $("#gridJobDetail").bootgrid({
+            navigation: 0,
+            labels: {
+                noResults: 'ไม่พบรายการ'
+            }
+        });
+
+        var gridTutorSubject = $("#gridTutorSubject").bootgrid({
+            navigation: 0,
+            labels: {
+                noResults: 'ไม่พบรายการ'
+            }
+        });
+        function appendApplySubjectList(applySubject, i) {
+            console.log(applySubject);
+            var exps = dataExp.filter(function (el) {
+                return el.val == applySubject.exp;
+            });
+            var exp = 0;
+            if (exps[0]) {
+                exp = exps[0];
+            }
+            gridTutorSubject.bootgrid("append", [
+                {
+                    "id": i+1,
+                    "class": applySubject.subject.subjName,
+                    "level": applySubject.subjectCatagory.subcName,
+                    "exp": exp.name
+                    }
+            ]);
+        }
+        function appendApplyDayList(applyDay, i) {
+            console.log(applyDay);
+            var dayId = applyDay.tavDayId;
+            var divSignActive = "<div class='signActive'></div>";
+            var divSignInactive = "<div class='signInActive'></div>";
+            var chkCar;
+            var chkBus;
+            var chkBTS;
+            var chkTaxi;
+            if (applyDay.tavTraDrive == 'Y') {
+                chkCar = divSignActive;
+            } else {
+                chkCar = divSignInactive;
+            }
+            if (applyDay.tavTraBus == 'Y') {
+                chkBus = divSignActive;
+            } else {
+                chkBus = divSignInactive;
+            }
+            if (applyDay.tavTraTrain == 'Y') {
+                chkBTS = divSignActive;
+            } else {
+                chkBTS = divSignInactive;
+            }
+            if (applyDay.tavTraTaxi == 'Y') {
+                chkTaxi = divSignActive;
+            } else {
+                chkTaxi = divSignInactive;
+            }
+            var startTimes = dataTime.filter(function (el) {
+                return el.val == applyDay.tavStartTime;
+            });
+            var startTime = "";
+            if (startTimes[0]) {
+                startTime = startTimes[0];
+            }
+            var endTimes = dataTime.filter(function (el) {
+                return el.val == applyDay.tavEndTime;
+            });
+            var endTime = "";
+            if (endTimes[0]) {
+                endTime = endTimes[0];
+            }
+            gridJobDetail.bootgrid("append", [
+                {
+                    "id": i+1,
+                    "day": dataDay[applyDay.tavDayId - 1].name,
+                    "time": startTime.name+ " - " + endTime.name,
+                    "startPlace": applyDay.tavStartLocation,
+                    "endPlace": applyDay.tavEndLocation,
+                    "car": chkCar,
+                    "bus": chkBus,
+                    "bts": chkBTS,
+                    "taxi": chkTaxi
+                }
+            ]);
+        }
 </script>
 
 </html>

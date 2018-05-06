@@ -11,7 +11,7 @@
             <li class="breadcrumb-item">
                 <a href="javascript:loadMainPage()">หน้าหลัก</a>
             </li>
-            <li class="breadcrumb-item active">รายชื่อติวเตอร์</li>
+            <li class="breadcrumb-item active">ติวเตอร์ Blacklist</li>
         </ol>
     </div>
     <div class="alert alert-dismissible alert-success" style="display: none;">
@@ -22,50 +22,7 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
     </div>
-    <div class="label-header">รายชื่อติวเตอร์</div>
-    <br>
-    <!-- Button trigger modal -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <form class="form-horizontal">
-                    <div class="form-group required">
-                        <label class="col-lg-2 labelform">ชื่อ สกุลติวเตอร์</label>
-                        <div class="col-lg-3">
-                            <input type="text" class="form-control" id="txtSearchTutorName">
-                        </div>
-                        <label class="col-lg-2 labelform">เพศ</label>
-                        <div class="col-lg-3">
-                            <select class="custom-select" id="dropdownTutorSex">
-                                <option selected value="null">ไม่ระบุ</option>
-                                <option value="M">ชาย</option>
-                                <option value="F">หญิง</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-2"></div>
-                    </div>
-                    <div class="form-group required">
-                        <label class="col-lg-2 labelform">วิชาสอน</label>
-                        <div class="col-lg-3">
-                            <select class="custom-select" id="dropdownTutorSubject">
-                            </select>
-                        </div>
-                        <label class="col-lg-2 labelform">กลุ่มวิชาสอน</label>
-                        <div class="col-lg-3">
-                            <select class="custom-select" id="dropdownTutorSubjectCatagory">
-                            </select>
-                        </div>
-                        <div class="col-lg-2">
-                            <button type="button" class="btn btn-primary btn-lg" onClick="javascript:initialTutorReportData();" style="margin:5px;">ค้นหา</button>
-                            <button type="button" class="btn btn-default btn-lg" onClick="javascript:cleanTutorSearchData();" style="margin:5px;">ล้างข้อมูล</button>
-
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-        </div>
-    </div>
+    <div class="label-header">ติวเตอร์ Blacklist</div>
     <table id="gridTutorList" class="table table-condensed table-hover table-striped">
         <thead>
             <tr>
@@ -134,13 +91,12 @@
         var _gTutors = [];
         jQuery(document).ready(function () {
             console.log("Load on edit course page");
-            //  initialTutors();
-            getSubjectForApplyJob();
+            initialTutors();
 
 
         });
 
-        function initialTutorReportData() {
+        function initialTutors() {
             console.log("initial data");
             gridTutorList.bootgrid('clear');
             _gTutors = [];
@@ -148,22 +104,10 @@
             var subjectId = parseInt($("#dropdownTutorSubject option:selected").val());
             var subjectCatagoryId = parseInt($("#dropdownTutorSubjectCatagory option:selected").val());
             var tutorName = $('#txtSearchTutorName').val();
-            console.log(sex);
-            console.log(subjectId);
-            console.log(subjectCatagoryId);
-            console.log(tutorName);
-            var requestBody = {
-                turName : tutorName,
-                turSex : sex,
-                subjId : subjectId,
-                subcId : subjectCatagoryId
-            };
-            console.log(requestBody);
             $.ajax({
-                type: "POST",
-                url: _gServiceURL + "report/tutorlist",
+                type: "GET",
+                url: _gServiceURL + "tutor/list",
                 contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(requestBody),
                 crossDomain: true,
                 dataType: "json",
                 success: function (data, status, jqXHR) {
@@ -224,6 +168,7 @@
 
         function gotoTutorDetailsPage(i) {
             _gSelectedTurId = _gTutors[i].turId;
+            _gTutorDetailFrom = "B";
             changePage('./html/tutordetail.html');
         }
         function unlockTutorConfirmPopup(i) {
@@ -296,63 +241,6 @@
             $('#modalConfirmApproveTutor').modal('hide');
         });
 
-        function getSubjectForApplyJob() {
-            subjectDetailForApplyJobViews = [];
-            console.log("initial data for subject list");
-            $.ajax({
-                type: "GET",
-                url: _gServiceURL + "subjectdetail/listforapplyjob",
-                contentType: "application/json; charset=utf-8",
-                crossDomain: true,
-                dataType: "json",
-                success: function (data, status, jqXHR) {
-                    console.log(data.data.subjectDetailForApplyJobViews);
-                    var messages = data.message;
-                    var alert;
-                    if (data.status == 200) {
-                        subjectDetailForApplyJobViews = data.data.subjectDetailForApplyJobViews;
-                        $('#dropdownTutorSubject').append('<option value="' + 0 + '">ไม่ระบุ</option>');
-
-                        for (var i = 0; i < subjectDetailForApplyJobViews.length; i++) {
-                            $('#dropdownTutorSubject').append('<option value="' + subjectDetailForApplyJobViews[i].subject.subjId + '">' + subjectDetailForApplyJobViews[i].subject.subjName + '</option>');
-                        }
-                        $('#dropdownTutorSubjectCatagory').append('<option value="' + 0 + '">ไม่ระบุ</option>');
-
-                    }
-                },
-                error: function (jqXHR, status) {
-                    console.log(jqXHR);
-                    alert('fail' + status.code);
-                }
-            });
-        }
-        $("#dropdownTutorSubject").change(function () {
-            var subjId = this.value;
-            $('#dropdownTutorSubjectCatagory').empty();
-            $('#dropdownTutorSubjectCatagory').append('<option value="' + 0 + '">ไม่ระบุ</option>');
-            if (subjId == 0) {
-            } else {
-
-                var subjectDetailForApplyJobViewsBySubjid = subjectDetailForApplyJobViews.filter(function (el) {
-                    return el.subjId == subjId;
-                });
-                console.log(subjectDetailForApplyJobViewsBySubjid);
-                if (subjectDetailForApplyJobViewsBySubjid[0]) {
-                    var subjectCatagories = subjectDetailForApplyJobViewsBySubjid[0].subjectCatagories;
-                    console.log(subjectCatagories);
-                    for (var i = 0; i < subjectCatagories.length; i++) {
-                        $('#dropdownTutorSubjectCatagory').append('<option value="' + subjectCatagories[i].subcId + '">' + subjectCatagories[i].subcName + '</option>');
-                    }
-                }
-            }
-        });
-
-        function cleanTutorSearchData() {
-            $("#dropdownTutorSex").val($("#dropdownTutorSex option:first").val());
-            $("#dropdownTutorSubject").val($("#dropdownTutorSubject option:first").val());
-            $("#dropdownTutorSubjectCatagory").val($("#dropdownTutorSubjectCatagory option:first").val());
-            $('#txtSearchTutorName').val('');
-        }
     </script>
 </body>
 

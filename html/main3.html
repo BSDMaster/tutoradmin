@@ -424,8 +424,10 @@
         function verifypaymentDetail(i) {
             _gSelectedRecId = _waitingverifypayment[i].recId;
             if (_waitingverifypayment[i].clsType == 'M') {
+                _gRecMergedClassFrom = "M";
                 changePage('./html/recmergedclassdetailstaff.html');
             } else {
+                _gRecClassFrom = "M";
                 changePage('./html/recclassdetailstaff.html');
             }
         }

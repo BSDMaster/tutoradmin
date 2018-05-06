@@ -11,9 +11,6 @@
             <li class="breadcrumb-item">
                 <a href="javascript:loadMainPage()">หน้าหลัก</a>
             </li>
-            <li class="breadcrumb-item">
-                <a href="javascript:loadMainPage()">รายงาน</a>
-            </li>
             <li class="breadcrumb-item active">รายงานการแนะนำงานสอน</li>
         </ol>
     </div>
@@ -230,9 +227,11 @@
         function openRectutorDetailReport(i) {
             if (_gRecTutorReport[i].clsType == 'M') {
                 _gSelectedRecId = _gRecTutorReport[i].recId;
+                _gRecMergedClassFrom = "R";
                 changePage('./html/recmergedclassdetailstaff.html');
             } else {
                 _gSelectedRecId = _gRecTutorReport[i].recId;
+                _gRecClassFrom = "R";
                 changePage('./html/recclassdetailstaff.html');
             }
 

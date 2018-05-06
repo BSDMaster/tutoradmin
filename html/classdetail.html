@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage();">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item active" id="breadcrumbstuclass">งานสอนเลขที่ </li>
+        </ol>
+    </div>
+    <br>
+    <div class="alert alert-dismissible alert-success" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert"></button>
+        <strong>บันทึกข้อมูลสำเร็จ</strong>
+    </div>
+    <div class="alert alert-dismissible alert-danger" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert"></button>
+        <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
+    </div>
+    <div class="label-header" id="headerstuclass">งานสอน</div>
+    <div style="margin-top:30px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3">รหัสงานสอน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsClsId">คณิตศาสตร์</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">วิชา :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsSubjectCat">คณิตศาสตร์</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ภาษาที่ใช้สอน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsProgram">ปกติ</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ประเภทงานสอน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsSpec">ปกติ</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">สถานะ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsStatus">คณิตศาสตร์</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="label-header">ข้อมูลนักเรียน</div>
+    <div style="margin-top:30px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3">ชื่อ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsStuName"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">เบอร์โทรติดต่อ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsStuTel"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">อีเมล์ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsStuEmail"></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">เพศ :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsStuSex">ชาย</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">ระดับชั้น :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsLevel">ประถมศึกษาปีที่ 6</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">สถานศึกษา :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsSchool">โรงเรียน</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">จำนวนนักเรียน :</label>
+                            <label class="col-lg-9 labelnormal" id="lblStuClsNumOfStudent">1</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div style="display: none;" id="tutorSection">
+        <div class="label-header">ข้อมูลติวเตอร์</div>
+        <div style="margin-top:30px;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-3">ชื่อ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblStuClsTurName"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">เบอร์โทรติดต่อ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblStuClsTurTel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">อีเมล์ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblStuClsTurEmail"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">เพศ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblStuClsTurSex">ชาย</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">คณะ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblStuClsTurFac"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">สถาบัน :</label>
+                                <label class="col-lg-9 labelnormal" id="lblStuClsTurUni"></label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="label-header">ข้อมูลวัน เวลา สถานที่เรียน</div>
+    <div style="margin:30px;">
+        <table id="gridStuClassTime" class="table table-condensed table-hover table-striped scroll">
+            <thead>
+                <tr>
+                    <th data-column-id="day" data-width="10%">วัน</th>
+                    <th data-column-id="time" data-width="30%">เวลา</th>
+                    <th data-column-id="location" data-width="60%">สถานที่</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <br>
+</body>
+<script>
+    var _clsId;
+    var _stuTimesClassDetail = [];
+    jQuery(document).ready(function () {
+        initialStuClassDetailData();
+
+        initialEvaTutor();
+    });
+
+    var gridStuClassTime = $("#gridStuClassTime").bootgrid({
+        navigation: 0,
+        labels: {
+            noResults: 'ไม่พบรายการ'
+        }
+    });
+
+    function initialStuClassDetailData() {
+
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "class/classdetail/student/" + _gSelectedClsId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+
+                var classDetail = data.data.classDetailView;
+                console.log(classDetail);
+                $('#breadcrumbstuclass').text('งานสอนเลขที่ ' + classDetail.clsId);
+                $('#headerstuclass').text('งานสอนเลขที่ ' + classDetail.clsId);
+                _clsId = classDetail.clsId;
+                $('#lblStuClsClsId').text(classDetail.clsId);
+                $('#lblStuClsStatus').text(classDetail.statusName);
+                $('#lblStuClsSubjectCat').text(classDetail.subjectAndGroupDetailName);
+                $('#lblStuClsProgram').text(classDetail.program);
+                $('#lblStuClsPrice').text(classDetail.recPrice);
+                $('#lblStuClsStuSex').text(classDetail.stuSex);
+                $('#lblStuClsLevel').text(classDetail.stuLevel);
+                $('#lblStuClsSchool').text(classDetail.stuSchool);
+                $('#lblStuClsNumOfStudent').text(classDetail.numOfStu);
+                $('#lblStuClsStuName').text(classDetail.stuName);
+                $('#lblStuClsStuTel').text(classDetail.stuTel);
+                $('#lblStuClsStuEmail').text(classDetail.stuEmail);
+                if (classDetail.isSpec == 'Y') {
+                    $('#lblStuClsSpec').text('ระบุติวเตอร์');
+                    $('#aListRequestChangeTutor').hide();
+                } else {
+                    $('#lblStuClsSpec').text('ไม่ระบุติวเตอร์');
+                    $('#aListRequestChangeTutor').show();
+                }
+                if (classDetail.statusId == 1 || classDetail.statusId == 5 || classDetail.statusId == 6) {
+                    $('#divNumHours').hide();
+                    $('#btnCreateRequest').hide();
+                    $('#btnCancelClassBtStudent').show();
+                    $('#btnEvaluateTutor').hide();
+                } else if (classDetail.statusId == 7) {
+                    $('#divNumHours').show();
+                    $('#btnCreateRequest').show();
+                    $('#btnCancelClassBtStudent').hide();
+                    $('#btnEvaluateTutor').show();
+                } else {
+                    $('#divNumHours').hide();
+                    $('#btnCreateRequest').hide();
+                    $('#btnCancelClassBtStudent').hide();
+                    $('#btnEvaluateTutor').hide();
+                }
+
+                if ((classDetail.statusId == 2 || classDetail.statusId == 3 || classDetail.statusId == 4
+                    || classDetail.statusId == 7 || classDetail.statusId == 8 || classDetail.statusId == 9
+                    || (classDetail.statusId == 6 && classDetail.isSpec == 'Y')) && classDetail.turName != null) {
+                    $('#lblStuClsTurName').text(classDetail.turName);
+                    $('#lblStuClsTurTel').text(classDetail.turTel);
+                    $('#lblStuClsTurEmail').text(classDetail.turEmail);
+                    $('#lblStuClsTurFac').text(classDetail.turFac);
+                    $('#lblStuClsTurUni').text(classDetail.turUni);
+                    $('#lblStuClsTurSex').text(classDetail.turSex);
+                    $('#tutorSection').show();
+                } else {
+                    $('#tutorSection').hide();
+                }
+                _stuTimesClassDetail = classDetail.recommendTimelocationList;
+                for (var i = 0; i < _stuTimesClassDetail.length; i++) {
+                    appendStuClassTime(_stuTimesClassDetail[i], i);
+                }
+            },
+            error: function (jqXHR, status) {
+            }
+
+        });
+
+    }
+
+    function appendStuClassTime(time, i) {
+        gridStuClassTime.bootgrid("append", [
+            {
+                "day": time.day,
+                "time": time.time,
+                "location": time.location
+            }
+        ]);
+    }
+
+
+</script>
+
+</html>
