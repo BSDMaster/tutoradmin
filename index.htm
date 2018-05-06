@@ -51,7 +51,7 @@
       stfRole: null
     };
     _gNoResultFound = 'ไม่พบรายการ';
-  //  _gServiceURL = 'https://14039143.ngrok.io/tutormatchingservices-0.0.1-SNAPSHOT/';
+    //  _gServiceURL = 'https://14039143.ngrok.io/tutormatchingservices-0.0.1-SNAPSHOT/';
     _gServiceURL = 'http://localhost:8080/tutormatchingservices-0.0.1-SNAPSHOT/';
     _gSelectedTurId = null;
     _gSelectedReqId = null;
@@ -60,8 +60,8 @@
     _gRecClassFrom = "R";
     _gRecMergedClassFrom = "R";
     _gSelectedClsId = null;
-        //day
-        dataDay = [{
+    //day
+    dataDay = [{
       name: "จันทร์", val: "1"
     }, {
       name: "อังคาร", val: "2"
@@ -186,7 +186,7 @@
       name: "3 ปี", val: "3"
     }, {
       name: "4 ปีขึ้นไป", val: "4"
-    
+
     }];
   </script>
 </head>
@@ -244,6 +244,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:changePage('./html/schedule.html');">รายงาน</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="javascript:changePage('./html/reportSummaryRecommendFee.html');">รายงานสรุปยอดค่าแนะนำ</a>
+            </div>
           </li>
           <li class="nav-item dropdown">
             <a id="divShowUser1" class="nav-link dropdown-toggle" data-toggle="dropdown">User</a>
@@ -275,6 +278,7 @@
             <a class="nav-link dropdown-toggle" data-toggle="dropdown">รายงาน</a>
             <div class="dropdown-menu">
               <a class="dropdown-item" href="javascript:changePage('./html/reportclass.html');">รายงานการลงทะเบียนเรียน</a>
+              <a class="dropdown-item" href="javascript:changePage('./html/reportStudentRegister.html');">รายงานสรุปจำนวนการลงทะเบียนรายเดือน</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -302,9 +306,10 @@
           <li class="nav-item dropdown ">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown">รายงาน</a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="javascript:changePage('./html/reportclass.html');">รายการลงทะเบียนเรียน</a>
+              <a class="dropdown-item" href="javascript:changePage('./html/reportclass.html');">รายการลงทะเบียนเรียน</a>
               <a class="dropdown-item" href="javascript:changePage('./html/reportrecommendclass.html');">รายการแนะนำงานสอน</a>
               <a class="dropdown-item" href="javascript:changePage('./html/reporttutorlist.html');">รายการติวเตอร์และวิชาสอน</a>
+              <a class="dropdown-item" href="javascript:changePage('./html/reportRecommendFeeAndReturn.html');">รายงานรายรับ-รายจ่ายจากการชำระค่าแนะนำและคือเงิน</a>
             </div>
           </li>
           <li class="nav-item dropdown">
