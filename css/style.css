@@ -81,13 +81,15 @@
     background-image: url("../images/icons8-trash.png");
 }
 .fa-calendar-times-o{
-    width: 15px;
-    height: auto;
+    width: 20px;
+    height: 20px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-image: url("../images/icons8-calendar.png");
+    position: absolute;
+    left: 4px;
+    top: 8px;
 }
-
 .fa-waypoint{
     width: 20px;
     height: 20px;
