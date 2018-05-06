@@ -270,7 +270,7 @@
             var catInt = [];
             for (var j = 0; j < subjectCatagories.length; j++) {
                 var subcId = subjectCatagories[j].subcId;
-                var checkBoxVal = $("#cb" + subcId).val();
+                var checkBoxVal = parseInt($("#cb" + subcId).val());
                 console.log("subcId :" + subcId);
                 if ($("#cb" + subcId).is(":checked")) {
                     catInt.push(checkBoxVal);
