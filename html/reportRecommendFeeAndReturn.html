@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage()">หน้าหลัก</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="javascript:loadMainPage()">รายงาน</a>
+            </li>
+            <li class="breadcrumb-item active">รายรับ-จ่ายจากการชำระค่าแนะนำและคืนเงิน</li>
+        </ol>
+    </div>
+    <div class="label-header">รายรับ-จ่ายจากการชำระค่าแนะนำและคืนเงิน</div>
+    <!-- Button trigger modal -->
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <form class="form-horizontal">
+                    <div class="form-group required">
+                        <label class="col-lg-2 labelform">เริ่ม</label>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <div class="fa fa-calendar-times-o"></div>
+                                </div>
+                                <input class="form-control" id="pickerRecClassStartDate" name="date" placeholder="DD/MM/YYY" type="text" readonly/>
+                            </div>
+                        </div>
+                        <label class="col-lg-2 labelform">สิ้นสุด</label>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <div class="fa fa-calendar-times-o"></div>
+                                </div>
+                                <input class="form-control" id="pickerRecClassEndDate" name="date" placeholder="DD/MM/YYY" type="text" readonly/>
+                            </div>
+                        </div>
+                        <div class="col-lg-2"></div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <table id="gridRecommendFeeAndReturnReport" class="table table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th data-column-id="recId" data-width="5%">รหัสงาน</th>
+                <th data-column-id="stuName" data-width="10%">ชื่อนักเรียน</th>
+                <th data-column-id="subject" data-width="15%">วิชาเรียน</th>
+                <th data-column-id="month" data-width="30%">เดือน</th>
+                <th data-column-id="year" data-width="10%">ปี</th>
+                <th data-column-id="type" data-width="10%">ประเภท</th>
+                <th data-column-id="fee" data-width="15%">จำนวนเงิน</th>
+                <th data-column-id="action" data-width="5%" data-sortable="false" data-searchable="false"></th>
+            </tr>
+        </thead>
+    </table>
+
+    <script>
+        var gridRecommendFeeAndReturnReport = $("#gridRecommendFeeAndReturnReport");
+        var _gRecTutorReport = [];
+        jQuery(document).ready(function () {
+            console.log("Load on course page");
+            var date_input = $('input[name="date"]'); //our date input has the name "date"
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            date_input.datepicker({
+                autoclose: true,
+                minViewMode: 1,
+                format: 'mm/yyyy'
+            })
+            $('#pickerRecClassStartDate').val('11/03/2018');
+            $('#pickerRecClassEndDate').val('11/05/2018');
+
+            //   initialRecStudentNameData();
+
+        });
+
+        function appendRecommendFeeandReturnReport(rectutor, i) {
+
+            var actionTag = "<button type='button' class='btn btn-xs btn-default command-detail' data-row-id='" + i + "'><div class='fa-detail-o'></div></button> ";
+            gridRecommendFeeAndReturnReport.bootgrid("append", [
+                {
+                    "recId": rectutor.recId,
+                    "stuName": rectutor.stuName,
+                    "subject": rectutor.subjectAndGroupDetailName,
+                    "month": rectutor.recTimeLoc,
+                    "year": rectutor.tutorName,
+                    "type": rectutor.tutorContact,
+                    "fee": rectutor.status,
+                    "action": actionTag
+                }
+            ]);
+        }
+
+
+        $("#gridRecommendFeeAndReturnReport").bootgrid(
+            {
+                labels: {
+                    noResults: 'ไม่พบรายการ'
+                }
+            }
+        ).on("loaded.rs.jquery.bootgrid", function () {
+            gridRecommendFeeAndReturnReport.find(".command-detail").on("click", function (e) {
+                var i = $(this).data("row-id");
+                openRecommendFeeAndReturnDetailReport(i);
+            });
+        });
+
+        function openRecommendFeeAndReturnDetailReport(i) {
+            if (_gRecTutorReport[i].clsType == 'M') {
+                _gSelectedRecId = _gRecTutorReport[i].recId;
+                changePage('./html/recmergedclassdetailstaff.html');
+            } else {
+                _gSelectedRecId = _gRecTutorReport[i].recId;
+                changePage('./html/recclassdetailstaff.html');
+            }
+
+        }
+
+
+    </script>
+</body>
+
+</html>
