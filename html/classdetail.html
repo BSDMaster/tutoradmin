@@ -55,6 +55,36 @@
         </div>
     </div>
     <br>
+    <div id="divParentInfo">
+        <div class="label-header">ข้อมูลผู้ปกครอง</div>
+        <div style="margin-top:30px;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-3">ชื่อ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblStuClsParName"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">เบอร์โทรติดต่อ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblStuClsParTel"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">อีเมล์ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblStuClsParEmail"></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">เพศ :</label>
+                                <label class="col-lg-9 labelnormal" id="lblStuClsParSex">ชาย</label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
     <div class="label-header">ข้อมูลนักเรียน</div>
     <div style="margin-top:30px;">
         <div class="container-fluid">
@@ -146,6 +176,40 @@
         </table>
     </div>
     <br>
+    </div>
+    <div style="display: none;" id="tutorForNonSpec">
+        <div class="label-header">ข้อมูลคุณสมบัติติวเตอร์</div>
+        <div style="margin-top:30px;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-3">เพศ :</label>
+                                <div class="col-lg-9 divnewline" id="lblSpecTurSex"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">คณะ :</label>
+                                <div class="col-lg-9 divnewline" id="lblSpecTurFac"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">สถาบัน :</label>
+                                <div class="col-lg-9 divnewline" id="lblSpecTurUni"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">ประสบการณ์ :</label>
+                                <div class="col-lg-9 divnewline" id="lblSpecTurExp"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">ลำดับปัจจัยในการคัดเลือกติวเตอร์ :</label>
+                                <div class="col-lg-9 divnewline" id="lblSpecTurVarOrder"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
     var _clsId;
@@ -153,7 +217,6 @@
     jQuery(document).ready(function () {
         initialStuClassDetailData();
 
-        initialEvaTutor();
     });
 
     var gridStuClassTime = $("#gridStuClassTime").bootgrid({
@@ -190,12 +253,28 @@
                 $('#lblStuClsStuName').text(classDetail.stuName);
                 $('#lblStuClsStuTel').text(classDetail.stuTel);
                 $('#lblStuClsStuEmail').text(classDetail.stuEmail);
+                if (classDetail.parId) {
+                    $('#divParentInfo').show();
+                    $('#lblStuClsParName').text(classDetail.parName);
+                    $('#lblStuClsParTel').text(classDetail.parTel);
+                    $('#lblStuClsParEmail').text(classDetail.parEmail);
+                    $('#lblStuClsParSex').text(classDetail.parSex);
+                } else {
+                    $('#divParentInfo').hide();
+                }
                 if (classDetail.isSpec == 'Y') {
                     $('#lblStuClsSpec').text('ระบุติวเตอร์');
                     $('#aListRequestChangeTutor').hide();
+                    $('#tutorForNonSpec').hide();
                 } else {
                     $('#lblStuClsSpec').text('ไม่ระบุติวเตอร์');
                     $('#aListRequestChangeTutor').show();
+                    $('#tutorForNonSpec').show();
+                    $('#lblSpecTurSex').text(classDetail.turSpecSex);
+                    $('#lblSpecTurFac').text(classDetail.turSpecFac);
+                    $('#lblSpecTurUni').text(classDetail.turSpecUni);
+                    $('#lblSpecTurExp').text(classDetail.turSpecExp);
+                    $('#lblSpecTurVarOrder').text(classDetail.classVarOrder);
                 }
                 if (classDetail.statusId == 1 || classDetail.statusId == 5 || classDetail.statusId == 6) {
                     $('#divNumHours').hide();

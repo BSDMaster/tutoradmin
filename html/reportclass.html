@@ -67,8 +67,9 @@
         <thead>
             <tr>
                 <th data-column-id="clsId" data-width="5%">รหัส</th>
-                <th data-column-id="stuName" data-width="25%">ชื่อนักเรียน</th>
-                <th data-column-id="subject" data-width="40%">วิชาเรียน</th>
+                <th data-column-id="stuName" data-width="20%">ชื่อนักเรียน/ผู้ปกครอง</th>
+                <th data-column-id="subject" data-width="25%">วิชาเรียน</th>
+                <th data-column-id="type" data-width="20%">ประเภท</th>
                 <th data-column-id="status" data-width="25%">สถานะ</th>
                 <th data-column-id="action" data-width="5%" data-sortable="false" data-searchable="false"></th>
             </tr>
@@ -166,13 +167,20 @@
         }
 
         function appendClassReport(clazz, i) {
+            var classType = "";
+            if (clazz.isSpec == 'N') {
+                classType="ไม่ระบุติวเตอร์";
+            } else {
 
+                classType="ระบุติวเตอร์";
+            }
             var actionTag = "<button type='button' class='btn btn-xs btn-default command-detail' data-row-id='" + i + "'><div class='fa-detail-o'></div></button> ";
             gridClassReport.bootgrid("append", [
                 {
                     "clsId": clazz.clsId,
                     "stuName": clazz.stuName,
                     "subject": clazz.subjectAndGroupDetailName,
+                    "type":classType,
                     "status": clazz.status,
                     "action": actionTag
                 }

@@ -50,6 +50,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 ">
+                <button type="button" class="btn btn-danger btn-lg pull-right" id="btnBlacklistTutorDetail" onClick="javascript:blacklistTutorDetailConfirmPopup();"
+                    style="margin:5px;">Blacklist</button>
                 <button type="button" class="btn btn-danger btn-lg pull-right" id="btnRejectTutorDetail" onClick="javascript:rejectTutorDetailConfirmPopup();"
                     style="margin:5px;">ไม่อนุมัติผลการตรวจสอบประวัติ</button>
                 <button type="button" class="btn btn-success btn-lg pull-right" id="btnApproveTutorDetail" onClick="javascript:approveTutorDetailConfirmPopup();"
@@ -251,6 +253,27 @@
             </div>
         </div>
     </div>
+ <!-- Modal Blacklist -->
+ <div class="modal fade" id="modalConfirmBlacklistTutorDetail" tabindex="-1" role="dialog" aria-labelledby="modalConfirmBlacklistTutorDetailLabel"
+ aria-hidden="true">
+ <div class="modal-dialog" role="document">
+     <div class="modal-content">
+         <div class="modal-header">
+             <h5 class="modal-title" id="modalConfirmBlacklistTutorDetailLabel">ยืนยัน</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+         </div>
+         <div class="modal-body" id="divConfirmBlacklistDetailMsg">
+                 ท่านต้องการ lock
+         </div>
+         <div class="modal-footer">
+             <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">ยกเลิก</button>
+             <button type="button" class="btn btn-primary btn-lg" onclick="javascript:blacklistTutorDetail()" value="">ยืนยัน</button>
+         </div>
+     </div>
+ </div>
+</div>
 
 </body>
 <script>
@@ -312,9 +335,12 @@
                     $('#btnRejectTutorDetail').hide();
                 }
                 if (tutor.isBlock == 'Y') {
+                    $('#btnBlacklistTutorDetail').hide();
                     $('#btnUnlockTutorDetail').show();
                     $('#divLockFlag').show();
                 } else {
+
+                    $('#btnBlacklistTutorDetail').show();
                     $('#btnUnlockTutorDetail').hide();
                     $('#divLockFlag').hide();
                 }
@@ -469,6 +495,39 @@
     function unlockTutorDetailConfirmPopup() {
         $('#divConfirmUnlockDetailMsg').text('กรุณากดปุ่มยืนยันหากท่านต้องการปลดล็อคติวเตอร์รหัส ' + _gSelectedTurId);
         $('#modalConfirmUnlockTutorDetail').modal('show');
+    }
+
+    function blacklistTutorDetailConfirmPopup(){
+        $('#divConfirmBlacklistDetailMsg').text('กรุณากดปุ่มยืนยันหากท่านล็อคติวเตอร์รหัส ' + _gSelectedTurId);
+        $('#modalConfirmBlacklistTutorDetail').modal('show');
+    }
+
+    function blacklistTutorDetail(){
+        $('#modalConfirmBlacklistTutorDetail').modal('hide');
+        $.ajax({
+            type: "GET",
+            url: _gServiceURL + "tutor/lockblacklist/" + _gSelectedTurId,
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function (data, status, jqXHR) {
+                var messages = data.message;
+                var alert;
+                if (data.status == 200) {
+                    alert = $(".alert-success");
+                    initialTutorProfile();
+                } else {
+                    alert = $(".alert-danger");
+                }
+                alert.find("strong").text(messages);
+                alert.show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            },
+            error: function (jqXHR, status) {
+                $(".alert-danger").show();
+                $('html, body').animate({ scrollTop: $('.breadcrumb').offset().top }, 'fast');
+            }
+        });
     }
 
     function unlockTutorDetail(){

@@ -23,6 +23,18 @@
         <button type="button" class="close" data-dismiss="alert"></button>
         <strong>ไม่สามารถบันทึกข้อมูลได้</strong>
     </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 ">
+                <button type="button" class="btn btn-danger btn-lg pull-right" id="btnRejectRequest" style="margin:5px;" data-toggle="modal"
+                    data-target="#modalConfirmRejectRequest">ไม่อนุมัติ</button>
+                <button type="button" class="btn btn-success btn-lg pull-right" id="btnApproveRequestAndPay" style="margin:5px;" data-toggle="modal"
+                    data-target="#modalConfirmApproveAndPayRequest">อนุมัติและชำระเงินคืนติวเตอร์</button>
+                <button type="button" class="btn btn-success btn-lg pull-right" id="btnApproveRequest" style="margin:5px;" data-toggle="modal"
+                    data-target="#modalConfirmApproveRequest">อนุมัติ</button>
+            </div>
+        </div>
+    </div>
     <div class="label-header" id="headerreqclass">ข้อมูลคำร้อง</div>
     <div style="margin-top:30px;">
         <div class="container-fluid">
@@ -186,19 +198,6 @@
         </table>
     </div>
     <br>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="form-group col-lg-12">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <button type="button" class="btn btn-primary btn-lg" id="btnApproveRequest" data-toggle="modal" data-target="#modalConfirmApproveRequest">อนุมัติ</button>
-                    <button type="button" class="btn btn-primary btn-lg" id="btnApproveRequestAndPay" data-toggle="modal" data-target="#modalConfirmApproveAndPayRequest">อนุมัติและชำระเงินคืนติวเตอร์</button>
-                    <button type="button" class="btn btn-secondary btn-lg" id="btnRejectRequest" data-toggle="modal" data-target="#modalConfirmRejectRequest">ไม่อนุมัติ</button>
-                </div>
-                <div class="col-lg-4"></div>
-            </div>
-        </div>
-    </div>
     <!-- Approve Request Modal -->
     <div class="modal fade" id="modalConfirmApproveRequest" tabindex="-1" role="dialog" aria-labelledby="confirmApproveRequestLabel">
         <div class="modal-dialog" role="document">
@@ -296,7 +295,7 @@
                 $('#breadcrumbrequestclass').text('คำขอเลขที่ ' + classRequest.reqId);
                 _reqId = classRequest.reqId;
                 $('#divBodyApproveModal').text('ท่านต้องการอนุมัติคำขอเลขที่ ' + classRequest.reqId);
-                $('#divBodyApproveAndPayModal').text('ท่านต้องการอนุมัติคำขอเลขที่ ' + classRequest.reqId + ' และชำระเงินค่าแนะนำคืนให้ติวเตอร์ในราคา ' + classRequest.reqPrice + ' บาท');
+                $('#divBodyApproveAndPayModal').text('ท่านต้องการอนุมัติคำขอเลขที่ ' + classRequest.reqId + ' และชำระเงินค่าแนะนำคืนให้ติวเตอร์ในราคา ' + classRequest.reqReturnPrice + ' บาท');
                 $('#divBodyRejectModal').text('ท่านต้องการปฏิเสธคำขอเลขที่ ' + classRequest.reqId);
                 $('#lblReqId').text(classRequest.reqId);
                 $('#lblReqType').text(classRequest.reqType);
@@ -305,18 +304,13 @@
                 $('#lblReqPrice').text(classRequest.reqPrice + ' บาท');
                 $('#lblReqRequester').text(classRequest.reqRequester);
                 $('#lblReqCreatedDate').text(classRequest.reqCreatedDate);
-                if (classRequest.reqTypeId == 1) {
-                    $('#btnApproveRequestAndPay').hide();
-                } else {
-                    $('#btnApproveRequestAndPay').show();
-                }
                 $('#headerstuclass').text('งานสอนเลขที่ ' + classDetail.clsId);
                 $('#lblClsId').text(classDetail.clsId);
                 $('#lblClsSubjectCat').text(classDetail.subjectAndGroupDetailName);
                 $('#lblClsProgram').text(classDetail.program);
                 $('#lblClsPrice').text(classDetail.recPrice);
-                if (classDetail.recReturnPrice != "" || classDetail.recReturnPrice != null) {
-                    $('#lblClsReturnPrice').text(classDetail.recReturnPrice);
+                if (classRequest.reqReturnPrice != "" || classRequest.reqReturnPrice != null) {
+                    $('#lblClsReturnPrice').text(classRequest.reqReturnPrice);
                 } else {
                     $('#lblClsReturnPrice').text("0.00");
                 }
