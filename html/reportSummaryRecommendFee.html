@@ -31,7 +31,7 @@
                                 <div class="input-group-addon">
                                     <div class="fa fa-calendar-times-o"></div>
                                 </div>
-                                <input class="form-control" id="pickerRecClassStartDate" name="date" placeholder="MM/YYY" type="text" readonly/>
+                                <input class="form-control" id="pickerRecClassStartDate" name="date" placeholder="MM/YYYY" type="text" readonly/>
                             </div>
                         </div>
                         <label class="col-lg-2 labelform">สิ้นสุด</label>
@@ -40,7 +40,7 @@
                                 <div class="input-group-addon">
                                     <div class="fa fa-calendar-times-o"></div>
                                 </div>
-                                <input class="form-control" id="pickerRecClassEndDate" name="date" placeholder="MM/YYY" type="text" readonly/>
+                                <input class="form-control" id="pickerRecClassEndDate" name="date" placeholder="MM/YYYY" type="text" readonly/>
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -58,9 +58,9 @@
             <tr>
                 <th data-column-id="month" data-width="20%">เดือน</th>
                 <th data-column-id="year" data-width="20%">ปี</th>
-                <th data-column-id="type" data-width="30%">ประเภท</th>
-                <th data-column-id="fee" data-width="25%">จำนวนเงิน</th>
-                <th data-column-id="action" data-width="5%" data-sortable="false" data-searchable="false"></th>
+                <th data-column-id="type" data-width="25%">ประเภท</th>
+                <th data-column-id="debit" data-width="15%" data-align="right" data-column-align="center">รายรับ</th>
+                <th data-column-id="credit" data-width="15%" data-align="right" data-column-align="center">รายจ่าย</th>
             </tr>
         </thead>
     </table>
@@ -78,42 +78,13 @@
                 minViewMode: 1,
                 format: 'mm/yyyy'
             })
+            $('#pickerRecClassStartDate').val('01/2018');
+            $('#pickerRecClassEndDate').val('06/2018');
 
-
-            //$('#pickerRecClassStartDate').val('11/03/2018');
-            //$('#pickerRecClassEndDate').val('11/05/2018');
-
-            initialRectutorStatusData();
             //   initialRecStudentNameData();
 
         });
-        function initialRectutorStatusData() {
-            console.log("initial data");
-            $('#dropdownRecTutorStatus').empty();
-            $.ajax({
-                type: "GET",
-                url: _gServiceURL + "report/recommendstatus",
-                contentType: "application/json; charset=utf-8",
-                crossDomain: true,
-                dataType: "json",
-                success: function (data, status, jqXHR) {
-                    console.log(data.data.recommendStatuses);
-                    var recommendstatus = data.data.recommendStatuses;
-                    console.log(recommendstatus);
-                    for (var i = 0; i < recommendstatus.length; i++) {
-                        $('#dropdownRecTutorStatus').append('<option value="' + recommendstatus[i].recStatusId + '">' + recommendstatus[i].recStatusName + '</option>');
-                    }
-                    $("#dropdownRecTutorStatus").val($("#dropdownRecTutorStatus option:first").val());
-
-                },
-                error: function (jqXHR, status) {
-                    console.log(jqXHR);
-                    alert('fail' + status.code);
-                }
-            });
-        }
-
-
+      
         $("#gridRecommendFeeReport").bootgrid(
             {
                 labels: {
@@ -140,37 +111,25 @@
 
         function initialSummaryRecommenFeeData() {
             console.log("initial data");
-            var startDate = $('#pickerClassStartDate').val();
-            var endDate = $('#pickerClassEndDate').val();
-            var selectedStatusIds = [];
-            $('#dropdownClassStatus :selected').each(function () {
-                if ($(this).val() == "0" || $(this).val() == 0) {
-
-                } else {
-                    selectedStatusIds.push(parseInt($(this).val()));
-                }
-            });
-
-            // var studentId = parseInt($('#dropdownRecStudentName option:selected').val());
-            var studentName = $('#txtClassSearchStudentName').val();
-            gridClassReport.bootgrid('clear');
+            var startDate = $('#pickerRecClassStartDate').val();
+            var endDate = $('#pickerRecClassEndDate').val();
+           
+            gridRecommendFeeReport.bootgrid('clear');
             _gClassReport = [];
             var bodyRequest = {
                 startDate: startDate,
-                endDate: endDate,
-                statusIds: selectedStatusIds,
-                studentName: studentName
+                endDate: endDate
             };
             $.ajax({
                 type: "POST",
-                url: _gServiceURL + "report/getclass",
+                url: _gServiceURL + "report/getsummarypricereport",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(bodyRequest),
                 crossDomain: true,
                 dataType: "json",
                 success: function (data, status, jqXHR) {
-                    console.log(data.data.recommendTutorViews);
-                    _gClassReport = data.data.recommendTutorViews;
+                    console.log(data.data.recommendTutors);
+                    _gClassReport = data.data.recommendTutors;
                     console.log(_gClassReport);
                     for (var i = 0; i < _gClassReport.length; i++) {
                         appendSummaryRecommenFeeReport(_gClassReport[i], i);
@@ -184,16 +143,15 @@
         }
 
         function appendSummaryRecommenFeeReport(clazz, i) {
-
-            var actionTag = "<button type='button' class='btn btn-xs btn-default command-detail' data-row-id='" + i + "'><div class='fa-detail-o'></div></button> ";
-            gridClassReport.bootgrid("append", [
+            var debit = Number(clazz.debit).toFixed(2);
+            var credit = Number(clazz.credit).toFixed(2);
+           gridRecommendFeeReport.bootgrid("append", [
                 {
-                    "clsId": clazz.clsId,
                     "month": clazz.month,
                     "year": clazz.year,
                     "type": clazz.type,
-                    "fee": clazz.fee,
-                    "action": actionTag
+                    "debit": debit,
+                    "credit": credit
                 }
             ]);
         }
